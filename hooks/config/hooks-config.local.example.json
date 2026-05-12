@@ -1,0 +1,13 @@
+{
+  "_documentation": "Per-machine overrides for hooks-config.json. Copy to hooks-config.local.json (gitignored) and customize.",
+  "_examples": {
+    "fully_silent_machine": "Set every disable*Hook key to true, or use SOUNDS_DISABLED=1 env var.",
+    "enable_verbose_logging": "disableLogging: false (default) writes every hook event to hooks/logs/hooks-log.jsonl.",
+    "noisy_dev_box_quiet_hours": "Override individual hooks while keeping the dispatcher loaded."
+  },
+
+  "disableNotificationHook": false,
+  "disableStopHook": false,
+  "disableTaskCompletedHook": false,
+  "disableLogging": false
+}

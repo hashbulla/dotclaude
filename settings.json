@@ -1,0 +1,480 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "_documentation": "Full doctrine at best-practice/claude-settings.md. Secrets via .env.local (gitignored). Hooks at hooks/scripts/hooks.py.",
+
+  "theme": "dark-daltonized",
+  "outputStyle": "Explanatory",
+  "respectGitignore": true,
+  "skipDangerousModePermissionPrompt": true,
+  "agentPushNotifEnabled": true,
+  "enableAllProjectMcpServers": true,
+
+  "env": {
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "80",
+    "POSTHOG_API_KEY": "${POSTHOG_API_KEY}"
+  },
+
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh issue view:*)",
+      "Read",
+      "Glob",
+      "Grep"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(rm -rf /)",
+      "Read(path: **/.env)",
+      "Read(path: **/.env.*)",
+      "Read(path: **/.env.local)",
+      "Read(path: **/config/secrets.*)",
+      "Read(path: **/*.key)",
+      "Read(path: **/*.pem)",
+      "Read(path: **/credentials.json)",
+      "Read(path: **/.aws/credentials)",
+      "Read(path: **/.ssh/id_*)"
+    ]
+  },
+
+  "ignorePatterns": [
+    ".env",
+    ".env.*",
+    "**/__pycache__/**",
+    "**/.venv/**",
+    "**/node_modules/**"
+  ],
+
+  "spinnerVerbs": {
+    "mode": "replace",
+    "verbs": [
+      "Reasoning",
+      "Synthesizing",
+      "Cross-referencing",
+      "Verifying assumptions",
+      "Building the model",
+      "Tracing the dependency graph",
+      "Auditing the diff",
+      "Composing the response",
+      "Tightening the prose",
+      "Citing sources"
+    ]
+  },
+
+  "attribution": {
+    "commit": "Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>",
+    "pr": "🤖 Generated with [Claude Code](https://claude.com/claude-code)"
+  },
+
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y ccstatusline@latest",
+    "padding": 0,
+    "refreshInterval": 10
+  },
+
+  "mcpServers": {
+    "mcp-mermaid": {
+      "command": "npx",
+      "args": ["-y", "mcp-mermaid"]
+    },
+    "posthog": {
+      "command": "npx",
+      "args": ["-y", "@posthog/agent-toolkit", "mcp"],
+      "env": {
+        "POSTHOG_API_KEY": "${POSTHOG_API_KEY}",
+        "POSTHOG_BASE_URL": "https://eu.posthog.com"
+      }
+    }
+  },
+
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/rtk-rewrite.sh"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py PreToolUse",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "PreToolUse"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py PostToolUse",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "PostToolUse"
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py PostToolUseFailure",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "PostToolUseFailure"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py PermissionRequest",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "PermissionRequest"
+          }
+        ]
+      }
+    ],
+    "PermissionDenied": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py PermissionDenied",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "PermissionDenied"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py UserPromptSubmit",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "UserPromptSubmit"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py Notification",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "Notification"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py Stop",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "Stop"
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py StopFailure",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "StopFailure"
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py SubagentStart",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "SubagentStart"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py SubagentStop",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "SubagentStop"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py PreCompact",
+            "timeout": 5000,
+            "async": true,
+            "once": true,
+            "statusMessage": "PreCompact"
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py PostCompact",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "PostCompact"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py SessionStart",
+            "timeout": 5000,
+            "async": true,
+            "once": true,
+            "statusMessage": "SessionStart"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py SessionEnd",
+            "timeout": 5000,
+            "async": true,
+            "once": true,
+            "statusMessage": "SessionEnd"
+          }
+        ]
+      }
+    ],
+    "Setup": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py Setup",
+            "timeout": 30000,
+            "async": true,
+            "statusMessage": "Setup"
+          }
+        ]
+      }
+    ],
+    "TeammateIdle": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py TeammateIdle",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "TeammateIdle"
+          }
+        ]
+      }
+    ],
+    "TaskCreated": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py TaskCreated",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "TaskCreated"
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py TaskCompleted",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "TaskCompleted"
+          }
+        ]
+      }
+    ],
+    "ConfigChange": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py ConfigChange",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "ConfigChange"
+          }
+        ]
+      }
+    ],
+    "WorktreeCreate": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/worktree-create.sh",
+            "timeout": 120
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py WorktreeCreate",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "WorktreeCreate"
+          }
+        ]
+      }
+    ],
+    "WorktreeRemove": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/worktree-remove.sh",
+            "timeout": 60
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py WorktreeRemove",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "WorktreeRemove"
+          }
+        ]
+      }
+    ],
+    "InstructionsLoaded": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py InstructionsLoaded",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "InstructionsLoaded"
+          }
+        ]
+      }
+    ],
+    "Elicitation": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py Elicitation",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "Elicitation"
+          }
+        ]
+      }
+    ],
+    "ElicitationResult": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py ElicitationResult",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "ElicitationResult"
+          }
+        ]
+      }
+    ],
+    "CwdChanged": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py CwdChanged",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "CwdChanged"
+          }
+        ]
+      }
+    ],
+    "FileChanged": [
+      {
+        "matcher": ".envrc|.env|.env.local",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py FileChanged",
+            "timeout": 5000,
+            "async": true,
+            "statusMessage": "FileChanged"
+          }
+        ]
+      }
+    ]
+  }
+}

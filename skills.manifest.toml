@@ -1,0 +1,46 @@
+# =============================================================================
+# Skills manifest — dotclaude bootstrap
+# =============================================================================
+# Declares which external skills bootstrap.sh installs on a fresh machine.
+# Each [skill.<name>] block describes one bootstrap-installable skill.
+# Format is intentionally explicit: adding or removing a skill is a 4-line edit.
+#
+# 5 first-party skills ship via this manifest. Third-party symlinks
+# (impeccable/*, paperclip/*, dossier-intelligence, proposition-commerciale)
+# are catalogued in skills/EXTERNAL.md — they require manual setup.
+
+[skill.deep-research]
+repo = "git@github.com:hashbulla/deep-research.git"
+clone_to = "~/local-skills/Skills/deep-research"
+symlink_target = "~/.claude/skills/deep-research"
+required = true
+description = "Agentic multi-source deep research. Triggered by /rpi:research when needs_deep_research=true."
+
+[skill.critical-harness]
+repo = "git@github.com:hashbulla/critical-harness.git"
+clone_to = "~/local-skills/Skills/critical-harness"
+symlink_target = "~/.claude/skills/critical-harness"
+required = true
+description = "Adversarial repo-level review pipeline. Pattern source for RPI's Citation Grounding rule."
+
+[skill.claude-init]
+repo = "git@github.com:hashbulla/claude-init-skill.git"
+clone_to = "~/local-skills/Skills/claude-init-skill"
+symlink_source = "skills/claude-init"
+symlink_target = "~/.claude/skills/claude-init"
+required = true
+description = "Bootstraps or audits the full .claude/ memory architecture of a project."
+
+[skill.skill-generator]
+repo = "git@github.com:hashbulla/skill-generator.git"
+clone_to = "~/local-skills/Skills/skill-generator"
+symlink_target = "~/.claude/skills/skill-generator"
+required = true
+description = "Scaffolds production-grade skills per Anthropic Agent Skills spec and Perplexity's eval-first method."
+
+[skill.skill-harness]
+repo = "git@github.com:hashbulla/skill-harness.git"
+clone_to = "~/local-skills/Skills/skill-harness"
+symlink_target = "~/.claude/skills/skill-harness"
+required = true
+description = "Adversarial quality harness for individual skills. Companion to skill-generator."

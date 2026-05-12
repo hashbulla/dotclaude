@@ -1,0 +1,1 @@
+~/local-skills/Skills/impeccable/.claude/agents/anti-patterns.md

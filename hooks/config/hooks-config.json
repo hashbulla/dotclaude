@@ -1,0 +1,37 @@
+{
+  "_documentation": "Per-hook toggles loaded by hooks/scripts/hooks.py. Defaults are conservative — only the 5 most useful hooks fire sounds out of the box. Override per-machine via hooks-config.local.json (gitignored).",
+
+  "disablePreToolUseHook": true,
+  "disablePostToolUseHook": true,
+  "disablePostToolUseFailureHook": false,
+  "disablePermissionRequestHook": false,
+  "disablePermissionDeniedHook": false,
+
+  "disableUserPromptSubmitHook": true,
+  "disableNotificationHook": false,
+  "disableStopHook": false,
+  "disableStopFailureHook": false,
+  "disableSubagentStartHook": true,
+  "disableSubagentStopHook": false,
+
+  "disablePreCompactHook": false,
+  "disablePostCompactHook": true,
+  "disableSessionStartHook": false,
+  "disableSessionEndHook": true,
+  "disableSetupHook": true,
+
+  "disableTeammateIdleHook": true,
+  "disableTaskCreatedHook": true,
+  "disableTaskCompletedHook": false,
+
+  "disableConfigChangeHook": true,
+  "disableWorktreeCreateHook": true,
+  "disableWorktreeRemoveHook": true,
+  "disableInstructionsLoadedHook": true,
+  "disableElicitationHook": true,
+  "disableElicitationResultHook": true,
+  "disableCwdChangedHook": true,
+  "disableFileChangedHook": true,
+
+  "disableLogging": false
+}
