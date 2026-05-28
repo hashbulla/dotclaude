@@ -1,19 +1,15 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "_documentation": "Full doctrine at best-practice/claude-settings.md. Secrets via .env.local (gitignored). Hooks at hooks/scripts/hooks.py.",
-
-  "theme": "dark-daltonized",
-  "outputStyle": "Explanatory",
   "respectGitignore": true,
-  "skipDangerousModePermissionPrompt": true,
-  "agentPushNotifEnabled": true,
-  "enableAllProjectMcpServers": true,
-
   "env": {
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "80",
-    "POSTHOG_API_KEY": "${POSTHOG_API_KEY}"
+    "POSTHOG_API_KEY": "${POSTHOG_API_KEY}",
+    "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
   },
-
+  "attribution": {
+    "commit": "Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>",
+    "pr": "🤖 Generated with [Claude Code](https://claude.com/claude-code)"
+  },
   "permissions": {
     "allow": [
       "Bash(git status)",
@@ -41,58 +37,7 @@
       "Read(path: **/.ssh/id_*)"
     ]
   },
-
-  "ignorePatterns": [
-    ".env",
-    ".env.*",
-    "**/__pycache__/**",
-    "**/.venv/**",
-    "**/node_modules/**"
-  ],
-
-  "spinnerVerbs": {
-    "mode": "replace",
-    "verbs": [
-      "Reasoning",
-      "Synthesizing",
-      "Cross-referencing",
-      "Verifying assumptions",
-      "Building the model",
-      "Tracing the dependency graph",
-      "Auditing the diff",
-      "Composing the response",
-      "Tightening the prose",
-      "Citing sources"
-    ]
-  },
-
-  "attribution": {
-    "commit": "Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>",
-    "pr": "🤖 Generated with [Claude Code](https://claude.com/claude-code)"
-  },
-
-  "statusLine": {
-    "type": "command",
-    "command": "npx -y ccstatusline@latest",
-    "padding": 0,
-    "refreshInterval": 10
-  },
-
-  "mcpServers": {
-    "mcp-mermaid": {
-      "command": "npx",
-      "args": ["-y", "mcp-mermaid"]
-    },
-    "posthog": {
-      "command": "npx",
-      "args": ["-y", "@posthog/agent-toolkit", "mcp"],
-      "env": {
-        "POSTHOG_API_KEY": "${POSTHOG_API_KEY}",
-        "POSTHOG_BASE_URL": "https://eu.posthog.com"
-      }
-    }
-  },
-
+  "enableAllProjectMcpServers": true,
   "hooks": {
     "PreToolUse": [
       {
@@ -110,8 +55,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py PreToolUse",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "PreToolUse"
+            "statusMessage": "PreToolUse",
+            "async": true
           }
         ]
       }
@@ -123,8 +68,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py PostToolUse",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "PostToolUse"
+            "statusMessage": "PostToolUse",
+            "async": true
           }
         ]
       }
@@ -136,8 +81,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py PostToolUseFailure",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "PostToolUseFailure"
+            "statusMessage": "PostToolUseFailure",
+            "async": true
           }
         ]
       }
@@ -149,8 +94,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py PermissionRequest",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "PermissionRequest"
+            "statusMessage": "PermissionRequest",
+            "async": true
           }
         ]
       }
@@ -162,8 +107,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py PermissionDenied",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "PermissionDenied"
+            "statusMessage": "PermissionDenied",
+            "async": true
           }
         ]
       }
@@ -175,8 +120,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py UserPromptSubmit",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "UserPromptSubmit"
+            "statusMessage": "UserPromptSubmit",
+            "async": true
           }
         ]
       }
@@ -188,8 +133,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py Notification",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "Notification"
+            "statusMessage": "Notification",
+            "async": true
           }
         ]
       }
@@ -201,8 +146,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py Stop",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "Stop"
+            "statusMessage": "Stop",
+            "async": true
           }
         ]
       }
@@ -214,8 +159,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py StopFailure",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "StopFailure"
+            "statusMessage": "StopFailure",
+            "async": true
           }
         ]
       }
@@ -227,8 +172,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py SubagentStart",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "SubagentStart"
+            "statusMessage": "SubagentStart",
+            "async": true
           }
         ]
       }
@@ -240,8 +185,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py SubagentStop",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "SubagentStop"
+            "statusMessage": "SubagentStop",
+            "async": true
           }
         ]
       }
@@ -253,9 +198,9 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py PreCompact",
             "timeout": 5000,
-            "async": true,
+            "statusMessage": "PreCompact",
             "once": true,
-            "statusMessage": "PreCompact"
+            "async": true
           }
         ]
       }
@@ -267,8 +212,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py PostCompact",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "PostCompact"
+            "statusMessage": "PostCompact",
+            "async": true
           }
         ]
       }
@@ -280,9 +225,9 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py SessionStart",
             "timeout": 5000,
-            "async": true,
+            "statusMessage": "SessionStart",
             "once": true,
-            "statusMessage": "SessionStart"
+            "async": true
           }
         ]
       }
@@ -294,9 +239,9 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py SessionEnd",
             "timeout": 5000,
-            "async": true,
+            "statusMessage": "SessionEnd",
             "once": true,
-            "statusMessage": "SessionEnd"
+            "async": true
           }
         ]
       }
@@ -308,8 +253,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py Setup",
             "timeout": 30000,
-            "async": true,
-            "statusMessage": "Setup"
+            "statusMessage": "Setup",
+            "async": true
           }
         ]
       }
@@ -321,8 +266,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py TeammateIdle",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "TeammateIdle"
+            "statusMessage": "TeammateIdle",
+            "async": true
           }
         ]
       }
@@ -334,8 +279,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py TaskCreated",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "TaskCreated"
+            "statusMessage": "TaskCreated",
+            "async": true
           }
         ]
       }
@@ -347,8 +292,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py TaskCompleted",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "TaskCompleted"
+            "statusMessage": "TaskCompleted",
+            "async": true
           }
         ]
       }
@@ -360,8 +305,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py ConfigChange",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "ConfigChange"
+            "statusMessage": "ConfigChange",
+            "async": true
           }
         ]
       }
@@ -382,8 +327,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py WorktreeCreate",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "WorktreeCreate"
+            "statusMessage": "WorktreeCreate",
+            "async": true
           }
         ]
       }
@@ -404,8 +349,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py WorktreeRemove",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "WorktreeRemove"
+            "statusMessage": "WorktreeRemove",
+            "async": true
           }
         ]
       }
@@ -417,8 +362,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py InstructionsLoaded",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "InstructionsLoaded"
+            "statusMessage": "InstructionsLoaded",
+            "async": true
           }
         ]
       }
@@ -430,8 +375,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py Elicitation",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "Elicitation"
+            "statusMessage": "Elicitation",
+            "async": true
           }
         ]
       }
@@ -443,8 +388,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py ElicitationResult",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "ElicitationResult"
+            "statusMessage": "ElicitationResult",
+            "async": true
           }
         ]
       }
@@ -456,8 +401,8 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py CwdChanged",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "CwdChanged"
+            "statusMessage": "CwdChanged",
+            "async": true
           }
         ]
       }
@@ -470,11 +415,90 @@
             "type": "command",
             "command": "python3 ${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/scripts/hooks.py FileChanged",
             "timeout": 5000,
-            "async": true,
-            "statusMessage": "FileChanged"
+            "statusMessage": "FileChanged",
+            "async": true
           }
         ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y ccstatusline@latest",
+    "padding": 0,
+    "refreshInterval": 10
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "figma@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "telegram@claude-plugins-official": true,
+    "agent-sdk-dev@claude-plugins-official": true
+  },
+  "outputStyle": "Explanatory",
+  "spinnerVerbs": {
+    "mode": "replace",
+    "verbs": [
+      "Reasoning",
+      "Synthesizing",
+      "Cross-referencing",
+      "Verifying assumptions",
+      "Building the model",
+      "Tracing the dependency graph",
+      "Auditing the diff",
+      "Composing the response",
+      "Tightening the prose",
+      "Citing sources"
+    ]
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark-daltonized",
+  "agentPushNotifEnabled": true,
+  "_documentation": "Full doctrine at best-practice/claude-settings.md. Secrets via .env.local (gitignored). Hooks at hooks/scripts/hooks.py.",
+  "ignorePatterns": [
+    ".env",
+    ".env.*",
+    "**/__pycache__/**",
+    "**/.venv/**",
+    "**/node_modules/**"
+  ],
+  "mcpServers": {
+    "mcp-mermaid": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-mermaid"
+      ]
+    },
+    "posthog": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@posthog/agent-toolkit",
+        "mcp"
+      ],
+      "env": {
+        "POSTHOG_API_KEY": "${POSTHOG_API_KEY}",
+        "POSTHOG_BASE_URL": "https://eu.posthog.com"
+      }
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "env": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+      }
+    }
   }
 }
