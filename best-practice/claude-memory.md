@@ -4,7 +4,7 @@ Every byte in `~/.claude/CLAUDE.md` is loaded into every Claude Code session at 
 
 ## The 200-line ceiling
 
-The reference repo (`shanraisshan/claude-code-best-practice`) flagged 200 lines as the empirical ceiling for reliable adherence. Past that, attention to individual directives drops. dotclaude's `CLAUDE.md` is ~75 lines; the heavy content lives in:
+The reference repo (`shanraisshan/claude-code-best-practice`) flagged 200 lines as the empirical ceiling for reliable adherence; Anthropic's own docs say the same ("target under 200 lines… bloated files cause Claude to ignore your actual instructions", retrieved 2026-06-09). Past that, attention to individual directives drops. Run `scripts/audit-config.sh` for the live count — never assert it in prose (asserted numbers rot: this doc once claimed "~75 lines" while the file sat at 317). The heavy content lives in:
 
 - `@identity.md` — PII (gitignored).
 - `@profile.md` — professional persona (gitignored).
@@ -61,10 +61,16 @@ Together they're ~140 lines; merged they'd cross the 200-line ceiling.
 - The directive is doctrine that explains *why* something works the way it does → put it in `best-practice/` (this folder).
 - The directive duplicates a skill or agent's own description → trust the skill's `description` field for auto-discovery.
 
-## Verifying CLAUDE.md size
+## Config invariants + growth rule (anti-drift)
+
+`scripts/audit-config.sh` is the executable contract — the gate the 200-line ceiling lacked while the file grew to 317. It hard-fails (exit 1, blocks the commit when wired to `.git/hooks/pre-commit`) on: CLAUDE.md > 200 lines, any `rules/*.md` > 100, or a cheat-sheet/pitfalls block inlined in CLAUDE.md. It warns on a doc that asserts CLAUDE.md's line count and on oversized best-practice docs.
 
 ```bash
-wc -l ~/.claude/CLAUDE.md ~/.claude/identity.md ~/.claude/profile.md ~/.claude/RTK.md
+bash scripts/audit-config.sh          # run before every commit; exit 0 = within budget
 ```
 
-Total across all `@-imported` files should stay around 200 lines.
+**The growth rule (why the file drifted, and how it won't again).** dotclaude bloated because each new domain (Scrapling → Context7 → Code-Gen) was added by mirroring the previous one's *always-on dual-block* — a routing table **plus** an autonomous-trigger block **plus** a cheat-sheet **plus** pitfalls. That template cost ~80–100 always-on lines per domain. It stops here:
+
+- A new domain does **not** get an always-on dual-block. It gets either a lazy `rules/<domain>.md` (if file-triggered, like code-gen) **or** one compressed always-on stanza — routing rows + a single "fire proactively when…" line — if intent-triggered (search, docs, scraping).
+- **Cheat-sheets, pitfalls, worked examples, and multi-paragraph notes NEVER live in CLAUDE.md.** Their home is the domain's `playbooks/<domain>/` (or the command/skill file); CLAUDE.md keeps a one-line pointer.
+- Before adding to CLAUDE.md, apply Anthropic's test: "Would removing this line cause Claude to make a mistake?" If not, cut it.

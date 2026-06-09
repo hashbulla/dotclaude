@@ -22,9 +22,10 @@
 10. [📚 Playbooks](#-playbooks)
 11. [🔁 The RPI workflow](#-the-rpi-workflow)
 12. [⚙️ Configuration hierarchy](#-configuration-hierarchy)
-13. [🔐 Security & secrets](#-security--secrets)
-14. [🛣️ Roadmap](#-roadmap)
-15. [🙏 Credits](#-credits)
+13. [🧱 Config drift gate](#-config-drift-gate)
+14. [🔐 Security & secrets](#-security--secrets)
+15. [🛣️ Roadmap](#-roadmap)
+16. [🙏 Credits](#-credits)
 
 ---
 
@@ -250,6 +251,24 @@ Claude Code resolves settings in this order (first match wins):
 7. **Defaults** — Claude Code's built-in.
 
 Doctrine: [best-practice/claude-settings.md](best-practice/claude-settings.md).
+
+---
+
+## 🧱 Config drift gate
+
+`CLAUDE.md` has a 200-line ceiling (Anthropic + the reference repo agree). A ceiling nothing checks is a wish, so [`scripts/audit-config.sh`](scripts/audit-config.sh) makes it executable — it hard-fails on an over-budget `CLAUDE.md`, an oversized `rules/*.md`, or a cheat-sheet/pitfalls block inlined into always-on context.
+
+Gate it at commit time (where drift enters). `.git/` is not versioned, so install the hook per-machine:
+
+```bash
+cat > .git/hooks/pre-commit <<'EOF'
+#!/usr/bin/env bash
+exec bash "$(git rev-parse --show-toplevel)/scripts/audit-config.sh"
+EOF
+chmod +x .git/hooks/pre-commit
+```
+
+The growth rule that prevents recurrence (new domains never get an always-on dual-block; cheat-sheets/pitfalls live in playbooks) lives in [best-practice/claude-memory.md](best-practice/claude-memory.md).
 
 ---
 
