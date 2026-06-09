@@ -1,0 +1,200 @@
+[
+  {
+    "claim_id": "C01",
+    "claim_text": "Scrapling 0.4.x added a Scrapy-style spider framework with start_urls, parse(), Request/Response, lifecycle hooks, and async iteration.",
+    "supporting_source_ids": ["S01", "S02", "S05", "S07"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 4,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C02",
+    "claim_text": "Top-level public API exports in 0.4.8 are: Selector, Fetcher, AsyncFetcher, StealthyFetcher, DynamicFetcher.",
+    "supporting_source_ids": ["S06"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 1,
+    "contradicting_source_ids": [],
+    "notes": "Single-source but primary (the source code itself). A1 grade."
+  },
+  {
+    "claim_id": "C03",
+    "claim_text": "PlayWrightFetcher does not exist in 0.4.x — it was renamed to DynamicFetcher.",
+    "supporting_source_ids": ["S06", "S07"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 2,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C04",
+    "claim_text": "The scrapling mcp server exposes 10 tools: open_session, close_session, list_sessions, get, bulk_get, fetch, bulk_fetch, stealthy_fetch, bulk_stealthy_fetch, screenshot.",
+    "supporting_source_ids": ["S08"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 1,
+    "contradicting_source_ids": [],
+    "notes": "Single source but the source code itself (FastMCP add_tool calls). Highest possible primary."
+  },
+  {
+    "claim_id": "C05",
+    "claim_text": "scrapling mcp defaults to stdio transport; --http enables streamable-http transport.",
+    "supporting_source_ids": ["S08", "S09"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 2,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C06",
+    "claim_text": "scrapling mcp --http defaults to host 0.0.0.0:8000, which is unsafe for shared-network use.",
+    "supporting_source_ids": ["S08"],
+    "admiralty_credibility": 3,
+    "corroboration_count": 1,
+    "contradicting_source_ids": [],
+    "notes": "Code fact is single-sourced from CLI source. Security implication is our inference. Moved to Needs Verification."
+  },
+  {
+    "claim_id": "C07",
+    "claim_text": "Scrapling's anti-detection stack combines curl_cffi (TLS/JA3), patchright (Playwright stealth fork), and browserforge (fingerprint generation).",
+    "supporting_source_ids": ["S03", "S05", "S24"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 3,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C08",
+    "claim_text": "Scrapling bypasses Cloudflare Turnstile/Interstitial in the typical case.",
+    "supporting_source_ids": ["S05"],
+    "admiralty_credibility": 2,
+    "corroboration_count": 1,
+    "contradicting_source_ids": [],
+    "notes": "Maintainer claim; no independent reproduction in our source set but no counter-claim either."
+  },
+  {
+    "claim_id": "C09",
+    "claim_text": "Scrapling's bypass against Tencent WAF is probabilistic — not deterministic.",
+    "supporting_source_ids": ["S03"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 1,
+    "contradicting_source_ids": [],
+    "notes": "Issue #265 with concrete reproduction script. Primary evidence."
+  },
+  {
+    "claim_id": "C10",
+    "claim_text": "StealthyFetcher's patchright uses its own .local-browsers cache directory, causing a second browser download even when Playwright browsers are installed.",
+    "supporting_source_ids": ["S03"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 1,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C11",
+    "claim_text": "The README's 35-620x speed claim is against MechanicalSoup and BS4+html5lib — known-slow choices.",
+    "supporting_source_ids": ["S05", "S15"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 2,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C12",
+    "claim_text": "Against Parsel/Scrapy and raw lxml, Scrapling is at parity (~2ms on a 5000-element synthetic doc).",
+    "supporting_source_ids": ["S05", "S15"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 2,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C13",
+    "claim_text": "selectolax (Lexbor C engine) is materially faster than Scrapling for pure parser throughput.",
+    "supporting_source_ids": ["S12", "S16", "S17"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 3,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C14",
+    "claim_text": "robots.txt obedience is built into Scrapling via the protego library (Scrapy's robots parser).",
+    "supporting_source_ids": ["S05", "S10"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 2,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C15",
+    "claim_text": "Scrapling has a built-in ProxyRotator with cyclic or custom strategies plus per-request proxy override.",
+    "supporting_source_ids": ["S02", "S05", "S07"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 3,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C16",
+    "claim_text": "Scrapling provides persistent sessions (FetcherSession, DynamicSession, StealthySession) preserving cookies and storage across requests.",
+    "supporting_source_ids": ["S05", "S07"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 2,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C17",
+    "claim_text": "Scrapling is actively maintained as of May 2026 (commits May 11/16/18 2026).",
+    "supporting_source_ids": ["S01"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 1,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C18",
+    "claim_text": "Scrapling is a single-maintainer project (Karim Shoair / D4Vinci); bus factor = 1.",
+    "supporting_source_ids": ["S04"],
+    "admiralty_credibility": 2,
+    "corroboration_count": 1,
+    "contradicting_source_ids": [],
+    "notes": "Author field from PyPI; structural risk inference is our framing."
+  },
+  {
+    "claim_id": "C19",
+    "claim_text": "Crawlee/Scrapy-based comparisons in 2026 typically still classify Scrapling as a parser library, missing the 0.4 framework additions.",
+    "supporting_source_ids": ["S12", "S14", "S20"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 3,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C20",
+    "claim_text": "Scrapling supports HTTP/3 via curl_cffi in Fetcher.",
+    "supporting_source_ids": ["S04"],
+    "admiralty_credibility": 2,
+    "corroboration_count": 1,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C21",
+    "claim_text": "Scrapling CLI provides install, mcp (--http/--host/--port), shell, and extract subcommands (get/post/put/delete/fetch/stealth).",
+    "supporting_source_ids": ["S09"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 1,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C22",
+    "claim_text": "For maximum parser throughput on static HTML, selectolax is preferable to Scrapling.",
+    "supporting_source_ids": ["S12", "S16", "S17"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 3,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C23",
+    "claim_text": "For distributed crawl coordination beyond a single host, Scrapy + scrapy-redis remains the leader.",
+    "supporting_source_ids": ["S14"],
+    "admiralty_credibility": 2,
+    "corroboration_count": 1,
+    "contradicting_source_ids": []
+  },
+  {
+    "claim_id": "C24",
+    "claim_text": "Scrapling's adaptive matcher overhead stays in the same performance range as the rest of the parser (~2.39ms in the README benchmark).",
+    "supporting_source_ids": ["S05", "S15"],
+    "admiralty_credibility": 1,
+    "corroboration_count": 2,
+    "contradicting_source_ids": []
+  }
+]
