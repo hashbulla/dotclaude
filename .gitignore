@@ -19,6 +19,7 @@ file-history/
 paste-cache/
 plugins/
 projects/
+security/
 session-env/
 sessions/
 shell-snapshots/
@@ -31,6 +32,7 @@ agent-memory/
 # ── Per-session ephemera ────────────────────────────────────────────────────
 history.jsonl
 .last-cleanup
+.last-update-result.json
 stats-cache.json
 mcp-needs-auth-cache.json
 
