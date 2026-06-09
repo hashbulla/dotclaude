@@ -13,6 +13,7 @@
 | [claude-rules.md](claude-rules.md) | `paths:` lazy loading; when to use rules vs CLAUDE.md | [`../rules/`](../rules/) |
 | [claude-mcp.md](claude-mcp.md) | MCP server design; Tavily-first search routing doctrine | [`../CLAUDE.md`](../CLAUDE.md) (MCP Registry section) |
 | [rpi-workflow.md](rpi-workflow.md) | Research → Plan → Implement with Citation Grounding | [`../commands/rpi/`](../commands/rpi/), [`../agents/`](../agents/) |
+| [code-generation.md](code-generation.md) | Prime→spec/TDD→review→verify; do-directly default, discipline as backstop | [`../rules/code-generation.md`](../rules/code-generation.md), [`../CLAUDE.md`](../CLAUDE.md) (Code Gen routing + triggers) |
 
 ## How to read this
 
