@@ -1,3 +1,9 @@
+---
+description: Register a domain via Cloudflare Registrar, point DNS to a Koyeb app, attach it, and verify TLS — one autonomous run.
+argument-hint: "<domain> <koyeb-app>"
+allowed-tools: Bash, Read, Write, AskUserQuestion
+---
+
 # /domain-setup — Cloudflare Registrar + Koyeb peering, end-to-end
 
 Register a domain through Cloudflare Registrar API, provision DNS pointing to a Koyeb app, attach it, and verify TLS — all in a single autonomous run.

@@ -1,3 +1,9 @@
+---
+description: Decide which Scrapling fetcher fits a target (static vs dynamic, anti-bot posture, concurrency) without running a full scrape.
+argument-hint: "<target-or-url>"
+allowed-tools: Bash, Read
+---
+
 # /fetcher-pick — Decide which Scrapling fetcher fits a target
 
 Lightweight decision helper. For the full execution workflow, use [/scrape](scrape.md).

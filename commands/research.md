@@ -1,3 +1,9 @@
+---
+description: Tavily-first web research — deep multi-source synthesis, library/API docs, search, extraction, domain mapping, or site audit.
+argument-hint: "<query-or-objective>"
+allowed-tools: mcp__tavily__tavily_research, mcp__tavily__tavily_skill, mcp__tavily__tavily_search, mcp__tavily__tavily_extract, mcp__tavily__tavily_map, mcp__tavily__tavily_crawl, mcp__fetch__fetch, WebSearch
+---
+
 # /research — Tavily-First Web Research
 
 Execute a structured web research task using the Tavily + Fetch MCP stack.

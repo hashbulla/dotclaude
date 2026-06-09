@@ -1,3 +1,9 @@
+---
+description: Scrapling-first autonomous scraping — probe the target, pick the fetcher, extract with anti-bot handling.
+argument-hint: "<url-or-target>"
+allowed-tools: Bash, Read, Write, Skill, mcp__scrapling__get, mcp__scrapling__fetch, mcp__scrapling__stealthy_fetch, mcp__scrapling__open_session, mcp__scrapling__close_session, mcp__scrapling__screenshot, mcp__fetch__fetch
+---
+
 # /scrape — Scrapling-first autonomous scraping
 
 Execute a scraping task with state-of-the-art tool selection. Validated playbook: [~/.claude/playbooks/scrapling/research-report.md](../playbooks/scrapling/research-report.md).
