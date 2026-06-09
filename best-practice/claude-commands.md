@@ -22,6 +22,10 @@ argument-hint: "<expected-args>"
 
 Body is the orchestration prose — the steps the command runs, in order.
 
+## Commands are skills now (Claude Code 2026)
+
+Claude Code merged custom commands into skills: `commands/<name>.md` and `skills/<name>/SKILL.md` both create `/<name>` and behave identically ([slash-commands docs](https://code.claude.com/docs/en/slash-commands), retrieved 2026-06-09). `commands/*.md` keep working and take the same frontmatter. Frontmatter is **optional but recommended** — with no `description`, the menu falls back to the file's first paragraph, which is why a bare `# /name — …` H1 still surfaces. All eight dotclaude commands now carry frontmatter for consistency. Add `disable-model-invocation: true` only for commands Claude must never auto-invoke; `/scrape`, `/research`, `/fetcher-pick` deliberately omit it so the autonomous triggers in CLAUDE.md can fire them.
+
 ## Subdirectory namespacing
 
 `commands/<name>.md` → `/<name>`.
