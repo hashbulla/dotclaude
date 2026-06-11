@@ -2,6 +2,21 @@
 
 All notable changes to dotclaude are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+
+#### Self-update (5-layer dependency freshness)
+
+- `scripts/self-update.sh` — throttled, best-effort updater for the layers dotclaude doesn't get for free. Enumerates every git-backed skill clone symlinked into `skills/` + `agents/` (deduped to git roots), runs `git pull --ff-only` on each, and `pipx upgrade scrapling`. A dirty / detached / divergent / offline clone is **skipped, never merged or stashed** — work is never lost. Logs one line per repo to `hooks/logs/self-update.log`.
+- `hooks/scripts/hooks.py` — `maybe_launch_self_update()` fires the updater **detached** (`Popen(start_new_session=True)`) on `SessionStart`, throttled to once per `SELF_UPDATE_INTERVAL_HOURS` (default 24h). Read-only pre-check in the hook; the script is the throttle authority and claims the slot on start (anti thundering-herd). Independent of the sound/quiet settings; wrapped in try/except so a failure never blocks `SessionStart`.
+- `hooks/config/hooks-config.json` — `disableSelfUpdateHook` toggle (default-on).
+- `.gitignore` — `.last-self-update` throttle stamp (ephemeral).
+
+Coverage by layer: **(1) CC binary** auto-updates natively (no code); **(2) plugins** left to Claude Code's marketplace sweep (semantic pins are intentional); **(3) first-party skills** + **(4) third-party skills** via `git pull --ff-only`; **(5) MCP servers** — `uvx`/`npx -y` float per-run, `scrapling` (pipx) upgraded by the script. The dotclaude repo itself is **not** auto-pulled (frequently dirty → would always skip). Skill updates land for the *next* session, since skills load at session start.
+
+Env knobs: `SELF_UPDATE_FORCE=1` (bypass throttle), `SELF_UPDATE_INTERVAL_HOURS=N` (window).
+
 ## [0.1.0] — 2026-05-12
 
 The genesis commit. dotclaude scaffolding lifted from a working `~/.claude/` and shaped into a portable, versionable, senior-AI-engineer-grade repo. Inspired by [shanraisshan/claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice).

@@ -164,6 +164,20 @@ Three custom shell hooks pre-existed and are preserved:
 - [`hooks/worktree-create.sh`](hooks/worktree-create.sh) — runs on `WorktreeCreate`.
 - [`hooks/worktree-remove.sh`](hooks/worktree-remove.sh) — runs on `WorktreeRemove`.
 
+### Self-update on SessionStart
+
+The dispatcher also fires [`scripts/self-update.sh`](scripts/self-update.sh) **detached** on `SessionStart`, throttled to once per 24h, to keep external dependencies fresh across all five update layers:
+
+| Layer | Mechanism | Handled by |
+|---|---|---|
+| 1. CC binary | Native auto-update | Claude Code |
+| 2. Plugins | Marketplace sweep (semantic pins kept) | Claude Code |
+| 3. First-party skills | `git pull --ff-only` on symlinked clones | `self-update.sh` |
+| 4. Third-party skills | `git pull --ff-only` on symlinked clones | `self-update.sh` |
+| 5. MCP servers | `uvx`/`npx -y` float; `scrapling` via `pipx upgrade` | per-run / `self-update.sh` |
+
+A dirty / detached / divergent / offline clone is skipped, never merged or stashed. Toggle with `disableSelfUpdateHook` in `hooks-config.json`; bypass the throttle with `SELF_UPDATE_FORCE=1`. Skill updates land for the *next* session (skills load at session start). Results log to `hooks/logs/self-update.log`.
+
 ---
 
 ## 🔧 MCP registry

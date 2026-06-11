@@ -29,6 +29,7 @@ import platform
 import re
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 try:
@@ -288,12 +289,48 @@ def dry_run_check():
     sys.exit(0)
 
 
+def maybe_launch_self_update():
+    """On SessionStart, kick off scripts/self-update.sh detached and throttled.
+
+    The check here is read-only — it only avoids forking bash on every session.
+    The script itself is the throttle authority and claims the slot on start.
+    Never raises: a self-update failure must not block SessionStart.
+    """
+    try:
+        if is_hook_disabled("SelfUpdate"):
+            return
+        dotclaude = Path(__file__).parent.parent.parent
+        throttle = dotclaude / ".last-self-update"
+        try:
+            interval_h = float(os.environ.get("SELF_UPDATE_INTERVAL_HOURS", "24"))
+        except ValueError:
+            interval_h = 24.0
+        force = os.environ.get("SELF_UPDATE_FORCE", "").strip().lower() not in ("", "0", "false", "no", "off")
+        if not force and throttle.exists():
+            if (time.time() - throttle.stat().st_mtime) < interval_h * 3600:
+                return
+        script = dotclaude / "scripts" / "self-update.sh"
+        if not script.exists():
+            return
+        subprocess.Popen(
+            ["bash", str(script)],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            start_new_session=True,
+        )
+    except Exception as e:
+        print(f"self-update launch skipped: {e}", file=sys.stderr)
+
+
 def main():
     try:
         args = parse_arguments()
 
         if args.dry_run:
             dry_run_check()
+
+        # Self-update (SessionStart only) — independent of sound/quiet settings.
+        if args.event_name_arg == "SessionStart" and not args.agent:
+            maybe_launch_self_update()
 
         # Quiet-mode bail BEFORE any logging or sound work
         if is_quiet():

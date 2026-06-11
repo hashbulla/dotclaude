@@ -20,6 +20,9 @@
   "disableSessionEndHook": true,
   "disableSetupHook": true,
 
+  "_self_update": "disableSelfUpdateHook gates the throttled, detached git-pull of symlinked skill clones + scrapling (pipx) fired on SessionStart by scripts/self-update.sh. Independent of the sound hooks; default-on.",
+  "disableSelfUpdateHook": false,
+
   "disableTeammateIdleHook": true,
   "disableTaskCreatedHook": true,
   "disableTaskCompletedHook": false,

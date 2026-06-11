@@ -33,6 +33,7 @@ agent-memory/
 history.jsonl
 .last-cleanup
 .last-update-result.json
+.last-self-update
 stats-cache.json
 mcp-needs-auth-cache.json
 
