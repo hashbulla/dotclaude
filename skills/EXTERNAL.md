@@ -75,6 +75,7 @@ These ship with dotclaude itself and don't need installation:
 - `~/.claude/skills/linkedin-post/` — Karakeep → LinkedIn pipeline (FR).
 - `~/.claude/skills/synthese/` — French criminal law dossier synthesis.
 - `~/.claude/skills/voice-check/` — French B2B voice validator.
+- `~/.claude/skills/no-loss/` — zero-context-loss session checkpoint + resume prompt (AI-70).
 
 ## Bootstrap-installed (per skills.manifest.toml)
 
