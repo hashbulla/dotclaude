@@ -6,6 +6,16 @@
 
 ---
 
+# Asking Questions — Always via AskUserQuestion
+
+**Every question I put to the user goes through the `AskUserQuestion` tool — no exceptions.** This covers yes/no confirmations, clarifying questions before non-trivial work, and choices between approaches alike. Never ask in plain prose.
+
+- **Precise + contextualized.** Each question names the decision, says why it's the user's to make, and states the trade-off behind each option — never a bare "A or B?". Front-load the recommended option and label it "(Recommended)".
+- **2-4 discrete options.** Open-ended asks ("what's the endpoint?") still route through the tool and rely on its built-in "Other" free-text path.
+- **One principled exception:** plan approval uses `ExitPlanMode`, not this tool (its own spec forbids "is my plan ready?" questions). Inside plan mode, clarifying questions still go through `AskUserQuestion`.
+
+---
+
 # MCP Registry (User Scope)
 
 All servers below are registered at **user scope** — available in every project without local config.
