@@ -6,6 +6,10 @@ All notable changes to dotclaude are documented here. Format follows [Keep a Cha
 
 ### Added
 
+#### `/no-loss` skill (AI-70)
+
+- `skills/no-loss/` — captures a zero-loss session checkpoint under the project's `.claude/no-loss/`, appends a session summary to `context-log.md`, records lasting decisions to memory, and emits a copy-paste resume prompt. Deterministic path-resolution + self-ignoring `.gitignore` live in `scripts/no-loss-resolve.sh` (unit-tested in `tests/test-resolve.sh`); activation/output graded by `evals/`. PreCompact auto-fire is a documented future extension, deliberately deferred.
+
 #### Self-update (5-layer dependency freshness)
 
 - `scripts/self-update.sh` — throttled, best-effort updater for the layers dotclaude doesn't get for free. Enumerates every git-backed skill clone symlinked into `skills/` + `agents/` (deduped to git roots), runs `git pull --ff-only` on each, and `pipx upgrade scrapling`. A dirty / detached / divergent / offline clone is **skipped, never merged or stashed** — work is never lost. Logs one line per repo to `hooks/logs/self-update.log`.
