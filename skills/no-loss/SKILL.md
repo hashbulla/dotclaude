@@ -40,7 +40,8 @@ You now have `$CLAUDE_DIR`, `$NO_LOSS_DIR`, `$CONTEXT_LOG`, `$GIT_PRESENT`, `$BR
   ```bash
   git status --short; git diff --stat
   ```
-  If `no`, record "no git context" and skip these.
+  Use `$BRANCH` for the schema's "Branch:" field. If `no`, record "no git context" and skip these.
+- If a focus/note argument was passed to `/no-loss`, bias the synthesis below toward it.
 - Synthesise from THIS conversation (not from files): the mission (+ any ticket id), decisions
   with their rationale and rejected alternatives, what is done, what is in progress, the single
   **next concrete step**, mental-model notes & gotchas, key `file:line` anchors, open questions.
