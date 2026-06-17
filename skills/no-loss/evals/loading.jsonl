@@ -1,0 +1,12 @@
+{"query": "/no-loss", "should_activate": true, "mode": "hero"}
+{"query": "checkpoint this session before we lose context", "should_activate": true, "mode": "hero"}
+{"query": "sauvegarde le contexte avant compaction", "should_activate": true, "mode": "hero"}
+{"query": "génère un prompt de reprise pour la prochaine session", "should_activate": true, "mode": "hero"}
+{"query": "on va perdre le contexte, checkpoint", "should_activate": true, "mode": "fragile"}
+{"query": "I'm running low on context, snapshot where we are", "should_activate": true, "mode": "fragile"}
+{"query": "save my progress before we lose it", "should_activate": true, "mode": "fragile"}
+{"query": "/compact", "should_activate": false, "mode": "negative"}
+{"query": "compact this conversation", "should_activate": false, "mode": "negative"}
+{"query": "réduis le contexte", "should_activate": false, "mode": "negative"}
+{"query": "commit this and push", "should_activate": false, "mode": "negative"}
+{"query": "write a CLAUDE.md for this repo", "should_activate": false, "mode": "negative"}
