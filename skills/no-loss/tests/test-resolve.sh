@@ -18,7 +18,7 @@ run() { ( cd "$1" && bash "$SCRIPT" ); }   # helper prints KEY=VALUE lines
 load() { # $1 = cwd to run the helper in; reset vars, then eval its output
   CLAUDE_DIR= ; NO_LOSS_DIR= ; CONTEXT_LOG= ; GIT_PRESENT= ; BRANCH= ; TIMESTAMP=
   local out
-  if ! out="$(run "$1")"; then echo "FAIL: helper exited non-zero (cwd=$1)"; fails=$((fails+1)); fi
+  if ! out="$(run "$1")"; then echo "FAIL: helper exited non-zero (cwd=$1)"; fails=$((fails+1)); return; fi
   eval "$out"
 }
 assert_eq() { # actual expected label
@@ -40,8 +40,12 @@ assert_true [ ! -d "$t/proj/.claude/.claude" ] "A: no nested .claude/.claude"
 t="$(mktmp)"; ( cd "$t" && git init -q ); mkdir -p "$t/.claude" "$t/sub"
 load "$t/sub"
 assert_eq "$CLAUDE_DIR" "$t/.claude" "B: walk-up from subdir finds root .claude"
-echo "secret" > "$NO_LOSS_DIR/probe.md"
-assert_true git -C "$t" check-ignore -q "$NO_LOSS_DIR/probe.md" "B: checkpoint file is gitignored"
+if [ -n "$NO_LOSS_DIR" ]; then
+  echo "secret" > "$NO_LOSS_DIR/probe.md"
+  assert_true git -C "$t" check-ignore -q "$NO_LOSS_DIR/probe.md" "B: checkpoint file is gitignored"
+else
+  echo "FAIL: B: checkpoint file is gitignored (NO_LOSS_DIR empty — no helper output)"; fails=$((fails+1))
+fi
 
 # --- Case C: walk-up picks the NEAREST .claude (non-git tree) ----------------
 t="$(mktmp)"; mkdir -p "$t/.claude" "$t/a/.claude" "$t/a/b"
