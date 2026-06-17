@@ -16,7 +16,9 @@ mktmp() { # fresh temp dir, tracked for cleanup, symlink-resolved
 }
 run() { ( cd "$1" && bash "$SCRIPT" ); }   # helper prints KEY=VALUE lines
 load() { # $1 = cwd to run the helper in; reset vars, then eval its output
-  CLAUDE_DIR= ; NO_LOSS_DIR= ; CONTEXT_LOG= ; GIT_PRESENT= ; BRANCH= ; TIMESTAMP=
+  # Reset the vars the assertions read, so a no-output helper can't reuse a prior
+  # case's stale value (the others the helper emits aren't asserted, so unreset is safe).
+  CLAUDE_DIR= ; NO_LOSS_DIR= ; GIT_PRESENT=
   local out
   if ! out="$(run "$1")"; then echo "FAIL: helper exited non-zero (cwd=$1)"; fails=$((fails+1)); return; fi
   eval "$out"
@@ -25,7 +27,7 @@ assert_eq() { # actual expected label
   if [ "$1" = "$2" ]; then echo "ok: $3"; else echo "FAIL: $3 (got '$1', want '$2')"; fails=$((fails+1)); fi
 }
 assert_true() { # cmd... label(last arg)
-  local label="${@: -1}"; set -- "${@:1:$#-1}"
+  local label="${*: -1}"; set -- "${@:1:$#-1}"
   if "$@"; then echo "ok: $label"; else echo "FAIL: $label"; fails=$((fails+1)); fi
 }
 
