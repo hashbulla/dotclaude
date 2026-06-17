@@ -6,6 +6,7 @@
 set -euo pipefail
 
 cwd="$(pwd -P)"
+[ "$cwd" = "/" ] && { echo "no-loss-resolve: refusing to run from filesystem root" >&2; exit 1; }
 
 # --- Resolve CLAUDE_DIR -------------------------------------------------------
 claude_dir=""
@@ -27,13 +28,16 @@ if [ -z "$claude_dir" ]; then                          # none found → git topl
 fi
 
 dir="$claude_dir/no-loss"
-mkdir -p "$dir"
+mkdir -p "$dir" || { printf 'no-loss-resolve: cannot create %s\n' "$dir" >&2; exit 1; }
 printf '*\n' > "$dir/.gitignore"                       # self-ignore: cwd/repo-root independent
 
 # --- Git facts ----------------------------------------------------------------
-if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+# git_present="no" covers BOTH "git not installed" and "not a work tree" — the
+# skill degrades identically for either, so they need not be distinguished.
+if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   git_present="yes"
-  branch="$(git branch --show-current 2>/dev/null || echo "(detached)")"
+  branch="$(git branch --show-current 2>/dev/null)"    # empty on detached HEAD / commit-less repo
+  [ -n "$branch" ] || branch="(detached-or-empty)"
 else
   git_present="no"
   branch=""
@@ -41,10 +45,13 @@ fi
 
 ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-# --- Emit facts (KEY=VALUE, eval-friendly) ------------------------------------
-printf 'CLAUDE_DIR=%s\n' "$claude_dir"
-printf 'NO_LOSS_DIR=%s\n' "$dir"
-printf 'CONTEXT_LOG=%s\n' "$claude_dir/context-log.md"
+# --- Emit facts (KEY=VALUE) ---------------------------------------------------
+# %q shell-quotes path/branch values so the consumer's `eval` reconstructs them
+# exactly even with spaces or special chars (and neutralises eval injection).
+# GIT_PRESENT and TIMESTAMP are fixed-format tokens, so plain %s is safe.
+printf 'CLAUDE_DIR=%q\n' "$claude_dir"
+printf 'NO_LOSS_DIR=%q\n' "$dir"
+printf 'CONTEXT_LOG=%q\n' "$claude_dir/context-log.md"
 printf 'GIT_PRESENT=%s\n' "$git_present"
-printf 'BRANCH=%s\n' "$branch"
+printf 'BRANCH=%q\n' "$branch"
 printf 'TIMESTAMP=%s\n' "$ts"

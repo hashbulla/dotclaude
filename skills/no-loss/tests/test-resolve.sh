@@ -68,5 +68,11 @@ assert_eq "$GIT_PRESENT" "yes" "E: git presence reported"
 load "$t/deep/er"
 assert_eq "$(cat "$NO_LOSS_DIR/.gitignore")" "*" "F: self-ignore content is '*' after rerun"
 
+# --- Case G: path with spaces survives the eval round-trip (regression for %q) -
+t="$(mktmp)"; mkdir -p "$t/with space/.claude"
+load "$t/with space/.claude"
+assert_eq "$CLAUDE_DIR" "$t/with space/.claude" "G: spaced path eval-safe"
+assert_true [ -d "$t/with space/.claude/no-loss" ] "G: no-loss dir created under spaced path"
+
 echo "----"
 if [ "$fails" -eq 0 ]; then echo "ALL PASS"; else echo "$fails FAILED"; exit 1; fi
