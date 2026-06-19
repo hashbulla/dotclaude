@@ -44,6 +44,7 @@
       "Read(path: **/.ssh/id_*)"
     ]
   },
+  "model": "opus[1m]",
   "enableAllProjectMcpServers": true,
   "hooks": {
     "PreToolUse": [
@@ -77,6 +78,17 @@
             "timeout": 5000,
             "statusMessage": "PostToolUse",
             "async": true
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/pdf-design-gate.sh",
+            "timeout": 15,
+            "statusMessage": "Checking for PDF output"
           }
         ]
       }
@@ -467,6 +479,7 @@
       "Citing sources"
     ]
   },
+  "effortLevel": "xhigh",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark-daltonized",
   "agentPushNotifEnabled": true,

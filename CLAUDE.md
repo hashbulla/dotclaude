@@ -128,8 +128,48 @@ All servers below are registered at **user scope** — available in every projec
 | Bug / test failure / unexpected behavior | `superpowers:systematic-debugging` | Diagnose root cause before proposing a fix |
 | Multi-file diff done / about to claim passing | `/code-review` → `/simplify`, then `superpowers:verification-before-completion` | Correctness then reuse/efficiency pass; quote the verifying command's output before saying done |
 | Frontend / UI artifact | `impeccable` / `frontend-design` + anti-slop check | Avoid generic AI aesthetic |
+| Authoring or editing a skill (`SKILL.md`) | `/skill-generator` (net-new) → `/skill-harness` (validate) | Never hand-write or blind-ship a skill — see the Skill Authoring block below |
 
 **Proactive:** on non-trivial code intent, prime (codegraph) before the first edit, route through spec-first/TDD, and close with review→simplify→verify — without being asked. Skip all of it for trivial edits, a file already primed this session, or pure research.
+
+</important>
+
+---
+
+<important if="creating, scaffolding, or substantively editing a Claude Code skill — a SKILL.md plus its references / scripts / eval fixtures">
+
+# Skill Authoring Routing Decision Table
+
+**Stack:** `/skill-generator` (scaffold to current Agent Skills spec) → `/skill-harness` (adversarial 6-dimension grade + Citation Grounding) → ship. **A skill I produce is never "done" until the harness has graded it.** This is a hard lock, not a suggestion.
+
+| Signal / Intent | Tool / Skill | Rationale |
+|----------------|--------------|-----------|
+| Net-new skill ("build a skill", "scaffold a skill for X") | `/skill-generator` FIRST | Emits SKILL.md + references + scripts + eval fixtures per the spec — never hand-write a skill from scratch |
+| Net-new skill — before claiming done | `/skill-harness` on the new folder | Worktree-isolated Critic grades 6 dimensions; gate the skill on its findings |
+| Substantive edit to an existing skill (new behavior, reworked routing, rewritten SKILL.md body) | `/skill-harness` on the edited folder | skill-generator is scaffold-only (its own spec excludes editing) — but the harness still gates the change before done |
+| Trivial skill edit (typo, one description line, a frontmatter key) | Direct edit | No ceremony — mirrors the do-directly carve-out in the codegen table |
+| Grading / auditing an existing skill with no changes | `/skill-harness` | The harness is the audit tool; do NOT re-scaffold |
+
+**Proactive + hard lock:** on any "build / scaffold / create a skill" intent, route through `/skill-generator` BEFORE writing any SKILL.md, then `/skill-harness` BEFORE calling it done — without being asked. Substantive edits skip the generator but still MUST clear the harness. Only trivial one-line edits are exempt. Never blind-write or blind-ship a skill.
+
+</important>
+
+---
+
+<important if="the user produces, generates, compiles, or exports a PDF — Typst, LaTeX, pandoc, weasyprint, headless-Chrome — or is about to deliver / call a PDF artifact final">
+
+# PDF Production Routing Decision Table
+
+**Hard lock:** every PDF I produce is graded by the `pdf-design-evaluator` agent before it is called final, shipped, or handed over. Defense-in-depth mirrors voice-check — this doctrine + the deterministic `hooks/pdf-design-gate.sh` PostToolUse gate reinforce each other. The hook is the trigger I cannot forget; this rule is the standing instruction.
+
+| Signal / Intent | Action | Rationale |
+|----------------|--------|-----------|
+| Final / deliverable PDF compiled (`typst compile`, `pdflatex`, `pandoc -o x.pdf`, …) | Spawn Agent → `subagent_type: pdf-design-evaluator`, `PDF_PATH=<path>` | Adversarial 5-dimension grade (editorial, Bringhurst, Tufte, palette/8pt-grid, MBB aesthetic) before delivery |
+| Throwaway / intermediate recompile during active iteration | Defer — note the eval is owed on the final artifact | The evaluator is heavy (pdftoppm + Vision + sub-agent); don't burn it on every scratch compile |
+| Skill already runs it as a stage (`proposition-commerciale` Stage C) | Don't double-run | That skill owns the gate; honor its result |
+| Reading / extracting from an existing PDF (`pdftoppm`, `pdftotext`) | No eval | Consumption, not production — the hook stays silent here too |
+
+**Proactive + hard lock:** on any PDF I generate, grade the final artifact with `pdf-design-evaluator` BEFORE calling it done — without being asked. Only throwaway intermediate compiles are exempt, and the eval is still owed on the deliverable. Never ship or call a PDF final ungraded.
 
 </important>
 

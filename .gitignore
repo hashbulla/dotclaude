@@ -37,6 +37,16 @@ history.jsonl
 stats-cache.json
 mcp-needs-auth-cache.json
 
+# ── Background daemon / job runtime ─────────────────────────────────────────
+# Regenerated each session. daemon/control.key is a credential and daemon.log
+# carries auth tokens — never commit these.
+daemon/
+daemon.lock
+daemon.log
+daemon.status.json
+jobs/
+gh-pr-status-cache.json
+
 # auto-generated session plan files
 plans/
 
@@ -66,6 +76,9 @@ hooks/config/hooks-config.local.json
 
 # Symlink to a private brain dir; not part of dotclaude
 brain
+
+# Symlink to an external skills dir on Desktop; not part of dotclaude
+skills/qualify-leads
 
 # Nested git repo for the synthese skill — user installs manually
 # (see skills/EXTERNAL.md). Not auto-installed: submodule integration

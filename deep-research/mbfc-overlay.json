@@ -1,0 +1,18 @@
+{
+  "dataset_version": "2026-06-12",
+  "domains": {
+    "reuters.com": {"factual_reporting": "very-high", "bias": "least-biased"},
+    "apnews.com": {"factual_reporting": "very-high", "bias": "left-center"},
+    "bbc.co.uk": {"factual_reporting": "high", "bias": "left-center"},
+    "lemonde.fr": {"factual_reporting": "high", "bias": "left-center"},
+    "ft.com": {"factual_reporting": "high", "bias": "right-center"},
+    "economist.com": {"factual_reporting": "high", "bias": "least-biased"},
+    "nytimes.com": {"factual_reporting": "high", "bias": "left-center"},
+    "theguardian.com": {"factual_reporting": "mixed", "bias": "left-center"},
+    "foxnews.com": {"factual_reporting": "mixed", "bias": "right"},
+    "dailymail.co.uk": {"factual_reporting": "low", "bias": "right"},
+    "breitbart.com": {"factual_reporting": "low", "bias": "extreme-right"},
+    "rt.com": {"factual_reporting": "very-low", "bias": "right-center"},
+    "zerohedge.com": {"factual_reporting": "low", "bias": "extreme-right"}
+  }
+}
