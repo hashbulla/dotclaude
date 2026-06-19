@@ -54,6 +54,10 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/rtk-rewrite.sh"
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/secret-scan-gate.sh"
           }
         ]
       },
