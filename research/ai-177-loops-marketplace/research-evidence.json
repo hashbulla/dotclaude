@@ -1,0 +1,545 @@
+[
+  {
+    "claim_id": "C001",
+    "claim_text": "On long-horizon agentic coding the execution harness (the loop scaffold around the model) is often a stronger determinant of success than the model itself, with harness-induced variance exceeding model-induced variance.",
+    "section": "Executive summary",
+    "supporting_source_ids": [
+      "S015",
+      "S013"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C002",
+    "claim_text": "Claude Code hooks can deterministically block a tool call and force the agent not to stop, but they cannot direct the model's reasoning or guarantee its next action — they only block, inject context, or mutate inputs.",
+    "section": "Executive summary",
+    "supporting_source_ids": [
+      "S019",
+      "S020"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C003",
+    "claim_text": "A repository's .claude/settings.json hooks are a proven remote-code-execution attack surface (CVE-2025-59536, CVSS 8.7): the hook fired on startup before any trust prompt, so merely opening a cloned repo executed attacker code.",
+    "section": "Executive summary",
+    "supporting_source_ids": [
+      "S033",
+      "S037",
+      "S010"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 3,
+    "independent_tier12_count": 3,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C004",
+    "claim_text": "Mandatory (blocking) hooks are the right tool for cheap, irreversible checks (secret leaks, lint, format) but the wrong tool for slow checks, which drive systematic bypass and belong in CI.",
+    "section": "Executive summary",
+    "supporting_source_ids": [
+      "S040",
+      "S041"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C101",
+    "claim_text": "Geoffrey Huntley coined the 'Ralph Wiggum' agentic loop, first described May 2025 with the canonical post on 2025-07-14.",
+    "section": "1. The agentic loop pattern (Ralph) and its 2025-26 state",
+    "supporting_source_ids": [
+      "S002",
+      "S004",
+      "S005"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 3,
+    "independent_tier12_count": 3,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C102",
+    "claim_text": "In its canonical form Ralph is a bash while-loop that feeds a coding agent the same prompt repeatedly until a completion condition is met.",
+    "section": "1. The agentic loop pattern (Ralph) and its 2025-26 state",
+    "supporting_source_ids": [
+      "S001",
+      "S007",
+      "S008"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 3,
+    "independent_tier12_count": 3,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C103",
+    "claim_text": "Ralph's defining mechanic is resetting the agent's context window between iterations while persisting state externally (git, progress files), the opposite of one-shot prompting's single accumulating context.",
+    "section": "1. The agentic loop pattern (Ralph) and its 2025-26 state",
+    "supporting_source_ids": [
+      "S001",
+      "S007",
+      "S006"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 3,
+    "independent_tier12_count": 3,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C104",
+    "claim_text": "The pattern is named after the Simpsons character Ralph Wiggum, embodying naive persistence despite repeated failure.",
+    "section": "1. The agentic loop pattern (Ralph) and its 2025-26 state",
+    "supporting_source_ids": [
+      "S007",
+      "S005"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": false,
+    "notes": ""
+  },
+  {
+    "claim_id": "C105",
+    "claim_text": "Anthropic has adopted the Ralph loop as a documented orchestration pattern — a for-loop that kicks the agent back into context when it claims completion and asks whether it is really done.",
+    "section": "1. The agentic loop pattern (Ralph) and its 2025-26 state",
+    "supporting_source_ids": [
+      "S006",
+      "S004"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C106",
+    "claim_text": "By late 2025 Anthropic packaged the community technique into an official ralph-wiggum plugin in the Claude Code marketplace.",
+    "section": "1. The agentic loop pattern (Ralph) and its 2025-26 state",
+    "supporting_source_ids": [
+      "S004",
+      "S005"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": false,
+    "notes": ""
+  },
+  {
+    "claim_id": "C201",
+    "claim_text": "Claude Code auto-approve usage rises with experience (~20% of new-user sessions to over 40% for experienced users), i.e. autonomy scales with trust.",
+    "section": "2. When agentic loops help vs. hurt",
+    "supporting_source_ids": [
+      "S009",
+      "S010"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C202",
+    "claim_text": "Agent-initiated pauses are a critical oversight signal: on the most complex tasks the agent stops to ask for clarification more than twice as often as humans interrupt it.",
+    "section": "2. When agentic loops help vs. hurt",
+    "supporting_source_ids": [
+      "S009",
+      "S010"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C203",
+    "claim_text": "Human approval is an unreliable safeguard at scale: telemetry showed ~93% of permission prompts approved, with attention declining as volume rises.",
+    "section": "2. When agentic loops help vs. hurt",
+    "supporting_source_ids": [
+      "S010"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 2,
+    "label": "PROBABLY TRUE",
+    "corroboration_count": 1,
+    "independent_tier12_count": 1,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C204",
+    "claim_text": "Autonomous loops can game their own verification gate ('false green'): test-repair agents weakened assertions and deleted tests to reach superficial passing states.",
+    "section": "2. When agentic loops help vs. hurt",
+    "supporting_source_ids": [
+      "S014"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 2,
+    "label": "PROBABLY TRUE",
+    "corroboration_count": 1,
+    "independent_tier12_count": 1,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C205",
+    "claim_text": "Long-horizon multi-session work depends on an explicit harness (initializer plus progress artifacts); even a frontier model in a loop fails to produce production-quality output from only a high-level prompt.",
+    "section": "2. When agentic loops help vs. hurt",
+    "supporting_source_ids": [
+      "S013",
+      "S015"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C206",
+    "claim_text": "Context is a finite, degrading resource: recall accuracy falls as the context window grows ('context rot'), motivating context resets and external memory in long loops.",
+    "section": "2. When agentic loops help vs. hurt",
+    "supporting_source_ids": [
+      "S012",
+      "S013"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C207",
+    "claim_text": "Same-generator verification is unsafe; adversarial, independent stage-gated review catches confident-but-wrong findings that a self-checking loop endorses.",
+    "section": "2. When agentic loops help vs. hurt",
+    "supporting_source_ids": [
+      "S018"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 2,
+    "label": "PROBABLY TRUE",
+    "corroboration_count": 1,
+    "independent_tier12_count": 1,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C301",
+    "claim_text": "A PreToolUse hook returning exit code 2 (or permissionDecision deny) blocks the tool call before it executes.",
+    "section": "3. Claude Code enforcement mechanics: hooks and /loop",
+    "supporting_source_ids": [
+      "S019",
+      "S025"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C302",
+    "claim_text": "A PostToolUse hook cannot block — the tool already ran; it can only inject feedback context.",
+    "section": "3. Claude Code enforcement mechanics: hooks and /loop",
+    "supporting_source_ids": [
+      "S019",
+      "S025"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C303",
+    "claim_text": "A Stop hook returning exit code 2 / decision:block prevents Claude from stopping and forces the conversation to continue.",
+    "section": "3. Claude Code enforcement mechanics: hooks and /loop",
+    "supporting_source_ids": [
+      "S019",
+      "S024"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C304",
+    "claim_text": "SubagentStop mirrors Stop semantics, preventing a subagent from stopping.",
+    "section": "3. Claude Code enforcement mechanics: hooks and /loop",
+    "supporting_source_ids": [
+      "S019",
+      "S024"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C305",
+    "claim_text": "A Stop hook that always exits 2 creates an infinite loop; it must be gated on a real check that returns exit 0 once cleared.",
+    "section": "3. Claude Code enforcement mechanics: hooks and /loop",
+    "supporting_source_ids": [
+      "S024",
+      "S025"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": false,
+    "notes": ""
+  },
+  {
+    "claim_id": "C306",
+    "claim_text": "Stop-hook blocking has had reliability regressions, notably for hooks installed via plugins rather than the .claude/hooks path.",
+    "section": "3. Claude Code enforcement mechanics: hooks and /loop",
+    "supporting_source_ids": [
+      "S023",
+      "S022"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": false,
+    "notes": ""
+  },
+  {
+    "claim_id": "C401",
+    "claim_text": "'Loop engineering' — designing a kickoff plus feedback gate plus exit condition for coding agents — has emerged as a named, independently discussed practice in 2026, of which loops! is one catalog.",
+    "section": "4. The loops! marketplace",
+    "supporting_source_ids": [
+      "S032",
+      "S003"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C501",
+    "claim_text": "CVE-2026-21852 let a project's .claude/settings.json override ANTHROPIC_BASE_URL to route API traffic through an attacker proxy and steal API keys before any trust prompt.",
+    "section": "5. Supply-chain and security posture of loop/hook bundles",
+    "supporting_source_ids": [
+      "S033",
+      "S037"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C502",
+    "claim_text": "In-house/native loops (the /loop skill, an audited ralph plugin) carry lower supply-chain risk than third-party install bundles, and Anthropic's recommended containment is a devcontainer perimeter rather than per-action trust in the bundle.",
+    "section": "5. Supply-chain and security posture of loop/hook bundles",
+    "supporting_source_ids": [
+      "S010",
+      "S035"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C601",
+    "claim_text": "Client-side hook enforcement is always bypassable (git commit --no-verify, unsetting core.hooksPath), so a local hook is an aid, not a guarantee.",
+    "section": "6. Forced vs. opt-in: when to lock a loop",
+    "supporting_source_ids": [
+      "S040",
+      "S041"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C602",
+    "claim_text": "Slow checks (full test suites) are unsuitable for blocking pre-commit hooks and belong in CI; blocking inverts cost-benefit once waits exceed a second or two.",
+    "section": "6. Forced vs. opt-in: when to lock a loop",
+    "supporting_source_ids": [
+      "S041",
+      "S040"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C603",
+    "claim_text": "Deterministic hooks counter a structural LLM failure: agents forget or ignore CLAUDE.md instructions over long sessions and after context compaction, so a hook enforces what a prompt cannot.",
+    "section": "6. Forced vs. opt-in: when to lock a loop",
+    "supporting_source_ids": [
+      "S042",
+      "S043"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": false,
+    "notes": ""
+  },
+  {
+    "claim_id": "C604",
+    "claim_text": "The robust pattern is defense-in-depth: fast checks as local hooks plus an authoritative, bypass-resistant server-side CI gate.",
+    "section": "6. Forced vs. opt-in: when to lock a loop",
+    "supporting_source_ids": [
+      "S041",
+      "S042"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": false,
+    "notes": ""
+  },
+  {
+    "claim_id": "C605",
+    "claim_text": "Git pre-commit and CI gating are established prior art that AI-agent loop enforcement directly parallels — the design questions are not new.",
+    "section": "6. Forced vs. opt-in: when to lock a loop",
+    "supporting_source_ids": [
+      "S040",
+      "S042"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 1,
+    "label": "CONFIRMED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 2,
+    "primary_source_present": true,
+    "notes": ""
+  },
+  {
+    "claim_id": "C701",
+    "claim_text": "loops! exposes three trigger types (manual, event, interval) and a loop-entry anatomy of goal, max iterations, between-iterations check command, exit condition, kickoff prompt, and optional hook install bundle.",
+    "section": "Needs Verification",
+    "supporting_source_ids": [
+      "S028",
+      "S029"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 6,
+    "label": "UNVERIFIED",
+    "corroboration_count": 2,
+    "independent_tier12_count": 0,
+    "primary_source_present": false,
+    "notes": ""
+  },
+  {
+    "claim_id": "C702",
+    "claim_text": "loops! self-reports per-loop traction (copy and install counters in the high hundreds to low thousands) and a 'going viral' support appeal, with no external corroboration found.",
+    "section": "Needs Verification",
+    "supporting_source_ids": [
+      "S027"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 6,
+    "label": "UNVERIFIED",
+    "corroboration_count": 1,
+    "independent_tier12_count": 0,
+    "primary_source_present": false,
+    "notes": ""
+  },
+  {
+    "claim_id": "C703",
+    "claim_text": "Third-party coding-agent skill/extension marketplaces have been weaponized at scale (e.g. the ClawHub/ClawHavoc campaign; IDEsaster found 100% of ten tested AI IDEs prompt-injectable).",
+    "section": "5. Supply-chain and security posture of loop/hook bundles",
+    "supporting_source_ids": [
+      "S035"
+    ],
+    "contradicting_source_ids": [],
+    "admiralty_credibility": 3,
+    "label": "POSSIBLY TRUE",
+    "corroboration_count": 1,
+    "independent_tier12_count": 1,
+    "primary_source_present": true,
+    "notes": ""
+  }
+]
