@@ -175,6 +175,28 @@ All servers below are registered at **user scope** — available in every projec
 
 ---
 
+<important if="the user creates, updates, triages, comments on, or closes a Linear issue / project / milestone, or runs any Linear MCP op (`linear-server`)">
+
+# Linear PM Discipline Decision Table
+
+**Linear is the system of record for every chantier.** Act like a seasoned Linear PM on every op — proactively, without being asked. Full doctrine + workspace snapshot + good-issue checklist: [`rules/linear-pm.md`](rules/linear-pm.md).
+
+| Signal / Intent | Action | Rationale |
+|---|---|---|
+| Starting work on an issue | Set **In Progress** + comment the plan | State mirrors reality; idempotent |
+| Progress / finding / decision | Post a **comment** (append-only) | Never edit a human's spec for this |
+| Authoring a spec the agent owns | Edit the **description** | Description = durable contract |
+| Hitting a blocker | Set a **blocked-by relation** (+ comment) | Filterable; prose "blocked" isn't |
+| Finishing | **Ask before Done** — don't self-close | Delegation ≠ ownership; the human stays responsible |
+| Creating an issue | Title = problem concretely; body = problem + AC + DoD + scope + what-NOT-to-touch | Issue quality drives agent + human efficiency |
+| Before creating | `list_issues` / search to dedupe (`save_*` +id = update, no id = create) | Idempotence |
+
+**Default + proactive:** on ANY Linear op, apply the codified conventions without being asked — never overwrite a human-authored description; set the right state; write AC/DoD on new issues; signal blockers via relations; use the fixed priority enum + the `Type` label group. Cycles and initiatives are unused here — don't push them. Workspace: team `AI Agency`, 6-state workflow, single `Type` label group. Depth: [`rules/linear-pm.md`](rules/linear-pm.md).
+
+</important>
+
+---
+
 # User-scope Slash Commands
 
 Slash commands stored under `~/.claude/commands/`, available in every session. Invoke with `/<name> [args]`. **Suggest these proactively** when intent matches; full spec lives in each command's markdown file.
