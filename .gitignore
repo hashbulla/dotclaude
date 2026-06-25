@@ -80,6 +80,13 @@ brain
 # Symlink to an external skills dir on Desktop; not part of dotclaude
 skills/qualify-leads
 
+# External skills are symlinks to local upstreams (installed by bootstrap from skills.manifest.toml).
+# Never track them; keep only the inline skill(s) + the manifest docs.
+/skills/*
+!/skills/no-loss/
+!/skills/EXTERNAL.md
+/agents/anti-patterns.md
+
 # Nested git repo for the synthese skill — user installs manually
 # (see skills/EXTERNAL.md). Not auto-installed: submodule integration
 # was rejected because submodule lifecycle scripts run on clone.
