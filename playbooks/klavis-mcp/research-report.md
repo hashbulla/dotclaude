@@ -2,7 +2,7 @@
 
 > **Validated: 2026-06-25 (partial re-validation via Tavily; live MCP surface not empirically re-probed — run a discovery probe before any backlog session) · Original empirical source: 2026-04-30 (live integration with `klavis-gmail` Strata server, instance `823fd391-...`) + Tavily passes against `klavis.ai/docs` and `docs.klavis.ai`. Companion playbook to `~/.claude/playbooks/claude-code-koyeb-channels/` (which deploys the runtime that consumes Klavis).**
 >
-> **⚠ Stale-by guidance:** Klavis is in active iteration. Re-validate (`tools/list` probe + a single `gmail_modify_email` round-trip) if **either** of the following is true: (a) the timestamp above is more than 4 weeks old, or (b) you see the v1 silent-label-drop symptom (`addedLabels` returns `["UNREAD"]` instead of your requested labels). Klavis ships breaking renames at the toolkit-server level without explicit deprecation in the MCP surface.
+> **⚠ Stale-by guidance:** Klavis is in active iteration. Re-validate (discovery probe via `discover_server_categories_or_actions` + a single `execute_action` round-trip) if **either** of the following is true: (a) the timestamp above is more than 4 weeks old, or (b) you see the v1 silent-label-drop symptom (`addedLabels` returns `["UNREAD"]` instead of your requested labels). Klavis ships breaking renames at the toolkit-server level without explicit deprecation in the MCP surface.
 >
 > **⚠ ARCHITECTURE CHANGE (2026-06-25):** Strata now uses a **progressive-discovery model**, not a flat 10-tool surface. See §TL;DR and the STALE banner below. Live MCP surface was not empirically re-probed — run `discover_server_categories_or_actions` before any session. Next check: 2026-07-23.
 
@@ -43,9 +43,11 @@ Current official docs show: `gmail_search_messages`, `gmail_get_message`, `gmail
 | 2 | **Canonical Gmail tool names were `*_email` at 2026-04-30; current docs show `*_message`, resolved at runtime.** Don't trust any pinned names. | Always run `discover_server_categories_or_actions` → `get_action_details` at session start. Never hardcode tool names. |
 | 3 | **`gmail_modify_email` accepts unknown label *names* silently.** The Gmail API requires label *IDs* (`Label_NNN`). Klavis forwards your `addLabelIds` array verbatim; if you pass `_Agent/Triage/Bucket` (a name, not an ID), the call returns 200 OK with `addedLabels: ["UNREAD"]` and your label is silently dropped. | After every modify call, verify `response.addedLabels` ⊇ what you asked for. Treat any divergence as a hard error. **Never** pass label names; always resolve to IDs first. |
 | 4 | **The `strata_id` (`strataId` in API paths) in the MCP URL IS the credential.** The path-style URL is `https://strata.klavis.ai/mcp/?strata_id={strata_id}` and possession of `strata_id` grants full access to the bound Gmail OAuth grant. (Identifier renamed `instance_id` → `strata_id` in current SDK/API reference; source: klavis.ai/docs/api-reference/strata, retrieved 2026-06-25.) | Treat the full MCP URL as a P0 secret. Never log it, never commit it, and rotate by deleting+recreating the Strata instance if leaked. |
-| 5 | **Transport is HTTP+SSE JSON-RPC.** Initialize → `tools/list` → `tools/call`. The Strata server holds OAuth state per instance — a single `instance_id` = a single Gmail account = one user's mailbox. | Multi-tenant deployments need one Strata instance per user. Pricing/scale implications: factor this into capacity planning. |
+| 5 | **Transport is HTTP+SSE JSON-RPC.** Initialize → `tools/list` → `tools/call`. The Strata server holds OAuth state per instance — a single `instance_id` (now `strata_id`) = a single Gmail account = one user's mailbox. | Multi-tenant deployments need one Strata instance per user. Pricing/scale implications: factor this into capacity planning. |
 
 ## The verified Gmail tool surface (default subset)
+
+> **STALE (2026-06-25):** Strata moved to progressive discovery — the tool names below are 2026-04-30 empirical. See the TL;DR / architecture banner above before relying on them.
 
 Probe command (idempotent; safe to run as often as you need to re-pin):
 
@@ -208,11 +210,11 @@ If you're calling Klavis from Anthropic Managed Agents (now superseded in this p
 ```
 Vault entry:
   type: static_bearer
-  endpoint: https://strata.klavis.ai/mcp/?strata_id=<instance_id>
+  endpoint: https://strata.klavis.ai/mcp/?strata_id=<strata_id>
   bearer:   <KLAVIS_API_KEY>
 ```
 
-The Managed Agents runtime sends the bearer header on every MCP call. Same security model as direct: `instance_id` is the credential.
+The Managed Agents runtime sends the bearer header on every MCP call. Same security model as direct: `strata_id` (formerly `instance_id`) is the credential.
 
 ## Sources & cross-references
 

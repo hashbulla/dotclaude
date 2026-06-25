@@ -191,7 +191,7 @@ Reusable architecture playbooks validated across projects, each a folder under [
 
 | Playbook | Folder | Validated | Use when |
 |---|---|---|---|
-| **Claude Code on Koyeb with Channels** | `playbooks/claude-code-koyeb-channels/` | 2026-04-29 | Always-on Claude Code session triggered by external webhooks, pushing to chat channels (Telegram / Discord / iMessage). Headless OAuth, Koyeb tier, HMAC auth. |
-| **Klavis Strata MCP (Gmail focus)** | `playbooks/klavis-mcp/` | 2026-04-30 | Klavis hosted MCP (Gmail) with Claude Code / Managed Agents. 10-tool subset, `raw-actions` endpoint, instance_id-as-credential, silent-label-drop anti-pattern. |
-| **Scrapling 0.4.x** | `playbooks/scrapling/` | 2026-05-20 | Production scraping with Scrapling 0.4. Anti-detection stack, 10-tool MCP, perf verdict, real failure modes. |
-| **Context7 MCP** | `playbooks/context7/` | 2026-05-28 | Version-current library docs via Upstash Context7. Two-tool surface, 2026 reranking redesign, Issue #1713 workaround, free-tier budget. |
+| **Claude Code on Koyeb with Channels** | `playbooks/claude-code-koyeb-channels/` | 2026-06-25 | Always-on Claude Code session triggered by external webhooks, pushing to chat channels (Telegram / Discord / iMessage). Headless OAuth, Koyeb tier, HMAC auth. |
+| **Klavis Strata MCP (Gmail focus)** | `playbooks/klavis-mcp/` | 2026-06-25 | Klavis hosted MCP (Gmail) with Claude Code / Managed Agents. Progressive-discovery Strata meta-tools (`discover_server_categories_or_actions` / `execute_action`), `strata_id`-as-credential, silent-label-drop anti-pattern. |
+| **Scrapling 0.4.x** | `playbooks/scrapling/` | 2026-06-25 | Production scraping with Scrapling 0.4. Anti-detection stack, 10-tool MCP, perf verdict, real failure modes. |
+| **Context7 MCP** | `playbooks/context7/` | 2026-06-25 | Version-current library docs via Upstash Context7. Two-tool surface, 2026 reranking redesign, Issue #1713 workaround, free-tier budget. |
