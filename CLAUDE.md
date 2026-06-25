@@ -160,7 +160,7 @@ All servers below are registered at **user scope** — available in every projec
 
 # PDF Production Routing Decision Table
 
-**Hard lock:** every PDF I produce is graded by the `pdf-design-evaluator` agent before it is called final, shipped, or handed over. Defense-in-depth mirrors voice-check — this doctrine + the deterministic `hooks/pdf-design-gate.sh` PostToolUse gate reinforce each other. The hook is the trigger I cannot forget; this rule is the standing instruction.
+**Hard lock:** every PDF I produce is graded by the `pdf-design-evaluator` agent before it is called final, shipped, or handed over. This doctrine + the deterministic `hooks/pdf-design-gate.sh` PostToolUse gate reinforce each other — the hook is the trigger I cannot forget; this rule is the standing instruction.
 
 | Signal / Intent | Action | Rationale |
 |----------------|--------|-----------|

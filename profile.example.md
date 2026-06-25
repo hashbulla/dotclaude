@@ -44,7 +44,7 @@
 ## Voice & tone
 
 - **English**: terse, technical, no fluff.
-- **French**: <peer-to-peer senior pair voice; see `.claude/skills/voice-check/` if writing B2B copy>.
+- **French**: <describe your French B2B voice style here>.
 - **Avoid**: emoji unless explicitly asked; corporate-speak; hedging.
 
 ## Decision priorities (when there's tension)

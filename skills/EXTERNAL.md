@@ -70,11 +70,7 @@ Why not a submodule? Submodules execute lifecycle scripts on `git clone --recurs
 
 These ship with dotclaude itself and don't need installation:
 
-- `~/.claude/skills/deck-generator/` — French B2B deck generator (Presenton MCP).
-- `~/.claude/skills/humanize-fr/` — French text humanizer.
-- `~/.claude/skills/linkedin-post/` — Karakeep → LinkedIn pipeline (FR).
 - `~/.claude/skills/synthese/` — French criminal law dossier synthesis.
-- `~/.claude/skills/voice-check/` — French B2B voice validator.
 - `~/.claude/skills/no-loss/` — zero-context-loss session checkpoint + resume prompt (AI-70).
 
 ## Bootstrap-installed (per skills.manifest.toml)

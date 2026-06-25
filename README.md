@@ -123,7 +123,7 @@ Five first-party skills auto-install via [`skills.manifest.toml`](skills.manifes
 | `skill-generator` | [`hashbulla/skill-generator`](https://github.com/hashbulla/skill-generator) | Scaffolds production-grade skills (Anthropic spec + Perplexity eval-first) |
 | `skill-harness` | [`hashbulla/skill-harness`](https://github.com/hashbulla/skill-harness) | Adversarial review of individual skills |
 
-Plus six inline skills shipped with dotclaude itself: `deck-generator`, `humanize-fr`, `linkedin-post`, `synthese`, `voice-check` (FR B2B + legal domain).
+Plus one inline skill shipped with dotclaude itself: `synthese` (legal domain).
 
 And 25+ symlinked third-party skills (`pbakaus/impeccable` ×18, `paperclipai/paperclip` ×6, `hashbulla/dossier-intelligence`, `hashbulla/proposition-commerciale-skill`). Catalogue + manual install commands in [`skills/EXTERNAL.md`](skills/EXTERNAL.md).
 

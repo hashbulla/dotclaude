@@ -13,7 +13,7 @@ These files ship as-is in the repo and work identically on any host where the pr
 - `rules/*.md`
 - `hooks/scripts/hooks.py`, `hooks/config/hooks-config.json`, `hooks/config/hooks-config.local.example.json`, `hooks/sounds/**`
 - `best-practice/*.md`, `docs/*.md`
-- `skills/{claude-init,deck-generator,humanize-fr,linkedin-post,synthese,voice-check}/` (inline skills)
+- `skills/{claude-init,synthese}/` (inline skills)
 - `playbooks/{claude-code-koyeb-channels,klavis-mcp}/`
 - `workflows/rpi/feature-template/`
 - `bootstrap.sh`, `skills.manifest.toml`

@@ -22,7 +22,6 @@ Also: a forced gate the loop can *game* is theater — autonomous loops weaken a
 |------|-------|----------|----------|
 | `hooks/secret-scan-gate.sh` | PreToolUse · Bash | **hard deny** | no secret enters git history (`git commit`). Escapes: inline `# pragma: allowlist secret` on the line (works for in-session commits), or `export ALLOW_SECRET_COMMIT=1` (terminal commits only — the env var can't reach the hook from a per-command prefix). Fail-open if jq/git absent. |
 | `hooks/pdf-design-gate.sh` | PostToolUse · Bash | soft inject | grade a produced PDF with `pdf-design-evaluator` before final |
-| `voice-check` | PostToolUse | soft inject | FR B2B copy passes the voice gate before reaching the user |
 
 House style: **soft-inject (fail-open, exit 0) is the default**; reserve hard-deny for the cheap+irreversible case (secrets). New gates follow the standalone-script-per-matcher idiom — never a branch in the observe-only `hooks/scripts/hooks.py`.
 

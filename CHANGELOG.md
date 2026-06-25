@@ -117,7 +117,7 @@ The genesis commit. dotclaude scaffolding lifted from a working `~/.claude/` and
 - `RTK.md` — RTK token-saving proxy doctrine.
 - `mcp.json` — three user-scope MCP servers (tavily, fetch, presenton).
 - All non-RPI agents and commands pre-existing at scaffold time (`pdf-design-evaluator`, `project-memory-architect`, `/research`, `/domain-setup`).
-- All inline skills: `deck-generator`, `humanize-fr`, `linkedin-post`, `synthese`, `voice-check`.
+- Inline skill: `synthese`.
 - Playbooks: `claude-code-koyeb-channels`, `klavis-mcp`.
 - All symlinks into `~/local-skills/` (impeccable, paperclip, dossier-intelligence, proposition-commerciale, the `hashbulla/*` first-party skills).
 
