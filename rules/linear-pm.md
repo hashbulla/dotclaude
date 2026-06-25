@@ -41,7 +41,7 @@ Doctrine for AI-184. How the agent behaves as a seasoned Linear PM on **every** 
 
 - **Team** `AI Agency` (key `AI`). **Workflow**: Backlog → Todo → In Progress → Done; plus Canceled, Duplicate.
 - **`Type` labels (canonical)**: 🗂️ Admin · 🐛 Bug · 🎙️ Réunion · 🔎 Veille · 🧭 Conseil · ✍️ Contenu · 🤖 IA / Dev. Ignore the 3 orphan defaults (`Feature` / `Bug` / `Improvement`) — they duplicate `Type/Bug` (cleanup tracked in AI-210).
-- **Projects**: 🧠 AI Engineering · 📦 Interne / Agence (agency ops incl. Linear/tooling config) · ⚖️ Client retainer (NDA) (retainer; each mission = a dated milestone) · 🔒 Landing DevOps · 🌱 Perso.
+- **Projects**: 🧠 AI Engineering · 📦 Interne / Agence (agency ops incl. Linear/tooling config) · ⚖️ Client retainer (NDA; each mission = a dated milestone) · 🔒 Landing DevOps · 🌱 Perso.
 - **No cycles, no initiatives in use.**
 
 ## What's overkill here (lean-solo carve-outs)
