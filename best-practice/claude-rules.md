@@ -68,7 +68,7 @@ Lead with **the contract** (what MUST or MUST NOT happen). Then **how** (specifi
 
 ## Anti-patterns (for rule design itself)
 
-- Rules without `paths:` frontmatter — they load every session. Defeats the purpose.
+- Rules without `paths:` frontmatter AND without a CLAUDE.md `<important if>` trigger — they load every session. Defeats the purpose.
 - Rules longer than ~100 lines — Claude's attention drops; split.
 - Rules that duplicate CLAUDE.md content — pick one location.
 - Rules whose `paths:` glob is so wide it always fires (`paths: "**/*"`) — equivalent to no glob.

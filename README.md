@@ -141,6 +141,9 @@ Plus 24 symlinked third-party skills (`pbakaus/impeccable` ×18, `paperclipai/pa
 | [`ai-engineering.md`](rules/ai-engineering.md) | AI dirs | Prompt-cache, eval-first, citation discipline |
 | [`secrets-discipline.md`](rules/secrets-discipline.md) | secret-looking paths | Refuse to read, suggest env vars |
 | [`rpi-review-citation.md`](rules/rpi-review-citation.md) | `rpi/**/*` | Citation Grounding for RPI reviewers |
+| [`code-generation.md`](rules/code-generation.md) | `**/*.{py,ts,tsx,js,sh,…}` | Codegraph-prime → spec/TDD → verify before done; process layer over the per-language style rules |
+| [`agentic-loops.md`](rules/agentic-loops.md) | CLAUDE.md `<important if>` | Lock vs. opt-in for hook-enforced loop gates; the two hard constraints on enforcement |
+| [`linear-pm.md`](rules/linear-pm.md) | CLAUDE.md `<important if>` | PM-grade discipline on every Linear op — state, comments, AC/DoD, no clobber |
 
 Heavy doctrine lives in [`best-practice/`](best-practice/) — not loaded in every session. Doctrine for *why* the lazy-loading pattern exists: [best-practice/claude-rules.md](best-practice/claude-rules.md).
 

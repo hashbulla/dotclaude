@@ -15,7 +15,6 @@ These files ship as-is in the repo and work identically on any host where the pr
 - `best-practice/*.md`, `docs/*.md`
 - `skills/no-loss/` (inline skill, ships with evals)
 - `playbooks/{claude-code-koyeb-channels,klavis-mcp}/`
-- `workflows/rpi/feature-template/`
 - `bootstrap.sh`, `skills.manifest.toml`
 - `.gitignore`, `.env.example`
 
