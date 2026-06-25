@@ -53,11 +53,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/rtk-rewrite.sh"
+            "command": "${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/rtk-rewrite.sh"
           },
           {
             "type": "command",
-            "command": "~/.claude/hooks/secret-scan-gate.sh"
+            "command": "${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/secret-scan-gate.sh"
           }
         ]
       },
@@ -90,7 +90,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/pdf-design-gate.sh",
+            "command": "${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/pdf-design-gate.sh",
             "timeout": 15,
             "statusMessage": "Checking for PDF output"
           }
@@ -339,7 +339,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/worktree-create.sh",
+            "command": "${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/worktree-create.sh",
             "timeout": 120
           }
         ]
@@ -361,7 +361,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/worktree-remove.sh",
+            "command": "${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/worktree-remove.sh",
             "timeout": 60
           }
         ]
