@@ -91,7 +91,7 @@ Full walkthrough: [docs/BOOTSTRAP.md](docs/BOOTSTRAP.md). Troubleshooting: [docs
 | [`performance-analyst`](agents/performance-analyst.md) | opus | orange | on-demand | Measure first, recommend after. Big-O + caching + LLM cache hit rate. |
 | [`documentation-analyst-writer`](agents/documentation-analyst-writer.md) | sonnet | cyan | every RPI phase | Aggregator. Enforces Citation Grounding. Logs downgrades. |
 | `pdf-design-evaluator` | inherits | — | adversarial PDF review | Pre-existing; see file. |
-| `project-memory-architect` | inherits | — | bootstrap project `.claude/` | Pre-existing; called by [`claude-init`](skills/claude-init/SKILL.md). |
+| `project-memory-architect` | inherits | — | bootstrap project `.claude/` | Pre-existing; called by [`claude-init`](https://github.com/hashbulla/claude-init-skill). |
 | `anti-patterns` (symlink) | inherits | — | impeccable design anti-patterns | From [`pbakaus/impeccable`](https://github.com/pbakaus/impeccable). |
 
 Reviewer trio (`code-reviewer`, `security-reviewer`, `constitutional-validator`) runs in parallel in `isolation: worktree`. **Citation Grounding** is non-negotiable for P0/P1 findings — see [`rules/rpi-review-citation.md`](rules/rpi-review-citation.md).
@@ -246,7 +246,7 @@ prose ask  → /rpi:request    → REQUEST.md       (knowns + unknowns + needs_d
 3. **Constitutional check.** `constitutional-validator` checks the diff against the project's *own* `CLAUDE.md` + `.claude/rules/*.md` + stated non-goals. Project-internal layer that pure code review misses.
 4. **Conditional `/deep-research`.** `requirement-parser` sets a `needs_deep_research` flag. When true (new lib, comparing options, regulated domain, perf-critical, novel architecture, security-sensitive), `/rpi:research` invokes `/deep-research` (Perplexity-grade, 100+ sources). When false (trivial features), falls back to `tavily_skill` / `tavily_search`.
 
-Full doctrine: [best-practice/rpi-workflow.md](best-practice/rpi-workflow.md). Feature template: [workflows/rpi/feature-template/](workflows/rpi/feature-template/).
+Full doctrine: [best-practice/rpi-workflow.md](best-practice/rpi-workflow.md). Feature template: [commands/rpi/](commands/rpi/).
 
 ---
 
