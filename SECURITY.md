@@ -59,16 +59,6 @@ Rotation steps in order:
 4. **Sweep for residual instances** — `git log -p -S "<partial-prefix>"` across this repo and any related repo.
 5. **If the secret was checked in**, also rewrite history: `git filter-repo --invert-paths --path <file>`. Force-push only after explicit authorization (you, the user, decide).
 
-## The PostHog key incident (2026-05-12)
-
-During the dotclaude bootstrap, the previous `settings.json` had a PostHog API key inline (prefix `phx_REDACTED…`, value redacted). This is the only secret known to have leaked: it appeared in the planning conversation for this repo.
-
-Action taken:
-1. Moved the value to `~/.claude/.env.local` (gitignored).
-2. Replaced the inline value in `settings.json` with `${POSTHOG_API_KEY}`.
-
-**Action still required from the user**: rotate the key at <https://eu.posthog.com> → Project settings → API keys. The leaked value should be revoked, not just hidden.
-
 ## Permissions layer
 
 `settings.json` enforces the deny-list at the tool layer. If Claude tries to read a deny-listed path, the `Read` tool returns a permission denial before the file is opened. The deny patterns:

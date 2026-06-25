@@ -133,10 +133,6 @@ The genesis commit. dotclaude scaffolding lifted from a working `~/.claude/` and
 
 These are in `/tmp` and disappear on reboot. Copy to encrypted backup if you want them long-lived.
 
-### Security note
-
-The PostHog API key (prefix `phx_REDACTED…`, full value redacted) was previously inline in `settings.json` and appeared in the planning transcript for this work. **User action required**: rotate at <https://eu.posthog.com> → Project settings → API keys.
-
 ---
 
 ## [Unreleased]
