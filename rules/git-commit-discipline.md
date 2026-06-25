@@ -12,12 +12,12 @@ These rules apply whenever you are about to create a commit. The user prefers cl
 1. **One file per commit by default.** When a change touches `README.md` + a `SKILL.md` + a `settings.json`, that's three commits — not one.
 2. **Conventional commit prefixes** — `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `test:`, `init:`. Scope optional: `feat(rpi):`, `fix(hooks):`.
 3. **Commit message body answers "why", not "what".** The diff shows what changed; the body explains the motivation.
-4. **Co-authorship trailer.** Every commit you make should end with:
+4. **Co-authorship trailer.** Every commit you make should end with a co-author line naming the model that produced the code. Use the current model version, e.g.:
    ```
-   Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+   Co-Authored-By: Claude <noreply@anthropic.com>
    ```
-   (Or the corresponding model version.)
-5. **Never `--amend` a pushed commit.** Create a new commit. The plan file in this repo (`crystalline-snacking-lighthouse.md`) explains why.
+   Include the specific model name when you know it (e.g. `Claude Sonnet 4.6`) so the trailer stays informative over time.
+5. **Never `--amend` a pushed commit.** Create a new commit. Amending rewrites the commit SHA, which diverges any branch that already pulled the original — forcing force-pushes and breaking collaborators (or your own other checkouts).
 6. **Never `--no-verify`.** If a pre-commit hook fails, fix the underlying issue; never bypass.
 7. **Never `--no-gpg-sign`** unless the user explicitly authorizes it.
 
