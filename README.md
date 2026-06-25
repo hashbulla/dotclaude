@@ -1,31 +1,44 @@
 # dotclaude
 
-> A senior-AI-engineer-grade global configuration for [Claude Code](https://claude.com/claude-code). Personal dotfiles for `~/.claude/` — portable, version-controlled, and bootstrap-able on any machine.
+![MIT](https://img.shields.io/badge/license-MIT-green) ![Claude Code](https://img.shields.io/badge/Claude%20Code-global%20config-blue) ![config-drift](https://img.shields.io/badge/config--drift%20gate-passing-brightgreen)
 
-`dotclaude` turns a blank Claude Code install into an opinionated AI-engineering workstation: lazy-loaded rule routing, the four-phase **RPI** (Research → Plan → Implement) workflow with adversarial reviewers, Citation Grounding on high-severity findings, a 27-event hook dispatcher with cross-platform audio, Tavily-first search routing, five first-party skill repos auto-installed by `bootstrap.sh`, and a security posture that keeps every secret out of the repo.
+> The working `~/.claude/` configuration of a senior AI engineer — version-controlled, bootstrap-able on any machine, and opinionated by design.
+
+`dotclaude` turns a blank Claude Code install into a production AI-engineering workstation: lazy-loaded rule routing, the four-phase **RPI** (Research → Plan → Implement) workflow with an adversarial reviewer trio in worktree isolation, Citation Grounding with auto-downgrade on P0/P1 findings, a 27-event hook dispatcher, Tavily-first search routing, five first-party skill repos installed from `skills.manifest.toml` by `bootstrap.sh`, and a security posture that keeps every secret out of the repo.
 
 **Inspiration**: [shanraisshan/claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice). dotclaude diverges in three places: it lives at user scope (not project scope), it carries a working RPI workflow instead of a weather demo, and it bakes Citation Grounding from [`/critical-harness`](https://github.com/hashbulla/critical-harness) into the review trio.
+
+---
+
+## Highlights
+
+- **RPI workflow with an adversarial reviewer trio** — research → plan → implement, then code/security/constitutional reviewers gate every phase in worktree isolation.
+- **Citation Grounding with auto-downgrade** — a reviewer that can't cite a P0/P1 finding has it auto-downgraded, so findings can't be softened to dodge evidence.
+- **An executable config-drift gate** — `scripts/audit-config.sh` makes the doctrine's ceiling enforceable, not aspirational.
+- **A 27-event hook dispatcher + cheap-and-irreversible gates** — a TDD'd secret-scan gate (16/16 green) and a PDF-design gate, locked only where skipping is irreversible.
+- **Secrets posture** — every secret stays out of the repo via `.example` scaffolding + gitignore; verified clean across all history.
 
 ---
 
 ## Table of contents
 
 1. [🧠 Concepts](#-concepts)
-2. [🚀 Quick start](#-quick-start)
-3. [🤖 Agents (RPI + extras)](#-agents-rpi--extras)
-4. [🎯 Slash commands](#-slash-commands)
-5. [🧪 Skills](#-skills)
-6. [📐 Rules (lazy-loaded)](#-rules-lazy-loaded)
-7. [🔔 Hooks (27 events)](#-hooks-27-events)
-8. [🔧 MCP registry](#-mcp-registry)
-9. [🔍 Search routing](#-search-routing)
-10. [📚 Playbooks](#-playbooks)
-11. [🔁 The RPI workflow](#-the-rpi-workflow)
-12. [⚙️ Configuration hierarchy](#-configuration-hierarchy)
-13. [🧱 Config drift gate](#-config-drift-gate)
-14. [🔐 Security & secrets](#-security--secrets)
-15. [🛣️ Roadmap](#-roadmap)
-16. [🙏 Credits](#-credits)
+2. [Highlights](#highlights)
+3. [🚀 Quick start](#-quick-start)
+4. [🤖 Agents (RPI + extras)](#-agents-rpi--extras)
+5. [🎯 Slash commands](#-slash-commands)
+6. [🧪 Skills](#-skills)
+7. [📐 Rules (lazy-loaded)](#-rules-lazy-loaded)
+8. [🔔 Hooks (27 events)](#-hooks-27-events)
+9. [🔧 MCP registry](#-mcp-registry)
+10. [🔍 Search routing](#-search-routing)
+11. [📚 Playbooks](#-playbooks)
+12. [🔁 The RPI workflow](#-the-rpi-workflow)
+13. [⚙️ Configuration hierarchy](#-configuration-hierarchy)
+14. [🧱 Config drift gate](#-config-drift-gate)
+15. [🔐 Security & secrets](#-security--secrets)
+16. [🛣️ Roadmap](#-roadmap)
+17. [🙏 Credits](#-credits)
 
 ---
 
@@ -39,13 +52,24 @@ The repo is layered. Each layer has one job; doctrine is on disk before code.
 | File-pattern doctrine | [`rules/`](rules/) (11 files) | [best-practice/claude-rules.md](best-practice/claude-rules.md) | ✅ |
 | Subagent personas | [`agents/`](agents/) (10 RPI + 3 extras) | [best-practice/claude-subagents.md](best-practice/claude-subagents.md) | ✅ |
 | Slash workflows | [`commands/`](commands/) (RPI ×4 + extras) | [best-practice/claude-commands.md](best-practice/claude-commands.md) | ✅ |
-| Reusable knowledge | [`skills/`](skills/) (5 first-party + symlinks) | [best-practice/claude-skills.md](best-practice/claude-skills.md) | ✅ |
+| Reusable knowledge | [`skills/`](skills/) (no-loss inline + manifest externals) | [best-practice/claude-skills.md](best-practice/claude-skills.md) | ✅ |
 | Reactive layer | [`hooks/`](hooks/) (27 events + sound dispatcher) | [best-practice/claude-hooks.md](best-practice/claude-hooks.md) | ✅ |
 | Configuration | [`settings.json`](settings.json), `.env.local` (gitignored) | [best-practice/claude-settings.md](best-practice/claude-settings.md) | ✅ |
 | MCP servers | [`CLAUDE.md` § MCP Registry](CLAUDE.md), `mcp.json` | [best-practice/claude-mcp.md](best-practice/claude-mcp.md) | ✅ |
 | Operational runbooks | [`playbooks/`](playbooks/) (5 playbooks) | [playbooks/README.md](playbooks/README.md) | ✅ |
 | Doctrine | [`best-practice/`](best-practice/) (9 docs) | — | ✅ |
-| Reference | [`docs/`](docs/) (4 docs) | — | ✅ |
+| Reference | [`docs/`](docs/) | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [docs/PORTABILITY.md](docs/PORTABILITY.md) | ✅ |
+
+```mermaid
+flowchart TD
+  C["CLAUDE.md — always-loaded router"] --> R["rules/ — lazy-loaded by paths: or trigger"]
+  C --> B["best-practice/ — doctrine + worked examples"]
+  C --> P["playbooks/ — validated runbooks"]
+  C --> S["skills/ — no-loss inline + manifest externals"]
+  C --> A["agents/ — RPI trio + specialists"]
+  C --> H["hooks/ — 27-event dispatcher + gates"]
+  H --> G["secret-scan-gate · pdf-design-gate"]
+```
 
 ---
 
@@ -72,7 +96,7 @@ set -a; source ~/.claude/.env.local; set +a
 claude
 ```
 
-Full walkthrough: [docs/BOOTSTRAP.md](docs/BOOTSTRAP.md). Troubleshooting: [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md).
+Full walkthrough: [docs/BOOTSTRAP.md](docs/BOOTSTRAP.md). Troubleshooting: [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md). Architecture deep-dive: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Portability notes: [docs/PORTABILITY.md](docs/PORTABILITY.md).
 
 ---
 
@@ -113,7 +137,9 @@ Reviewer trio (`code-reviewer`, `security-reviewer`, `constitutional-validator`)
 
 ## 🧪 Skills
 
-One inline skill ships in-repo: [`no-loss`](skills/no-loss/) (zero-loss session checkpoint). Five first-party skills auto-install via [`skills.manifest.toml`](skills.manifest.toml):
+One eval-first inline flagship ships in-repo: [`no-loss`](skills/no-loss/) (zero-loss session checkpoint, with eval fixtures). All other skills install from [`skills.manifest.toml`](skills.manifest.toml) via `bootstrap.sh` — the `skills/` directory reads intentionally thin because external skill repos are cloned on demand, not bundled.
+
+Five first-party skills auto-install via the manifest:
 
 | Skill | Repo | Purpose |
 |---|---|---|
@@ -228,6 +254,9 @@ Multi-system runbooks validated in production:
 |---|---|---|
 | [Claude Code on Koyeb with Channels](playbooks/claude-code-koyeb-channels/) | 2026-04-29 | Always-on Claude Code session, webhook-triggered, pushing to Telegram / Discord / iMessage |
 | [Klavis Strata MCP (Gmail)](playbooks/klavis-mcp/) | 2026-04-30 | Hosted MCP server integration with the 10-tool Gmail subset |
+| [Scrapling 0.4.x](playbooks/scrapling/) | 2026-05-20 | Production scraping — anti-bot stack, MCP routing, DynamicFetcher vs StealthyFetcher decision matrix |
+| [Context7 MCP](playbooks/context7/) | 2026-05-28 | Version-current library docs via Upstash Context7 — two-tool surface, free-tier budget, failure modes |
+| [Agentic loops](playbooks/agentic-loops/) | — | Lock vs. opt-in gates: when to enforce via hook vs. keep user-triggered |
 
 Re-validate via `/deep-research` if older than 4 weeks. Index + freshness rule: [playbooks/README.md](playbooks/README.md).
 
@@ -243,6 +272,30 @@ prose ask  → /rpi:request    → REQUEST.md       (knowns + unknowns + needs_d
            → /rpi:plan       → pm/ux/eng/PLAN   (slice schedule)
            → /rpi:implement  → code + commits   (reviewer trio gates every slice)
 ```
+
+```mermaid
+flowchart LR
+  REQ["/rpi:request"] --> RES["/rpi:research"] --> PLN["/rpi:plan"] --> IMP["/rpi:implement"]
+  IMP --> TRIO{"reviewer trio (worktree-isolated)"}
+  TRIO --> CRV["code-reviewer"]
+  TRIO --> SRV["security-reviewer"]
+  TRIO --> CVL["constitutional-validator"]
+  CRV --> CG["Citation Grounding<br/>uncited P0/P1 auto-downgrade"]
+  SRV --> CG
+  CVL --> CG
+  CG --> IMP
+```
+
+### RPI command showcase
+
+| Command | What it does |
+|---|---|
+| `/rpi:request` | Parses feature prose into a structured `REQUEST.md` with knowns, unknowns, constraints, and a `needs_deep_research` flag |
+| `/rpi:research` | Runs `product-manager` + `technical-cto-advisor` in parallel; invokes `/deep-research` (100+ sources) when the flag is set; produces a GO/NO-GO `RESEARCH.md` |
+| `/rpi:plan` | Orchestrates `product-manager` + `ux-designer` + `senior-software-engineer` to produce four plan artifacts: `pm.md`, `ux.md`, `eng.md`, `PLAN.md` |
+| `/rpi:implement` | `senior-software-engineer` implements in reversible slices; reviewer trio (`code-reviewer`, `security-reviewer`, `constitutional-validator`) gates every slice in worktree isolation |
+
+Worked RPI/brainstorm→spec examples: [docs/superpowers/specs/2026-06-16-no-loss-skill-design.md](docs/superpowers/specs/2026-06-16-no-loss-skill-design.md) · [docs/superpowers/specs/2026-06-19-ai-177-locked-loop-gates-design.md](docs/superpowers/specs/2026-06-19-ai-177-locked-loop-gates-design.md) · [docs/superpowers/specs/2026-06-25-dotclaude-public-flagship-design.md](docs/superpowers/specs/2026-06-25-dotclaude-public-flagship-design.md).
 
 ### What makes it senior-AI-engineer grade
 
