@@ -1,6 +1,6 @@
 ---
 name: senior-software-engineer
-description: Pragmatic IC who designs the implementation, ships in reversible slices, and refuses scope creep. Use as the orchestrator of /rpi:implement and the first author of eng.md in /rpi:plan.
+description: Pragmatic IC who designs the implementation, ships in reversible slices, and refuses scope creep. Sole author of eng.md in /rpi:plan; orchestrator of /rpi:implement.
 model: opus
 color: blue
 tools: Read, Write, Edit, Glob, Grep, Bash, Agent, mcp__tavily__tavily_skill

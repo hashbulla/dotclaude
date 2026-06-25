@@ -17,13 +17,7 @@ description: |
 model: opus
 color: orange
 memory: user
-tools:
-  - Read
-  - Glob
-  - Grep
-  - Bash
-  - mcp__tavily__tavily_search
-  - mcp__tavily__tavily_extract
+tools: Read, Glob, Grep, Bash, Write, mcp__tavily__tavily_search, mcp__tavily__tavily_extract
 ---
 
 ## Role
@@ -176,7 +170,7 @@ PASS / WARN / FAIL with supporting data.
 | Bringhurst measure | PyMuPDF `page.get_text("dict")` spans grouped by line; compute mean and p95 chars/line per body-text block | `(mean, p95, outliers_list)` |
 | 8pt grid | Extract block y-positions per page; compute deltas between adjacent blocks; flag deltas where `delta % 8 > 1` | list of `(page, y, delta)` |
 | Numeric alignment | Detect table-like structures by clustering aligned x-positions; compute variance of last-digit x-position per column | list of `(page, table_index, variance_pt)` |
-| Typst gap anti-patterns | If `SOURCE_DIR` present AND `RULES_DIR/vertical-rhythm.md` exists: grep for the three silent-failure traps documented there — (1) `block(above:/below:)` inside `stack(spacing: 0pt)`, (2) heterogeneous sizes under uniform `stack(spacing: Npt)`, (3) `block(above:/below:)` inside a `grid()` cell. Multiline ripgrep. | list of `(file, line, trap_id, context)` |
+| Typst gap anti-patterns | If `SOURCE_DIR` present AND `RULES_DIR/vertical-rhythm.md` is available: grep for the three silent-failure traps documented there — (1) `block(above:/below:)` inside `stack(spacing: 0pt)`, (2) heterogeneous sizes under uniform `stack(spacing: Npt)`, (3) `block(above:/below:)` inside a `grid()` cell. Multiline ripgrep. Skip and note absence in `coverage_gaps` if the file is not present. | list of `(file, line, trap_id, context)` |
 | Vertical collisions | PyMuPDF `page.get_text("dict")` → extract every line bbox per page; for each consecutive pair in the same logical column, compute `gap = next.bbox.y0 - prev.bbox.y1`; flag pairs with `gap < 4pt` as collision candidates | list of `(page, y_prev, y_next, gap_pt, line_text_snippet)` |
 | Tytanic snapshot | If binary present AND `SNAPSHOT_BASELINE` provided: `tytanic compare <baseline> <pdf>` | `pass \| fail \| skipped` + `diff_ratio` |
 
@@ -189,8 +183,8 @@ traceability.
 Render every page to PNG at **220 DPI** for Vision grading. This is raised
 from the previous 150 DPI default because sub-4pt vertical gaps (common
 class of silent-failure bugs — see `vertical-rhythm.md` "Anti-patterns
-Typst") are visually indistinguishable at 150 DPI (1pt ≈ 2 px) but
-detectable at 220 DPI (1pt ≈ 3 px). The cost is ~2× file size on PNG
+Typst" when present) are visually indistinguishable at 150 DPI (1pt ≈ 2 px)
+but detectable at 220 DPI (1pt ≈ 3 px). The cost is ~2× file size on PNG
 staging — acceptable for audit pipelines.
 
 ```
@@ -265,15 +259,17 @@ Penalize:
   add nothing to hierarchy.
 
 If corpora loaded, cite `spatial-design.md` for 8pt-grid and whitespace
-penalties. If `RULES_DIR/vertical-rhythm.md` exists, it is the PRIMARY
+penalties. If `RULES_DIR/vertical-rhythm.md` is available, it is the PRIMARY
 authority for semantic-boundary gap penalties — cite it first, corpora
 second. Every transition under its `gaps.*` minimum is a MINOR, MAJOR,
-or CRITICAL finding per this rubric:
+or CRITICAL finding per this rubric. If the file is not present, fall back
+to corpora and note the absence in `coverage_gaps`.
 
 - **CRITICAL** — collision detected by the Step 2 "Vertical collisions"
   deterministic check (rendered gap < 4pt, text visually overlaps or
   touches), OR one of the three anti-patterns in `vertical-rhythm.md`
-  touches a title or kicker. A source that declares a 10pt gap but
+  (when present) touches a title or kicker. A source that declares a 10pt
+  gap but
   renders 0pt because of `block(above:)` inside `stack(spacing: 0pt)`
   is CRITICAL — the declaration passed textual review but failed pixel
   review.

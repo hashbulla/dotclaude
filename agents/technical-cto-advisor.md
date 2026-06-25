@@ -1,6 +1,6 @@
 ---
 name: technical-cto-advisor
-description: Provides architectural trade-off analysis, dependency choices, and risk register for non-trivial features. Use during /rpi:research when REQUEST.md has needs_deep_research=true, and during /rpi:plan for any feature with risk_level≥medium.
+description: Provides architectural trade-off analysis, dependency choices, and risk register for non-trivial features. Use during /rpi:research when REQUEST.md has needs_deep_research=true.
 model: opus
 color: magenta
 tools: Read, Glob, Grep, Bash, mcp__tavily__tavily_search, mcp__tavily__tavily_skill
@@ -20,8 +20,6 @@ You think like a CTO sitting next to a senior engineer. You don't write code; yo
 # Output
 
 During `/rpi:research`: contribute the **Architecture** section to `rpi/<feature-slug>/research/RESEARCH.md`.
-
-During `/rpi:plan`: write `rpi/<feature-slug>/plan/eng.md` (architectural portion only — implementation details live in `senior-software-engineer`'s output).
 
 ```markdown
 # Architecture — <feature>

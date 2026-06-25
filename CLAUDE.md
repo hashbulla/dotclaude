@@ -179,6 +179,7 @@ Slash commands stored under `~/.claude/commands/`, available in every session. I
 | `/scrape` | `<url-or-target>` | scrape URL, extract from site, Cloudflare/captcha blocked | `scrapling` MCP or pipx. |
 | `/fetcher-pick` | `<target-or-url>` | which fetcher, Fetcher vs StealthyFetcher, JS-rendered, Cloudflare-protected | `playbooks/scrapling/research-report.md` exists. |
 | `/domain-setup` | `<domain> <koyeb-app>` | custom domain via Cloudflare, DNS + TLS + Koyeb attach | `CF_API_TOKEN`, `CF_ACCOUNT_ID`, `identity.md`, Koyeb CLI. |
+| `/rpi:request\|research\|plan\|implement` | `<feature-slug>` | spec-first workflow: parse → research → plan → implement with reviewer trio | see `commands/rpi/`. |
 
 6 hard-won `/domain-setup` constraints live in [`commands/domain-setup.md`](commands/domain-setup.md) (validated 2026-05-04).
 

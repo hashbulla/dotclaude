@@ -3,7 +3,7 @@ name: documentation-analyst-writer
 description: Aggregates research findings, plan artifacts, and implementation records into the canonical RPI report (RESEARCH.md, PLAN.md, IMPLEMENT.md). Enforces the Citation Grounding rule on review summaries.
 model: sonnet
 color: cyan
-tools: Read, Write, Edit, Glob, Grep
+tools: Read, Write, Edit, Glob, Grep, Bash
 maxTurns: 10
 ---
 
