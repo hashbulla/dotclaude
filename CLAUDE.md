@@ -55,7 +55,7 @@ All servers below are registered at **user scope** — available in every projec
 <important if="the user names a library / framework / SDK / CLI / cloud service / version, or asks setup / config / migration / library-debug questions">
 # Documentation Lookup Routing Decision Table
 
-**Stack:** Context7 (canonical, version-specific) → Tavily Skill (broader reach) → WebSearch (fallback) → training data (last resort). Source of truth: [`playbooks/context7/research-report.md`](playbooks/context7/research-report.md) (validated 2026-05-28).
+**Stack:** Context7 (canonical, version-specific) → Tavily Skill (broader reach) → WebSearch (fallback) → training data (last resort). Source of truth: [`playbooks/context7/research-report.md`](playbooks/context7/research-report.md) (validated 2026-05-28); re-`/research` if >4 weeks stale.
 
 | Signal / Intent | Tool | Key params | Rationale |
 |----------------|------|------------|-----------|
@@ -78,7 +78,7 @@ All servers below are registered at **user scope** — available in every projec
 <important if="the user wants to scrape / extract from a page / crawl a site / pastes a URL to extract, or reports being blocked by Cloudflare / a captcha">
 # Scraping Routing Decision Table
 
-**Stack:** Scrapling (anti-bot, agent-driven, DOM-drift) → selectolax / httpx (raw throughput) → Scrapy + scrapy-redis (distributed) → Crawlee (Node/TS). Source of truth: [`playbooks/scrapling/`](playbooks/scrapling/) (validated 2026-05-20).
+**Stack:** Scrapling (anti-bot, agent-driven, DOM-drift) → selectolax / httpx (raw throughput) → Scrapy + scrapy-redis (distributed) → Crawlee (Node/TS). Source of truth: [`playbooks/scrapling/`](playbooks/scrapling/) (validated 2026-05-20); re-`/research` if >4 weeks stale.
 
 | Signal / Intent | Tool | Key params | Rationale |
 |----------------|------|------------|-----------|
@@ -94,7 +94,7 @@ All servers below are registered at **user scope** — available in every projec
 | TypeScript / Node-first project | Crawlee or Playwright-Node | — | Native TS framework; out of scope for Scrapling (research §7) |
 | Fallback (Scrapling MCP unavailable) | `mcp__fetch__fetch` or `mcp__tavily__tavily_extract` | — | Static fetch only; no stealth, no JS rendering |
 
-**Default + proactive:** on scrape/extract/crawl intent or a 403/429/Cloudflare report, act without asking (`/scrape` runs the probe) — pick the row by anti-bot signal, JS-rendering need, and scale; simpler tool wins for static fetches. Don't default to `StealthyFetcher` (real Chromium, heavy) — use only after lighter fetchers are blocked. Always honor `robots.txt`. **Pause and confirm** when: `Disallow:` covers the path · litigious social platform (LinkedIn/Facebook/X) · volume ≥10K req · credentialed scraping.
+**Default + proactive:** on scrape/extract/crawl intent or a 403/429/Cloudflare report, act without asking (`/scrape` runs the probe) — pick the row by anti-bot signal, JS-rendering need, and scale; simpler tool wins for static fetches. Don't default to `StealthyFetcher` (real Chromium, heavy) — use only after lighter fetchers are blocked. Always honor `robots.txt` (`robots_txt_obey=True`). **Pause and confirm with the user first** when: `Disallow:` covers the path · litigious social platform (LinkedIn/Facebook/X) · volume ≥10K req · credentialed scraping.
 </important>
 
 <important if="the user is generating, adding, refactoring, or debugging code (non-trivial), or about to claim work is done">
@@ -102,7 +102,7 @@ All servers below are registered at **user scope** — available in every projec
 
 **Stack:** Codegraph (context priming) → Superpowers (process: brainstorm/plan/TDD/verify) → `/code-review` + `/simplify` (post-gen passes) → Context7 (API docs) → LSP (pyright/typescript feedback).
 
-**Default is do-directly.** Trivial work — typo/string fix, log line, rename, single obvious-function change, comment, throwaway stdlib script, pure research — no ceremony; this list **wins on overlap**. Structural signals (≥2 files, ≥~20 LOC of logic, control-flow change, external API/SDK, behavior change) are a **backstop** that fires the discipline only when the change is *also* unfamiliar or risky. When unsure, do the smaller thing first. Depth: [`rules/code-generation.md`](rules/code-generation.md) + [`best-practice/code-generation.md`](best-practice/code-generation.md).
+**Default is do-directly.** Trivial work — typo/string fix, log line, rename, single obvious-function change, comment, throwaway stdlib script, pure research — no ceremony; this list **wins on overlap** (a 2-file rename is still a rename). Structural signals (≥2 files, ≥~20 LOC of logic, control-flow change, external API/SDK, behavior change) are a **backstop** that fires the discipline only when the change is *also* unfamiliar or risky. When unsure, do the smaller thing first. Depth: [`rules/code-generation.md`](rules/code-generation.md) + [`best-practice/code-generation.md`](best-practice/code-generation.md).
 
 | Signal / Intent | Tool / Skill | Rationale |
 |----------------|--------------|-----------|
