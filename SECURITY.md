@@ -1,6 +1,6 @@
 # Security — secrets hygiene and rotation
 
-dotclaude treats secret hygiene as load-bearing. The repo is private, but private-repo discipline is still defense-in-depth: clones land on laptops, screenshots get shared, paste-bins get indexed, CI logs get archived.
+dotclaude treats secret hygiene as load-bearing. Defense-in-depth applies regardless of repo visibility: clones land on laptops, screenshots get shared, paste-bins get indexed, CI logs get archived.
 
 ## The three rules
 
@@ -114,13 +114,4 @@ Also gitignored. Same rotation cadence as `history.jsonl`. Disable entirely via 
 
 ## Reporting a vulnerability
 
-This is a personal dotfiles repo, not a product. If you spot a security issue (e.g., a leaked secret in commit history, a permission misconfiguration), open a GitHub issue with title prefixed `[security]`. The repo is private; security issues should not be made public on third-party forums or social.
-
-## Future-proofing
-
-If dotclaude ever goes public (the LICENSE permits it), do this first:
-
-1. Sweep history for any committed secrets: `git log -p | grep -iE 'key|secret|token|api'` (manual review).
-2. Decide whether to filter-repo or rewrite the entire history.
-3. Verify `.gitignore` covers everything in this doc.
-4. Rotate every secret in `.env.local` regardless — assume the worst.
+This is a personal dotfiles repo, not a product. If you spot a security issue (e.g., a leaked secret in commit history, a permission misconfiguration), please use **GitHub private vulnerability reporting**: go to this repo's **Security** tab → **Report a vulnerability**. This keeps the report confidential until assessed. Do not post security issues as public GitHub issues or on third-party forums.

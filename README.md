@@ -320,4 +320,4 @@ Full rotation cadence and incident response: [SECURITY.md](SECURITY.md).
 
 ## License
 
-MIT — see [LICENSE](LICENSE). The repo is private; the license is permissive so individual files (rules, doctrine docs, agent definitions) can be quoted or forked freely if I open-source pieces later.
+MIT — see [LICENSE](LICENSE). The license is permissive so individual files (rules, doctrine docs, agent definitions) can be quoted or forked freely.
