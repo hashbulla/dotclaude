@@ -36,14 +36,14 @@ The repo is layered. Each layer has one job; doctrine is on disk before code.
 | Layer | Asset | Doctrine | Status |
 |---|---|---|---|
 | Every-session context | [`CLAUDE.md`](CLAUDE.md), `@identity.md`, `@profile.md`, [`RTK.md`](RTK.md) | [best-practice/claude-memory.md](best-practice/claude-memory.md) | ✅ |
-| File-pattern doctrine | [`rules/`](rules/) (8 files) | [best-practice/claude-rules.md](best-practice/claude-rules.md) | ✅ |
+| File-pattern doctrine | [`rules/`](rules/) (11 files) | [best-practice/claude-rules.md](best-practice/claude-rules.md) | ✅ |
 | Subagent personas | [`agents/`](agents/) (10 RPI + 3 extras) | [best-practice/claude-subagents.md](best-practice/claude-subagents.md) | ✅ |
 | Slash workflows | [`commands/`](commands/) (RPI ×4 + extras) | [best-practice/claude-commands.md](best-practice/claude-commands.md) | ✅ |
 | Reusable knowledge | [`skills/`](skills/) (5 first-party + symlinks) | [best-practice/claude-skills.md](best-practice/claude-skills.md) | ✅ |
 | Reactive layer | [`hooks/`](hooks/) (27 events + sound dispatcher) | [best-practice/claude-hooks.md](best-practice/claude-hooks.md) | ✅ |
 | Configuration | [`settings.json`](settings.json), `.env.local` (gitignored) | [best-practice/claude-settings.md](best-practice/claude-settings.md) | ✅ |
 | MCP servers | [`CLAUDE.md` § MCP Registry](CLAUDE.md), `mcp.json` | [best-practice/claude-mcp.md](best-practice/claude-mcp.md) | ✅ |
-| Operational runbooks | [`playbooks/`](playbooks/) (Koyeb, Klavis) | [playbooks/README.md](playbooks/README.md) | ✅ |
+| Operational runbooks | [`playbooks/`](playbooks/) (5 playbooks) | [playbooks/README.md](playbooks/README.md) | ✅ |
 | Doctrine | [`best-practice/`](best-practice/) (9 docs) | — | ✅ |
 | Reference | [`docs/`](docs/) (4 docs) | — | ✅ |
 
@@ -113,7 +113,7 @@ Reviewer trio (`code-reviewer`, `security-reviewer`, `constitutional-validator`)
 
 ## 🧪 Skills
 
-Five first-party skills auto-install via [`skills.manifest.toml`](skills.manifest.toml):
+One inline skill ships in-repo: [`no-loss`](skills/no-loss/) (zero-loss session checkpoint). Five first-party skills auto-install via [`skills.manifest.toml`](skills.manifest.toml):
 
 | Skill | Repo | Purpose |
 |---|---|---|
@@ -129,7 +129,7 @@ Plus 24 symlinked third-party skills (`pbakaus/impeccable` ×18, `paperclipai/pa
 
 ## 📐 Rules (lazy-loaded)
 
-8 rules in [`rules/`](rules/). Each has `paths:` frontmatter so it loads only when Claude touches a matching file.
+11 rules in [`rules/`](rules/). Most have `paths:` frontmatter so they load only when Claude touches a matching file. Rules without `paths:` (e.g. `agentic-loops.md`, `linear-pm.md`) are surfaced instead by CLAUDE.md `<important if>` triggers — a legitimate alternative, not an anti-pattern.
 
 | File | `paths:` glob | Topic |
 |---|---|---|
@@ -180,15 +180,17 @@ A dirty / detached / divergent / offline clone is skipped, never merged or stash
 
 ## 🔧 MCP registry
 
-Three MCP servers registered at **user scope** (available in every project):
+Five MCP servers registered at **user scope** (available in every project):
 
 | Name | Transport | Endpoint | Tools |
 |---|---|---|---|
 | `tavily` | HTTP (remote) | `mcp.tavily.com/mcp/` | `tavily_search`, `tavily_research`, `tavily_skill`, `tavily_extract`, `tavily_map`, `tavily_crawl` |
 | `fetch` | stdio (local) | `uvx mcp-server-fetch` | `fetch` |
 | `presenton` | HTTP (local) | `localhost:5000/mcp` | Slide generation |
+| `scrapling` | stdio (local) | `scrapling mcp` (pipx) | `open_session`, `close_session`, `list_sessions`, `get`, `fetch`, `stealthy_fetch`, `screenshot`, and more |
+| `context7` | stdio (local) | `npx -y @upstash/context7-mcp` | `resolve-library-id`, `query-docs` |
 
-> **Security note — `fetch`**: raw HTML from arbitrary URLs may carry prompt-injection payloads. Never pass `fetch` output unsanitized into another agent's context.
+> **Security note — `fetch` / `scrapling`**: raw HTML from arbitrary URLs may carry prompt-injection payloads. Never pass output unsanitized into another agent's context.
 
 Plus two MCP servers declared in `settings.json` (`mcp-mermaid`, `posthog` — the latter with `${POSTHOG_API_KEY}` env interpolation, never inline).
 

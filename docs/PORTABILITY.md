@@ -13,7 +13,7 @@ These files ship as-is in the repo and work identically on any host where the pr
 - `rules/*.md`
 - `hooks/scripts/hooks.py`, `hooks/config/hooks-config.json`, `hooks/config/hooks-config.local.example.json`, `hooks/sounds/**`
 - `best-practice/*.md`, `docs/*.md`
-- `skills/{claude-init,synthese}/` (inline skills)
+- `skills/no-loss/` (inline skill, ships with evals)
 - `playbooks/{claude-code-koyeb-channels,klavis-mcp}/`
 - `workflows/rpi/feature-template/`
 - `bootstrap.sh`, `skills.manifest.toml`
@@ -60,7 +60,7 @@ To remove from your machine: `rm ~/.claude/skills/<name>` for each symlink that 
 ## Host responsibilities (install separately)
 
 - Claude Code CLI itself
-- MCP server binaries (the user-scope MCP registry — `tavily`, `fetch`, `presenton` — is registered via `claude mcp add --scope user`, not from this repo)
+- MCP server binaries (the user-scope MCP registry — `tavily`, `fetch`, `presenton`, `scrapling`, `context7` — is registered via `claude mcp add --scope user`, not from this repo)
 - `gh` CLI auth (your GitHub login)
 - Audio drivers / shell aliases / OS-level prefs
 

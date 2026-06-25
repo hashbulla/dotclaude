@@ -42,6 +42,8 @@ dotclaude rules apply user-scope — they're in `~/.claude/rules/`. Project-scop
 
 ## Default rules in dotclaude
 
+11 rules total. Most use `paths:` for lazy-loading; three use CLAUDE.md `<important if>` triggers instead (see note below).
+
 | File | `paths:` | Topic |
 |---|---|---|
 | `markdown-docs.md` | `**/*.md` | Documentation style |
@@ -52,6 +54,11 @@ dotclaude rules apply user-scope — they're in `~/.claude/rules/`. Project-scop
 | `ai-engineering.md` | AI dirs | Prompt-cache, eval-first, citation discipline |
 | `secrets-discipline.md` | secret-looking paths | Refuse to read, suggest env vars |
 | `rpi-review-citation.md` | `rpi/**/*` | Citation Grounding rule for RPI reviewers |
+| `agentic-loops.md` | *(CLAUDE.md trigger)* | Lock vs. opt-in gates; hook enforcement policy |
+| `linear-pm.md` | *(CLAUDE.md trigger)* | Linear PM discipline on every Linear op |
+| `code-generation.md` | `**/*.{py,ts,tsx,js,sh,…}` | Codegraph prime, spec-first, TDD, verify before done |
+
+**Note:** rules without `paths:` frontmatter (`agentic-loops.md`, `linear-pm.md`) are surfaced by CLAUDE.md `<important if>` triggers instead. This is a legitimate design choice for ambient doctrine that applies to any task regardless of which files are open — it is not the anti-pattern of dumping everything into CLAUDE.md, because the rule body stays in its own file and loads only when the trigger fires.
 
 ## Writing a new rule
 

@@ -1,6 +1,6 @@
 # Claude MCP — server design and Tavily-first routing
 
-MCP (Model Context Protocol) servers extend Claude Code with tools beyond the built-in set. dotclaude registers three at user scope: `tavily`, `fetch`, `presenton`.
+MCP (Model Context Protocol) servers extend Claude Code with tools beyond the built-in set. dotclaude registers five at user scope: `tavily`, `fetch`, `presenton`, `scrapling`, `context7`.
 
 ## The dotclaude MCP registry
 
