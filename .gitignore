@@ -121,5 +121,8 @@ npm-debug.log*
 deep-research/newsletter-corpus/
 deep-research/newsletter-corpus-src/
 
+# user-scope expert prior — PRIVATE, contains personal GitHub handles
+deep-research/experts.yaml
+
 # subagent-driven-development scratch ledger (never publish)
 .superpowers/
