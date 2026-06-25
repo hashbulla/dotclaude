@@ -1,17 +1,48 @@
 # Klavis Strata MCP — integration playbook (Gmail focus)
 
-> **Validated: 2026-04-30 · Source: empirical (live integration with `klavis-gmail` Strata server, instance `823fd391-...`) + Tavily passes against `klavis.ai/docs` and `docs.klavis.ai`. Companion playbook to `~/.claude/playbooks/claude-code-koyeb-channels/` (which deploys the runtime that consumes Klavis).**
+> **Validated: 2026-06-25 (partial re-validation via Tavily; live MCP surface not empirically re-probed — run a discovery probe before any backlog session) · Original empirical source: 2026-04-30 (live integration with `klavis-gmail` Strata server, instance `823fd391-...`) + Tavily passes against `klavis.ai/docs` and `docs.klavis.ai`. Companion playbook to `~/.claude/playbooks/claude-code-koyeb-channels/` (which deploys the runtime that consumes Klavis).**
 >
 > **⚠ Stale-by guidance:** Klavis is in active iteration. Re-validate (`tools/list` probe + a single `gmail_modify_email` round-trip) if **either** of the following is true: (a) the timestamp above is more than 4 weeks old, or (b) you see the v1 silent-label-drop symptom (`addedLabels` returns `["UNREAD"]` instead of your requested labels). Klavis ships breaking renames at the toolkit-server level without explicit deprecation in the MCP surface.
+>
+> **⚠ ARCHITECTURE CHANGE (2026-06-25):** Strata now uses a **progressive-discovery model**, not a flat 10-tool surface. See §TL;DR and the STALE banner below. Live MCP surface was not empirically re-probed — run `discover_server_categories_or_actions` before any session. Next check: 2026-07-23.
 
 ## TL;DR — what every consumer needs to know
 
+> **⚠ STALE (as of 2026-06-25):** The "verified 10-tool surface" section below was empirically accurate as of 2026-04-30. **Strata has since moved to a progressive-discovery model.** See the updated findings immediately below before relying on the tool-name list. (Source: klavis.ai/docs/concepts/strata, retrieved 2026-06-25.)
+
+### Updated architecture — Strata progressive-discovery (2026-06-25)
+
+Current Strata exposes **5–6 meta-tools** instead of a flat 10-tool surface:
+
+| Meta-tool | Purpose |
+|---|---|
+| `discover_server_categories_or_actions` | First call — discover available categories or actions for a server |
+| `get_category_actions` | Get actions within a category |
+| `get_action_details` | Get full schema for a specific action |
+| `execute_action` | Execute an action: `execute_action(server_name="Gmail", category_name=…, action_name=…)` |
+| `search_documentation` | Search Klavis documentation |
+| `handle_auth_failure` | Handle OAuth failures |
+
+**Critical change:** agents do NOT call `gmail_*` names directly anymore. They call `execute_action(server_name="Gmail", category_name=…, action_name=…)`. Tool names are resolved at runtime via `get_action_details` — the old anti-pattern of pinning `tools/list` names is **doubly wrong** now. (Source: klavis.ai/docs/concepts/strata, retrieved 2026-06-25.)
+
+The canonical starting call for any backlog session is now `discover_server_categories_or_actions`, not `tools/list`.
+
+### Gmail tool names (runtime-resolved, 2026-06-25)
+
+Current official docs show: `gmail_search_messages`, `gmail_get_message`, `gmail_delete_message`, `gmail_send_message`, `gmail_create_draft`, `gmail_reply_message`, `gmail_mark_as_read`. Note these are now resolved at runtime via `get_action_details` — do not pin them as static names. (Source: klavis.ai/use-case/gmail-llm-automation-guide, retrieved 2026-06-25.)
+
+> **Note:** The old `*_email` naming (`gmail_search_emails`, `gmail_modify_email`, etc.) was accurate at 2026-04-30. Current docs show `*_message` naming. Names should be resolved dynamically at session start.
+
+---
+
+### Original TL;DR (2026-04-30 empirical — partially stale, see above)
+
 | # | Finding | Operational consequence |
 |---|---|---|
-| 1 | **Klavis Strata exposes only a default *subset* via MCP `tools/list`.** For Gmail, that subset is **10 tools** (full list below). The wider toolkit is reachable only via the REST endpoint `GET https://api.klavis.ai/mcp-server/strata/{strataId}/raw-actions?server=GMAIL`. | If you need a tool that's not in the 10, you must either fetch via `raw-actions` and bind it manually, or design around the absence. **Critical**: the default Gmail subset has **no label-management tools** (`gmail_create_label`, `gmail_list_labels` are absent). |
-| 2 | **Canonical Gmail tool names are `*_email`, NOT `*_message`.** Reverse-engineered MCP guides (e.g., hive-tools registry) use `gmail_modify_message` / `gmail_list_messages`; **Klavis's own server uses `gmail_modify_email` / `gmail_search_emails`.** Don't trust third-party docs, only `tools/list`. | Always run a Phase-0 schema dump and pin tool names from the dump. The first project that did not (this email-triage repo, v1) burned ~30k tokens on guessed names. |
+| 1 | **Klavis Strata exposes only a default *subset* via MCP `tools/list`.** For Gmail, that subset was **10 tools** (full list below; see STALE banner — architecture changed). The wider toolkit was reachable only via `raw-actions` endpoint. | **`raw-actions` endpoint is not in current docs; treat as unverified/probably obsolete — do not design around it; re-probe live.** (unverified at 2026-06-25 — re-probe live) |
+| 2 | **Canonical Gmail tool names were `*_email` at 2026-04-30; current docs show `*_message`, resolved at runtime.** Don't trust any pinned names. | Always run `discover_server_categories_or_actions` → `get_action_details` at session start. Never hardcode tool names. |
 | 3 | **`gmail_modify_email` accepts unknown label *names* silently.** The Gmail API requires label *IDs* (`Label_NNN`). Klavis forwards your `addLabelIds` array verbatim; if you pass `_Agent/Triage/Bucket` (a name, not an ID), the call returns 200 OK with `addedLabels: ["UNREAD"]` and your label is silently dropped. | After every modify call, verify `response.addedLabels` ⊇ what you asked for. Treat any divergence as a hard error. **Never** pass label names; always resolve to IDs first. |
-| 4 | **The `instance_id` in the MCP URL IS the credential.** The path-style URL is `https://strata.klavis.ai/mcp/?strata_id={instance_id}` and possession of `instance_id` grants full access to the bound Gmail OAuth grant. The `Authorization: Bearer ${KLAVIS_API_KEY}` header is largely defence-in-depth on the MCP path; Klavis ignores it for routing but uses it for the management REST API. | Treat the full MCP URL as a P0 secret. Never log it, never commit it, and rotate by deleting+recreating the Strata instance if leaked. |
+| 4 | **The `strata_id` (`strataId` in API paths) in the MCP URL IS the credential.** The path-style URL is `https://strata.klavis.ai/mcp/?strata_id={strata_id}` and possession of `strata_id` grants full access to the bound Gmail OAuth grant. (Identifier renamed `instance_id` → `strata_id` in current SDK/API reference; source: klavis.ai/docs/api-reference/strata, retrieved 2026-06-25.) | Treat the full MCP URL as a P0 secret. Never log it, never commit it, and rotate by deleting+recreating the Strata instance if leaked. |
 | 5 | **Transport is HTTP+SSE JSON-RPC.** Initialize → `tools/list` → `tools/call`. The Strata server holds OAuth state per instance — a single `instance_id` = a single Gmail account = one user's mailbox. | Multi-tenant deployments need one Strata instance per user. Pricing/scale implications: factor this into capacity planning. |
 
 ## The verified Gmail tool surface (default subset)
@@ -47,7 +78,9 @@ The 10 tools and their relevant signatures:
 
 ## How to recover the missing label-management tools
 
-Klavis's "raw actions" endpoint exposes the *full* toolkit before the default-subset filter is applied. **Verified path** (note: `instance/<id>` not `strata/<id>`):
+> **⚠ `raw-actions` endpoint:** not in current Klavis docs as of 2026-06-25 — treat as unverified/probably obsolete. Do not design around it; re-probe live before relying on it. (unverified at 2026-06-25 — re-probe live)
+
+Klavis's "raw actions" endpoint formerly exposed the *full* toolkit before the default-subset filter is applied. **Verified path (2026-04-30; may be obsolete — see above)** (note: `instance/<id>` not `strata/<id>`):
 
 ```http
 GET https://api.klavis.ai/mcp-server/instance/{instance_id}/raw-actions?server=GMAIL
@@ -90,7 +123,7 @@ NOT working (verified 404 / 422):
 ```
 ┌───────────────────┐    HTTPS+SSE    ┌─────────────────────────────┐
 │  Claude Code CLI  │  ─────────────▶ │  strata.klavis.ai/mcp/      │
-│  (.mcp.json)      │   Bearer KEY    │  ?strata_id=<instance_id>   │
+│  (.mcp.json)      │   Bearer KEY    │  ?strata_id=<strata_id>     │
 └───────────────────┘                 └──────────────┬──────────────┘
                                                      │ Gmail OAuth grant
                                                      │ (held by Klavis,
@@ -120,7 +153,7 @@ NOT working (verified 404 / 422):
 
 ## OAuth health check (24h cadence)
 
-Klavis's Gmail grants can lapse silently — refresh-token rotation, OAuth-consent screen changes, the user revoking app access in Google Account settings. Poll:
+Klavis's Gmail grants can lapse silently — refresh-token rotation, OAuth-consent screen changes, the user revoking app access in Google Account settings. Poll (identifier is now `strata_id` / `strataId` in API paths; source: klavis.ai/docs/api-reference/strata, retrieved 2026-06-25):
 
 ```http
 GET https://api.klavis.ai/mcp-server/strata/{strataId}/auth/GMAIL
@@ -136,10 +169,10 @@ Response (healthy): `{"isAuthenticated": true, "...": "..."}`. On `false`, the a
 **Root cause:** Passed label *names* (`_Agent/Triage/Promotional`) where Gmail expects label *IDs* (`Label_<19-digit-number>`). Klavis forwards verbatim; Gmail silently drops unknown IDs. (Update: as of 2026-04-30 Klavis returns explicit `{"error": "Invalid label: <name>"}` instead of silent drop — but the underlying issue stands. Whether silent or explicit, names don't work.)
 **Fix:** Always resolve names → IDs **once** via Google OAuth Playground (`gmail.labels` scope, GET `users/me/labels`), persist the map to `data/backlog/label-map.json`, and pass IDs to every subsequent Klavis modify call. After each modify, assert `set(addedLabels) ⊇ set(requestedLabelIds)`.
 
-### 2. Trusting third-party MCP registries for tool names
-**Symptom:** Agent calls `gmail_modify_message`; Klavis returns "tool not found" or unexpected behaviour.
-**Root cause:** Reverse-engineered MCP registries (hive-tools, etc.) document the upstream Gmail toolkit's older naming. Klavis renamed to `*_email` at some point.
-**Fix:** Always probe `tools/list` from the real instance and pin names from the dump. Don't trust any other source.
+### 2. Trusting third-party MCP registries or static tool names
+**Symptom:** Agent calls `gmail_modify_message` or `gmail_modify_email`; Klavis returns "tool not found" or unexpected behaviour.
+**Root cause:** Reverse-engineered MCP registries document stale naming. Klavis renamed from `*_message` → `*_email` (pre-2026), and current docs now show `*_message` again (runtime-resolved). With progressive discovery, tool names are **never stable** across Strata updates.
+**Fix (updated 2026-06-25):** Start every session with `discover_server_categories_or_actions`, then `get_action_details` to get the current action schema. Do NOT hardcode `*_email` names (now `*_message`, runtime-resolved). The Phase-0 probe is mandatory.
 
 ### 3. Per-email LLM reasoning at backlog scale
 **Symptom:** 10k-email backlog burns ~$30+ in Claude API or hits a Max-subscription monthly cap mid-run.
@@ -158,8 +191,8 @@ Response (healthy): `{"isAuthenticated": true, "...": "..."}`. On `false`, the a
 
 ### 6. Letting the agent guess tool names mid-run
 **Symptom:** Agent burns 5–15 minutes "thinking" about how to call a tool, often getting it wrong.
-**Root cause:** Without a pinned schema dump, the agent fabricates plausible-looking names from training data.
-**Fix:** Phase-0 dump-to-disk + a hard rule in the agent prompt: "Only call tools whose name appears verbatim in `data/klavis-tools-schema.json`. If you need a tool not in the dump, halt and report."
+**Root cause (2026-06-25 update):** With progressive discovery, tool names are resolved at runtime — static schema dumps from a previous session are stale. The agent must call `discover_server_categories_or_actions` → `get_action_details` first, not guess from training data or cached schemas.
+**Fix (updated 2026-06-25):** Phase-0 discovery call (`discover_server_categories_or_actions`) at session start. Hard rule in the agent prompt: "Only call `execute_action` with action names returned by `get_action_details` in this session. If you need an action not returned by discovery, halt and report. Never hardcode `*_email` or `*_message` names."
 
 ## Operational tips collected today
 
@@ -186,8 +219,11 @@ The Managed Agents runtime sends the bearer header on every MCP call. Same secur
 - `~/.claude/playbooks/claude-code-koyeb-channels/research-report.md` — parent playbook; §1 discusses Klavis Gmail integration in the Koyeb context
 - `~/.claude/playbooks/claude-code-koyeb-channels/backlog-triage-research.md` — sister doc; covers the LLM-side cost optimisation (Haiku, batch API, prompt caching) that pairs with the Klavis tool surface findings here
 - Klavis docs: `https://klavis.ai/docs` and `https://docs.klavis.ai`
-- Klavis raw-actions endpoint: `GET /mcp-server/strata/{strataId}/raw-actions?server=GMAIL` (verified live 2026-04-30)
-- Empirical schema dump: `Agents/email-triage-agent/data/backlog/tools-schema.json` in the email-triage project — kept in repo as the canonical reference for the 10-tool subset.
+- Klavis Strata progressive-discovery: `https://klavis.ai/docs/concepts/strata` (retrieved 2026-06-25) — canonical for current architecture
+- Klavis Gmail automation guide: `https://klavis.ai/use-case/gmail-llm-automation-guide` (retrieved 2026-06-25) — canonical for current Gmail action names
+- Klavis API reference (strata_id / strataId): `https://klavis.ai/docs/api-reference/strata` (retrieved 2026-06-25)
+- Klavis raw-actions endpoint: `GET /mcp-server/strata/{strataId}/raw-actions?server=GMAIL` (verified live 2026-04-30 — **unverified at 2026-06-25, treat as probably obsolete; re-probe live**)
+- Empirical schema dump: `Agents/email-triage-agent/data/backlog/tools-schema.json` in the email-triage project — canonical reference for the 10-tool subset as of 2026-04-30; **stale post-progressive-discovery migration**.
 - Gmail API: `users.messages.batchModify` (1000-message limit) — `https://developers.google.com/gmail/api/reference/rest/v1/users.messages/batchModify`
 
 ## Findings — session 2 (2026-04-30 PM, post-1872-message backlog run)
@@ -238,11 +274,21 @@ These are empirical observations that landed only after a full Phase 3-7 backlog
 **Operational impact:** None for small backlogs (~3k Haiku output × $0.40/MTok = essentially free). But for 100k+ backlogs, expand the system prompt deliberately past the cache threshold to lock in the discount.
 **Sonnet-equivalent multipliers (verified 2026-04):** Haiku 4.5 input ≈ 0.1× Sonnet input; Haiku output ≈ 0.2× Sonnet output. Cache reads are 0.1× the corresponding fresh-input cost. Use these for cost-projection sanity checks.
 
-### Updated probe / smoke-test recipe (2026-04-30)
+### Updated probe / smoke-test recipe (2026-06-25 — progressive discovery)
 
-Past sessions burned tokens re-discovering these. New canonical preflight before any backlog or HITL pipeline:
+> **Architecture changed.** The canonical first call is now `discover_server_categories_or_actions`, not `tools/list`. The 2026-04-30 recipe below is preserved for reference but the step 1 must be updated before use.
 
 ```python
+# UPDATED preflight (2026-06-25 — progressive discovery):
+# 1. discover_server_categories_or_actions {server_name: "Gmail"}
+#    Assert: returns categories or actions list.
+# 2. get_action_details {server_name: "Gmail", action_name: <search action>}
+#    Assert: schema returned. Note the current action name — do NOT assume gmail_search_emails.
+# 3. execute_action {server_name: "Gmail", action_name: <search>, params: {query: "in:inbox newer_than:1d", maxResults: 5}}
+#    Assert: response contains message list.
+# 4. (Optional) execute_action for modify — assert addedLabels on single message.
+
+# ORIGINAL preflight (2026-04-30 — may still work if Strata still exposes flat surface):
 # 1. Initialize + tools/list (once).
 # 2. gmail_search_emails {query: "in:inbox newer_than:1d", maxResults: 5}
 #    Assert: response is a list, len(response) > 0, first item has 'id'.
