@@ -85,6 +85,12 @@ skills/qualify-leads
 # was rejected because submodule lifecycle scripts run on clone.
 skills/synthese/
 
+# FR-B2B sales-enablement skills — excluded from the public flagship (client-confidential)
+skills/voice-check/
+skills/deck-generator/
+skills/humanize-fr/
+skills/linkedin-post/
+
 # ── Stale backups ───────────────────────────────────────────────────────────
 settings.json.bak
 settings.json.orig
