@@ -1,6 +1,6 @@
 # Claude Code on Koyeb with Channels — deployment validation
 
-> **Research date: 2026-04-29 · Skill: deep-research · Length: exhaustive**
+> **Research date: 2026-04-29 · Last re-validated 2026-06-25 (targeted freshness check) · Skill: deep-research · Length: exhaustive**
 > Source count: 53 cited / ~95 candidates · Tier 1/2 share: 78% · Median source date: 2025-09
 > Classification: technical (with current-affairs slice for research-preview status) · Profile: mixed
 >
@@ -9,9 +9,10 @@
 ## Executive summary
 
 - **The architecture is feasible but requires three corrections to the original plan.** Eco-Micro tier does *not* support persistent volumes (volumes are restricted to Standard tier and above). The credential-transport mechanism is `CLAUDE_CODE_OAUTH_REFRESH_TOKEN` env var (officially documented), not `.credentials.json` file mount. The custom webhook channel must bind to `0.0.0.0` (deviating from the docs' `127.0.0.1` example) for external POSTs to reach it on a PaaS.[^1][^4][^15]
-- **The Telegram channel plugin has five publicly tracked bugs that affect our specific shape** — most critically issue #54008, which reports stdio-pipe delivery failure between Claude Code and the spawned plugin subprocess in Docker, the exact deploy substrate we plan to use.[^30][^31][^32][^33][^34] The reactive UX (Telegram → Claude Code session) is unreliable; the outbound path (Claude → Telegram) is stable. **For v1, plan around outbound-only.**
+- **The Telegram channel plugin has seven or more publicly tracked bugs that affect our specific shape** — most critically issue #54008, which reports stdio-pipe delivery failure between Claude Code and the spawned plugin subprocess in Docker, the exact deploy substrate we plan to use.[^30][^31][^32][^33][^34] The reactive UX (Telegram → Claude Code session) is unreliable; the outbound path (Claude → Telegram) is stable. **For v1, plan around outbound-only.**
 - **Anthropic's own scheduling docs explicitly warn against `/loop`/`CronCreate` for unattended automation** and recommend GitHub Actions, Routines, or Desktop scheduled tasks for that role. Our existing GHA cron source-of-truth survives the pivot intact; the Koyeb container only needs to be **alive** during the daily POST window, not aware of dates.[^3]
-- **Koyeb Standard-Nano with Light Sleep scale-to-zero ($2.68/mo headline, ~$0.02/mo actual usage)** is the right shape for our daily-fire workload. 200ms cold-start on Light Sleep is well inside the 5-second timeout we already coded into the GHA workflow, and idle minutes don't bill. Eco-Micro is the same $2.68/mo always-on but cannot host volumes nor scale to zero.[^14][^17][^18]
+- **⚠ Koyeb was acquired by Mistral AI on 2026-02-17.** The platform continues under the Koyeb brand with no pricing/tier changes observed as of 2026-06-25, but Light Sleep GA pricing and Eco-tier continuity are now subject to Mistral's roadmap. (Sources: techzine.eu 2026-02-18, sifted.eu 2026-02-17, koyeb.com/blog 2026-02-17; retrieved 2026-06-25.) Add a re-validate trigger for "Mistral announces Koyeb roadmap changes".
+- **Koyeb Standard-Nano with Light Sleep scale-to-zero ($2.68/mo headline, ~$0.02/mo actual usage)** is the right shape for our daily-fire workload. 200–250ms cold-start on Light Sleep is well inside the 5-second timeout we already coded into the GHA workflow, and idle minutes don't bill. Eco-Micro is the same $2.68/mo always-on but cannot host volumes nor scale to zero.[^14][^17][^18] **Note: scale-to-zero itself is labeled "currently in public preview" in Koyeb docs (not only Light Sleep) — factor preview risk into production decisions.**
 - **HMAC + timestamp** (Stripe / GitHub pattern) is the documented best practice for webhook authentication and is a clear upgrade over the shared-secret-header design the project currently ships. The shared-secret design is acceptable for a single-user low-stakes context but should be flagged as technical debt.[^55][^56][^57]
 
 ## When to re-validate this report
@@ -23,6 +24,9 @@ Re-run `/deep-research` against the same scope if **any** of the following is tr
 3. Koyeb's changelog or pricing page shows changes to: Eco-* tiers, Volumes preview status, Scale-to-Zero behaviour, Light Sleep pricing.[^20]
 4. The Telegram plugin has a major version bump (currently `claude-plugins-official/telegram@0.0.6`) — any release ≥`0.1.0` likely contains breaking-change reshape to the protocol.[^31]
 5. You see any of the symptoms in the Needs-Verification section materialize in production. Re-run, focusing the new plan on the affected sub-question.
+6. Mistral announces Koyeb roadmap changes (post-acquisition, 2026-02-17). (Sources: techzine.eu 2026-02-18, sifted.eu 2026-02-17; retrieved 2026-06-25.)
+
+**Next check: 2026-09-25.**
 
 To re-run efficiently: load this report's `research-plan.md` (alongside this file in the playbook), drop the sub-questions that already returned authoritative Tier-1 docs (most of Q3, Q4, Q6, Q8), and focus the new run on Q1–Q2 (Anthropic-side change rate is highest there) and Q5 (operational/community signals on the Telegram plugin reliability).
 
@@ -123,7 +127,7 @@ Eco tier (Washington / Frankfurt / Singapore only):[^14]
 
 ## 5. GHA → Koyeb webhook reliability
 
-**Light Sleep cold-start is 200ms on Standard CPU instances** (in public preview at no cost during preview).[^17][^18] Plan-tier matrix:[^17]
+**Light Sleep cold-start is 200–250ms on Standard CPU instances** (docs say 200ms; Koyeb blog Jan 2026 cites up to 250ms; retrieved 2026-06-25[^18]) — in public preview at no cost during preview.[^17][^18] **Scale-to-zero itself is labeled "currently in public preview" in Koyeb docs**, not only Light Sleep — carry the preview risk flag accordingly. Plan-tier matrix:[^17]
 
 | Plan | Light Sleep min/max | Deep Sleep min/max |
 |---|---|---|
@@ -151,13 +155,15 @@ Eco tier (Washington / Frankfurt / Singapore only):[^14]
 
 ## 6. Telegram channel plugin operational
 
-**Five publicly tracked bugs in the official Telegram plugin** that are directly relevant to our deploy substrate:
+**Seven or more publicly tracked bugs in the official Telegram plugin** that are directly relevant to our deploy substrate (the class is unresolved and accumulating; retrieved 2026-06-25):
 
 - **Issue #44181** (Telegram plugin 0.0.4, Claude Code 2.1.81 + 2.1.92, macOS): "MCP server correctly receives messages from Telegram and emits notifications/claude/channel JSON-RPC notifications on stdout, but they never appear in the conversation. Outbound tool calls (reply, react, edit_message) work perfectly."[^30] [CONFIRMED for inbound-drop class]
 - **Issue #53335** (plugin 0.0.6, Linux): "polling loop dies silently, no reconnect — message delivery stops permanently. The plugin's polling loop has no reconnect-on-disconnect logic. When the connection to Telegram's long-poll endpoint drops, the loop exits and is never restarted."[^31] Workaround: external watchdog that counts outbound connections and restarts the service when count drops to 0. [CONFIRMED]
 - **Issue #39808**: when `enabledPlugins` is set in `~/.claude/settings.json`, the Telegram plugin loads in *every* Claude Code instance (VSCode extension, multiple terminals, etc.), each polling Telegram simultaneously, causing 409-style conflicts and silently dropped messages.[^32] [CONFIRMED]
 - **Issue #54008** (Claude Code 2.1.119, Docker, exact match for our deploy substrate): "stdio pipe between Claude Code and the spawned plugin subprocess is not being correctly read in containerized environments, or there is a buffering/PTY issue specific to Docker."[^33] [CONFIRMED — the most concerning to our specific architecture]
 - **Issue #36429**: inbound delivery failure between MCP server and Claude Code session, plugin v0.0.1.[^34] [CONFIRMED]
+- **Issue #36503** (Mar 2026): new symptom "Channels are not currently available" at startup — inbound-drop class, still unresolved. [CONFIRMED — retrieved 2026-06-25]
+- **Issue #37933**: additional inbound-drop report, further evidence the bug class is unresolved and accumulating. [CONFIRMED — retrieved 2026-06-25]
 
 **Plugin internals (gist by @nazt, reverse-engineered)**: pairing-approval flow uses `~/.claude/channels/telegram/approved/<senderId>` files dropped by the `/telegram:access skill`; `server.ts:317-339` polls these files for new approvals.[^35] Confirmed: `~/.claude/channels/telegram/.env` holds bot token; `access.json` holds the allowlist; plugin uses Telegram Bot API long-polling.[^35][^39]
 
@@ -165,6 +171,7 @@ Eco tier (Washington / Frankfurt / Singapore only):[^14]
 - **Drop the Telegram channel from the v1 install entirely.** Push notifications via direct Telegram Bot API (curl from agent's bash tool) inside the container, gated by the same shared secret. The CLAUDE.md rule "never call Telegram Bot API directly from agent code" should be updated to: "never call Telegram Bot API directly from agent code unless the runtime egress is constrained AND the bot token is provisioned only as a Koyeb Secret AND the agent operates inside a sandboxed working directory" — which our deploy satisfies.
 - This bypasses every one of the 5 bugs above. The trade-off: no reactive UX (we can't text the bot mid-day to ask follow-up questions). The brief-format spec was already self-sufficient (article + repo URLs inline), so the brief itself does not depend on reactive UX.
 - Re-consider the Telegram channel install once issues #44181 / #54008 close. Watch the plugin's GitHub for v0.1.0 release as a likely fix milestone.
+- The 7+ reported bugs are all open as of 2026-06-25; the bug class is accumulating, not converging.
 
 ## 7. Custom MCP channels in research preview — change cadence
 
