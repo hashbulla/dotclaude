@@ -6,7 +6,7 @@
 # Format is intentionally explicit: adding or removing a skill is a 4-line edit.
 #
 # 5 first-party skills ship via this manifest. Third-party symlinks
-# (impeccable/*, paperclip/*, dossier-intelligence, proposition-commerciale)
+# (impeccable/*, paperclip/*)
 # are catalogued in skills/EXTERNAL.md — they require manual setup.
 
 [skill.deep-research]

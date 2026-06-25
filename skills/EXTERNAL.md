@@ -45,23 +45,6 @@ Public repo: <https://github.com/pbakaus/impeccable>
 
 **Install**: `git clone https://github.com/paperclipai/paperclip.git ~/local-skills/paperclip` — adjust paths if your AIEngineering layout differs.
 
-### Other hashbulla-owned (manual install)
-
-| Skill | Repo | Target |
-|---|---|---|
-| `dossier-intelligence` | `git@github.com:hashbulla/dossier-intelligence.git` | `~/local-skills/Skills/dossier-intelligence` |
-| `proposition-commerciale` | `git@github.com:hashbulla/proposition-commerciale-skill.git` | `~/local-skills/Skills/proposition-commerciale` |
-| `synthese` | `git@github.com:hashbulla/synthese-skill.git` | `~/.claude/skills/synthese` (cloned in place, gitignored from dotclaude) |
-
-These are intentionally NOT in `skills.manifest.toml` to keep the bootstrap surface narrow. Install manually when needed:
-
-```bash
-# synthese — French criminal law dossier synthesis
-git clone git@github.com:hashbulla/synthese-skill.git ~/.claude/skills/synthese
-```
-
-Why not a submodule? Submodules execute lifecycle scripts on `git clone --recurse-submodules`, which is an untrusted-code-integration pathway. dotclaude prefers explicit manual installation.
-
 ## Symlinked but no remote (machine-local content)
 
 `skill-generator` and `skill-harness` were in this category historically. Since the migration on 2026-05-12 they are auto-installed via the manifest (`hashbulla/skill-generator`, `hashbulla/skill-harness`). No machine-local-only skills remain.
@@ -70,7 +53,6 @@ Why not a submodule? Submodules execute lifecycle scripts on `git clone --recurs
 
 These ship with dotclaude itself and don't need installation:
 
-- `~/.claude/skills/synthese/` — French criminal law dossier synthesis.
 - `~/.claude/skills/no-loss/` — zero-context-loss session checkpoint + resume prompt (AI-70).
 
 ## Bootstrap-installed (per skills.manifest.toml)
@@ -93,10 +75,6 @@ git clone https://github.com/pbakaus/impeccable.git ~/local-skills/Skills/impecc
 
 # paperclipai/paperclip
 git clone https://github.com/paperclipai/paperclip.git ~/local-skills/paperclip
-
-# hashbulla private skills
-git clone git@github.com:hashbulla/dossier-intelligence.git ~/local-skills/Skills/dossier-intelligence
-git clone git@github.com:hashbulla/proposition-commerciale-skill.git ~/local-skills/Skills/proposition-commerciale
 ```
 
 If you don't want a particular symlink at all:
