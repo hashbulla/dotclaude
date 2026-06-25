@@ -1,6 +1,6 @@
 # Research report: Best practices for Upstash Context7 MCP in Claude Code (Q1/Q2 2026)
 
-**Run date:** 2026-05-28
+**Run date:** 2026-05-28 · **Last re-validated:** 2026-06-25 (targeted freshness check)
 **Language:** English
 **Methodology:** deep-research skill, 9 broad-retrieval Tavily sweeps + 5 deep extracts, NATO Admiralty A–F × 1–6 grading, CRAG groundedness validation.
 **Stop conditions met:** groundedness 1.00, corroboration ≥ 2 independent Tier 1/2 sources on every routing rule, ≥1 Tier 1 source on every API-contract claim.
@@ -77,9 +77,23 @@ To target a specific library version, append it to the library ID (`/vercel/next
 
 The plugin's `.mcp.json` runs `npx -y @upstash/context7-mcp` with no API key. Queries succeed but count against the **unauthenticated rate budget** (substantially tighter than the registered free tier — the hosted backend can't link calls to the user's account).[^7] The user's Context7 dashboard will show zero usage even while queries are running.
 
-### Three patterns to inject the API key (ranked by senior-practitioner preference)
+### Package versions (2026-06-25)
 
-**Pattern A — Edit the plugin's `.mcp.json` to read from shell env (recommended for dotclaude):**
+`@upstash/context7-mcp` is now **3.x** (was 1.x at the time of the #1713 report). Major version bumps make plugin updates more likely to overwrite the env-block workaround — **verify the `env` block after every plugin update**. Latest CLI: `ctx7@0.5.2`. (Source: npmjs.com, retrieved 2026-06-25.)
+
+### Four patterns to inject the API key (ranked by senior-practitioner preference)
+
+**Pattern 0 — `ctx7` CLI setup (recommended for new installs, 2026-06-25):**
+
+```bash
+npx ctx7 setup --claude
+# For headless environments:
+npx ctx7 setup --claude --device
+```
+
+`ctx7 setup` handles OAuth login, API-key generation, and `.mcp.json` env injection in a single command. It survives plugin reinstalls more reliably than manual env-block edits. Latest: `ctx7@0.5.2`. (Source: npmjs.com + context7 README, retrieved 2026-06-25.) [CONFIRMED — new Pattern 0; use for all new installs]
+
+**Pattern A — Edit the plugin's `.mcp.json` to read from shell env (recommended for existing installs):**
 
 ```json
 {
@@ -113,7 +127,7 @@ Upstash also ships a hosted remote MCP endpoint with OAuth (handled by clients l
 
 - **Don't hardcode the API key in a versioned `.mcp.json`.** The dotclaude repo is on GitHub. Key leakage triggers immediate Upstash dashboard rotation. The `${CONTEXT7_API_KEY}` interpolation is the gate. [CONFIRMED — security best practice cross-cited in Anthropic + Cloudflare MCP docs[^19]]
 - **Don't set `CONTEXT7_API_KEY` in `~/.zshrc` alone.** Issue #1713 is explicit: the Claude Code plugin doesn't forward shell env to the npx subprocess.[^7]
-- **Don't put the key in `settings.json` under `env`.** That works for many MCPs but the Context7 plugin's MCP wrapper specifically reads its env from the `.mcp.json` `env` block, not from the parent process. (This is consistent with the Issue #1713 reproducer.) [PROBABLY TRUE — one Tier 1 source, one secondary]
+- **`settings.json` env injection is unreliable for Context7 plugin installs.** It may work with direct `claude mcp add` (Pattern B) but not the plugin wrapper — the Context7 plugin's MCP wrapper reads env from the `.mcp.json` `env` block. Use Pattern A or Pattern 0 for plugin installs. (Issues #1309 + #1713; retrieved 2026-06-25.) [PROBABLY TRUE — two Tier 1 sources]
 
 ## 4. Pricing tiers and rate budget (authoritative, 2026-05-28)
 
@@ -168,7 +182,7 @@ Do NOT route through Context7 for:
 Cross-referencing the upstash/context7 issue tracker against practitioner blog posts surfaces seven repeating failure modes:
 
 1. **"Library not found / not finalized for this version"** (Issue #71) — the index either doesn't include the library yet or doesn't have the requested version. Mitigation: fall back to `resolve-library-id` with broader `libraryName`, or escalate to `tavily_skill`.[^22] [CONFIRMED]
-2. **Plugin install API key passthrough silently fails** (Issue #1713) — covered in §3.[^7]
+2. **Plugin install API key passthrough silently fails** (Issue #1713, still OPEN as of 2026-06-25) — covered in §3.[^7] Mitigation: use Pattern 0 (`ctx7 setup --claude`) for new installs, or Pattern A (`env` block in `.mcp.json`) for existing installs. The `@upstash/context7-mcp` major version jump to 3.x increases the likelihood that plugin updates overwrite the env block — verify after every update.
 3. **Schema validation errors on `resolve-library-id`** (Issue #1706) — typically caused by legacy callers passing only `libraryName` without `query`. Mitigation: always pass both required params.[^17] [CONFIRMED]
 4. **Self-hosted authentication issues** (Issues #666, #711) — affects users running on-prem; not relevant for hosted free-tier.[^23][^24] [PROBABLY TRUE — narrow scope]
 5. **MCP server blocks agent spawn** (Issue #877) — under specific stdio-transport conditions, Context7's MCP prevents Claude Code subagents from initializing. Mitigation: disable Context7 as a smoke test when Agent tool calls hang.[^14] [CONFIRMED — diagnostic value]
@@ -179,7 +193,8 @@ Cross-referencing the upstash/context7 issue tracker against practitioner blog p
 
 - **"Always auto-invoke" vs "auto-invoke only on doc-specific intent."** Upstash's README (Glama, Augment Code) recommends the broad auto-invoke rule.[^1][^4][^10] Skeptical practitioners (Shankar, EpicAI, Scott Spence) argue that broad auto-invoke wastes budget and pollutes the context window for non-doc work.[^12][^13][^21] **Resolution for dotclaude:** narrow the auto-invoke rule to **library/framework/SDK/CLI/version triggers** (per the table in §5), not "any code question."
 - **`get-docs` vs `query-docs` naming.** The "new Context7" blog post[^6] uses `get-docs` in the SDK section; the shipped MCP tool exposed by `@upstash/context7-mcp` is `query-docs` (per the user's Claude Code system reminder and the Augment Code spec[^10]). **Resolution:** the blog discusses the JavaScript SDK API; the MCP server has its own naming. Trust the MCP tool name from the runtime.
-- **Hardcoded API key in `.mcp.json` vs env interpolation.** Some Upstash tutorials show `--api-key YOUR_KEY` literally. Security best-practice guidance (Anthropic MCP docs, Red Hat's MCP security write-up[^25]) says always interpolate from env. **Resolution:** Pattern A from §3.
+- **Hardcoded API key in `.mcp.json` vs env interpolation.** Some Upstash tutorials show `--api-key YOUR_KEY` literally. Security best-practice guidance (Anthropic MCP docs, Red Hat's MCP security write-up[^25]) says always interpolate from env. **Resolution:** Pattern A or Pattern 0 from §3.
+- **`get-library-docs` (HTTP remote transport `mcp.context7.com/mcp`) vs `query-docs` (stdio/npx)** — both are current, but transport-dependent. The HTTP remote transport (`mcp.context7.com/mcp`) exposes `get-library-docs`; the stdio/npx transport (`@upstash/context7-mcp`) exposes `query-docs`. dotclaude's npx/stdio config correctly uses `query-docs`. If you see `get-library-docs` in a tutorial, it targets the remote HTTP transport, not the stdio MCP. (Retrieved 2026-06-25.) [CONFIRMED]
 
 ## Needs Verification
 
