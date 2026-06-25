@@ -1,11 +1,11 @@
 # Scrapling 0.4.x — usage, best practices, and default-scraper fit
 
-> Research run: 2026-05-20 · Skill: deep-research · `--length standard` · `--lang en` · `--since 2025-01-01`
+> Research run: 2026-05-20 · Last re-validated 2026-06-25 (targeted freshness check) · Skill: deep-research · `--length standard` · `--lang en` · `--since 2025-01-01`
 > Sub-questions: 8 · Cited sources: 27 (10 Tier 1 primary, 13 Tier 2, 4 Tier 3) · Source-quality: 85% Tier 1/2 (gate ≥ 0.80 ✅) · Corroboration: 86% (gate ≥ 0.80 ✅) · Groundedness: 100% claims traceable.
 
 ## Executive summary
 
-- **Scrapling 0.4.x is no longer "just a parser library."** Version 0.4 introduced a complete Scrapy-style spider framework with `start_urls`/`parse()` callbacks, async iteration, `Request`/`Response` types, lifecycle hooks (`on_start`/`on_close`/`on_error`/`on_scraped_item`), built-in `protego`-based `robots.txt` obedience, persistent sessions, and a `ProxyRotator` — moving it squarely into framework territory.[S01][S02][S05][S07][S10] [CONFIRMED]
+- **Scrapling 0.4.x is no longer "just a parser library."** Current version is **0.4.9** (released 2026-06-07; patchright 1.60.1, follow_redirects="safe" default, --ai-targeted CLI flag, development_mode spider). Version 0.4 introduced a complete Scrapy-style spider framework with `start_urls`/`parse()` callbacks, async iteration, `Request`/`Response` types, lifecycle hooks (`on_start`/`on_close`/`on_error`/`on_scraped_item`), built-in `protego`-based `robots.txt` obedience, persistent sessions, and a `ProxyRotator` — moving it squarely into framework territory.[S01][S02][S05][S07][S10] [CONFIRMED]
 - **The built-in `scrapling mcp` server exposes 10 MCP tools** over stdio (default) or streamable-http: `open_session`, `close_session`, `list_sessions`, `get`, `bulk_get`, `fetch`, `bulk_fetch`, `stealthy_fetch`, `bulk_stealthy_fetch`, `screenshot`.[S08][S09] This is directly wirable into Claude Code at user scope and is arguably the single most interesting feature for an AI engineer. [CONFIRMED]
 - **Anti-detection breadth is real but not magic.** Scrapling stacks `curl_cffi` (TLS/JA3 + header impersonation), `patchright` (Playwright stealth fork), and `browserforge` (fingerprint generation). It bypasses Cloudflare Turnstile/Interstitial in most cases per the maintainer's claims, but **production reports show probabilistic failure against Tencent WAF** and a real installation pitfall (patchright uses its own `.local-browsers` cache, triggering a second browser download).[S03][S05][S24] [PROBABLY TRUE — Cloudflare bypass works, harder WAFs are inconsistent]
 - **The "35-620× speedup" headline is misleading**: the comparison is against MechanicalSoup and BS4+html5lib (well-known slow choices). Against the relevant baseline (Parsel/Scrapy, raw lxml), Scrapling is **roughly at parity**. Against `selectolax` (the current speed champion on the Lexbor C engine), it is materially slower.[S05][S15][S16][S17] [CONFIRMED — corroborated by 4 independent benchmarks]
@@ -13,17 +13,19 @@
 
 ---
 
-## 1. API surface — what 0.4.8 actually exposes [sq1]
+## 1. API surface — what 0.4.9 actually exposes [sq1]
+
+> **Version update (2026-06-25):** Scrapling is now **0.4.9** (released 2026-06-07). Key changes: `patchright` pin 1.59.1 → 1.60.1, `playwright` 1.60.0; `follow_redirects` now defaults to `"safe"` (SSRF protection); new `--ai-targeted` CLI flag; new spider `development_mode`. See §1.4, §1.5, §5, §6 for details. Next check: 2026-07-23. (Source: github.com/D4Vinci/Scrapling/releases, retrieved 2026-06-25.)
 
 ### 1.1 Top-level exports
 
-From `scrapling/__init__.py` (the installed 0.4.8 wheel)[S06]:
+From `scrapling/__init__.py` (the installed 0.4.9 wheel)[S06]:
 
 ```
 __all__ = ["Selector", "Fetcher", "AsyncFetcher", "StealthyFetcher", "DynamicFetcher"]
 ```
 
-The class **`PlayWrightFetcher` does not exist in 0.4.x** — it was renamed to `DynamicFetcher`. Tutorials referring to `PlayWrightFetcher` are pre-0.3 and will break on import.[S05][S06]
+The class **`PlayWrightFetcher` does not exist in 0.4.x** — it was renamed to `DynamicFetcher`. Tutorials referring to `PlayWrightFetcher` are pre-0.3 and will break on import.[S05][S06] (Still accurate in 0.4.9.)
 
 ### 1.2 Full fetcher catalog (`scrapling/fetchers/__init__.py`)
 
@@ -59,6 +61,8 @@ In `scrapling/spiders/` (10 modules):
 
 This is a **production crawl framework**, not just a parser. The 0.3 → 0.4 release notes confirm: `start_urls`, `parse(self, response)`, `async for item in spider.stream()`, `result.items.to_json()`/`.to_jsonl()`, `on_start()`/`on_close()`/`on_error()`/`on_scraped_item()`, `use_uvloop=True`, `spider.start()`.[S02][S05]
 
+**New in 0.4.9 — `development_mode = True` (retrieved 2026-06-25):** Set on a spider to cache responses to disk on first run and replay from cache on subsequent runs (cache stored at `.scrapling_cache/{spider_name}/`). Eliminates redundant network calls during dev iteration. (Source: github.com/D4Vinci/Scrapling/releases, retrieved 2026-06-25.)
+
 ### 1.5 CLI surface (`scrapling/cli.py`)[S09]
 
 ```
@@ -71,6 +75,8 @@ scrapling extract stealth URL [...]                # StealthyFetcher to file
 ```
 
 The `extract` family writes the result to `.html`, `.md`, or `.txt` based on the output extension — useful for one-shot scraping without a Python script.[S05][S09]
+
+**New in 0.4.9 — `--ai-targeted` flag (retrieved 2026-06-25):** `scrapling extract fetch|stealth URL --ai-targeted` enables main-content extraction, hidden-element sanitization, and auto ad-block. Useful for extracting clean content for LLM consumption. (Source: github.com/D4Vinci/Scrapling/releases, retrieved 2026-06-25.)
 
 ---
 
@@ -132,7 +138,8 @@ Scrapling's anti-detection stack[S03][S05][S24]:
 | Layer | Library | Job |
 |---|---|---|
 | HTTP fingerprint | `curl_cffi` (0.15.0) | Mimic Chrome/Firefox/Edge TLS-JA3 + HTTP/2 SETTINGS + header order |
-| Browser stealth | `patchright` (1.59.1) | Playwright fork with `navigator.webdriver` patches, CDP hiding, font/canvas fingerprint normalization |
+| Browser stealth | `patchright` (1.60.1) | Playwright fork with `navigator.webdriver` patches, CDP hiding, font/canvas fingerprint normalization. (Bumped from 1.59.1 in 0.4.9; source: github.com/D4Vinci/Scrapling/releases, retrieved 2026-06-25.) |
+| Playwright | `playwright` (1.60.0) | Chromium automation backend. (Bumped in 0.4.9.) |
 | Fingerprint generation | `browserforge` (1.2.4) | Realistic header/UA/screen fingerprints |
 | Captcha (Cloudflare) | Built-in solver | Cloudflare Turnstile + Interstitial bypass (per maintainer's CHANGELOG; sometimes solves twice on retry per `.gitignore` commit message) |
 
@@ -200,6 +207,12 @@ Olostep's 2026 catalog[S12] classifies Scrapling parser speed as **"Med"** in a 
 
 ## 5. Production scraping concerns [sq5]
 
+### 5.0 `follow_redirects` behavior change in 0.4.9 (retrieved 2026-06-25) — **upgrade required if pinned to ==0.4.8**
+
+**`follow_redirects` now defaults to `"safe"`** (SSRF protection) across all HTTP fetchers, the MCP server, and the CLI. This mode rejects redirects to private/loopback IPs (`127.x`, `10.x`, `192.168.x`, etc.). Pass `follow_redirects="all"` explicitly to restore the old permissive behavior.
+
+**Critical: 0.4.8 shipped a regression.** The `"safe"` string value was passed directly to `curl_cffi` (which expects a bool), causing a `ValueError` that broke all `Fetcher.get()` calls. This was fixed in 0.4.9 (Issue #336). **Anyone pinned to `scrapling==0.4.8` must upgrade to 0.4.9 immediately.** (Source: github.com/D4Vinci/Scrapling/releases, retrieved 2026-06-25.)
+
 ### 5.1 What is built in
 
 - **`robots.txt` obedience via `protego`**[S10] — `RobotsTxtManager.can_fetch(url)` is honored when `robots_txt_obey=True` on a spider.[S05][S10] Same parser Scrapy uses. **No need to bolt this on.**
@@ -228,6 +241,8 @@ Two real, documented failure modes (corroborated by independent users):
 
 1. **Probabilistic bypass against advanced WAFs** (Tencent, possibly DataDome scoring models). Acknowledged in Issue #265[S03]. **CONFIRMED**.
 2. **Browser-cache-directory drift between Playwright and patchright** causing `BrowserType.launch_persistent_context: Executable doesn't exist` errors after install.[S03] **CONFIRMED**.
+3. **`follow_redirects="safe"` regression in ==0.4.8** — `ValueError` breaks all `Fetcher.get()` calls. Upgrade to 0.4.9. (Issue #336, fixed in 0.4.9; retrieved 2026-06-25.) **CONFIRMED**.
+4. **`LinkExtractor` silently keeps `.tar.gz` links** (open Issue #349, 2026-06-25). Compound-extension bug in `_url_extension()` causes `.tar.gz` URLs to pass the `deny_extensions` filter. Workaround: add `"gz"` to `deny_extensions` explicitly. (Source: github.com/D4Vinci/Scrapling/issues/349, retrieved 2026-06-25.) **CONFIRMED — open bug**.
 
 Speculative critiques (single-source, kept in "Needs Verification"):
 
