@@ -4,6 +4,12 @@ All notable changes to dotclaude are documented here. Format follows [Keep a Cha
 
 ## [Unreleased]
 
+See [ROADMAP](README.md#-roadmap) in the README for what's queued.
+
+## [0.2.0] — 2026-06-25 — Public flagship (AI-213)
+
+dotclaude published as an open-source public repo. This release prepares the codebase for public consumption: removes client-confidential FR-B2B skills, patches privacy posture, reconciles all doc counts, and hardens the disclosure + dependency model.
+
 ### Added
 
 #### `/no-loss` skill (AI-70)
@@ -20,6 +26,15 @@ All notable changes to dotclaude are documented here. Format follows [Keep a Cha
 Coverage by layer: **(1) CC binary** auto-updates natively (no code); **(2) plugins** left to Claude Code's marketplace sweep (semantic pins are intentional); **(3) first-party skills** + **(4) third-party skills** via `git pull --ff-only`; **(5) MCP servers** — `uvx`/`npx -y` float per-run, `scrapling` (pipx) upgraded by the script. The dotclaude repo itself is **not** auto-pulled (frequently dirty → would always skip). Skill updates land for the *next* session, since skills load at session start.
 
 Env knobs: `SELF_UPDATE_FORCE=1` (bypass throttle), `SELF_UPDATE_INTERVAL_HOURS=N` (window).
+
+#### Public-release hardening (AI-213)
+
+- Removed 4 client-confidential FR-B2B inline skills (voice-check, deck-generator, humanize-fr, linkedin-post) from git history and `.gitignore`d them.
+- Updated public posture: removed "repo is private" qualifiers; replaced GitHub-issue disclosure path with GitHub private vulnerability reporting.
+- Reconciled all doc counts: 11 rules (was 8), 5 MCP servers (was 3), 5 playbooks (was 2 listed), `no-loss` as the one shipped inline skill.
+- Fixed two broken README relative links (skills/claude-init/SKILL.md → public GitHub URL; workflows/rpi/feature-template/ → commands/rpi/).
+- Patched `git-commit-discipline.md`: removed dead file reference, softened hardcoded model version to version-agnostic co-author form.
+- Merged duplicate `[Unreleased]` sections into one.
 
 ## [0.1.0] — 2026-05-12
 
@@ -62,7 +77,7 @@ The genesis commit. dotclaude scaffolding lifted from a working `~/.claude/` and
 - `/rpi:plan` (opus) — parallel `pm.md` / `ux.md` / `eng.md` from three agents, assembler produces `PLAN.md`.
 - `/rpi:implement` (opus) — per-slice: implement → reviewer trio (parallel, worktree-isolated) → on-demand perf → consolidation. Citation Grounding enforced.
 
-#### Rules (8 lazy-loaded with `paths:` frontmatter)
+#### Rules (11 total — 8 path-triggered + 3 CLAUDE.md-triggered)
 
 - `markdown-docs.md` — documentation style.
 - `git-commit-discipline.md` — one-file-one-commit, conventional commits, never `--no-verify` or `--no-gpg-sign`.
@@ -72,6 +87,9 @@ The genesis commit. dotclaude scaffolding lifted from a working `~/.claude/` and
 - `ai-engineering.md` — prompt-cache, context budget, eval-first, harness engineering, citation discipline, provider neutrality.
 - `secrets-discipline.md` — refuse to read, suggest env vars, incident response.
 - `rpi-review-citation.md` — Citation Grounding rule scoped to `rpi/**`.
+- `agentic-loops.md` — lock vs. opt-in gate policy (CLAUDE.md `<important if>` trigger).
+- `linear-pm.md` — Linear PM discipline on every Linear op (CLAUDE.md `<important if>` trigger).
+- `code-generation.md` — codegraph prime, spec-first/TDD, verify before done.
 
 #### Hooks
 
@@ -102,7 +120,7 @@ The genesis commit. dotclaude scaffolding lifted from a working `~/.claude/` and
 #### Top-level
 
 - `README.md` — reference-grade with 15 sections, concept table, agent catalog, slash-command table, skills section, rules table, hooks table, MCP registry, search routing, playbooks, RPI workflow, config hierarchy, security, roadmap, credits.
-- `SECURITY.md` — three rules, gitignore policy, secret-rotation workflow, the PostHog incident note, future-proofing checklist.
+- `SECURITY.md` — three rules, gitignore policy, secret-rotation workflow, the PostHog incident note, disclosure path.
 - `LICENSE` — MIT.
 
 ### Changed
@@ -132,9 +150,3 @@ The genesis commit. dotclaude scaffolding lifted from a working `~/.claude/` and
 - `deep-research.pre-symlink-bak/`
 
 These are in `/tmp` and disappear on reboot. Copy to encrypted backup if you want them long-lived.
-
----
-
-## [Unreleased]
-
-See [ROADMAP](README.md#-roadmap) in the README for what's queued.
