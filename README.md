@@ -252,10 +252,10 @@ Multi-system runbooks validated in production:
 
 | Playbook | Validated | Use when |
 |---|---|---|
-| [Claude Code on Koyeb with Channels](playbooks/claude-code-koyeb-channels/) | 2026-04-29 | Always-on Claude Code session, webhook-triggered, pushing to Telegram / Discord / iMessage |
-| [Klavis Strata MCP (Gmail)](playbooks/klavis-mcp/) | 2026-04-30 | Hosted MCP server integration with the 10-tool Gmail subset |
-| [Scrapling 0.4.x](playbooks/scrapling/) | 2026-05-20 | Production scraping — anti-bot stack, MCP routing, DynamicFetcher vs StealthyFetcher decision matrix |
-| [Context7 MCP](playbooks/context7/) | 2026-05-28 | Version-current library docs via Upstash Context7 — two-tool surface, free-tier budget, failure modes |
+| [Claude Code on Koyeb with Channels](playbooks/claude-code-koyeb-channels/) | 2026-06-25 | Always-on Claude Code session, webhook-triggered, pushing to Telegram / Discord / iMessage |
+| [Klavis Strata MCP (Gmail)](playbooks/klavis-mcp/) | 2026-06-25 | Hosted MCP server integration — Strata progressive-discovery (5-6 meta-tools, 2026-06-25) |
+| [Scrapling 0.4.x](playbooks/scrapling/) | 2026-06-25 | Production scraping — anti-bot stack, MCP routing, DynamicFetcher vs StealthyFetcher decision matrix |
+| [Context7 MCP](playbooks/context7/) | 2026-06-25 | Version-current library docs via Upstash Context7 — two-tool surface, free-tier budget, failure modes |
 | [Agentic loops](playbooks/agentic-loops/) | — | Lock vs. opt-in gates: when to enforce via hook vs. keep user-triggered |
 
 Re-validate via `/deep-research` if older than 4 weeks. Index + freshness rule: [playbooks/README.md](playbooks/README.md).

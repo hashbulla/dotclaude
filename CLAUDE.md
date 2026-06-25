@@ -55,7 +55,7 @@ All servers below are registered at **user scope** — available in every projec
 <important if="the user names a library / framework / SDK / CLI / cloud service / version, or asks setup / config / migration / library-debug questions">
 # Documentation Lookup Routing Decision Table
 
-**Stack:** Context7 (canonical, version-specific) → Tavily Skill (broader reach) → WebSearch (fallback) → training data (last resort). Source of truth: [`playbooks/context7/research-report.md`](playbooks/context7/research-report.md) (validated 2026-05-28); re-`/research` if >4 weeks stale.
+**Stack:** Context7 (canonical, version-specific) → Tavily Skill (broader reach) → WebSearch (fallback) → training data (last resort). Source of truth: [`playbooks/context7/research-report.md`](playbooks/context7/research-report.md) (validated 2026-06-25); re-`/research` if >4 weeks stale.
 
 | Signal / Intent | Tool | Key params | Rationale |
 |----------------|------|------------|-----------|
@@ -78,7 +78,7 @@ All servers below are registered at **user scope** — available in every projec
 <important if="the user wants to scrape / extract from a page / crawl a site / pastes a URL to extract, or reports being blocked by Cloudflare / a captcha">
 # Scraping Routing Decision Table
 
-**Stack:** Scrapling (anti-bot, agent-driven, DOM-drift) → selectolax / httpx (raw throughput) → Scrapy + scrapy-redis (distributed) → Crawlee (Node/TS). Source of truth: [`playbooks/scrapling/`](playbooks/scrapling/) (validated 2026-05-20); re-`/research` if >4 weeks stale.
+**Stack:** Scrapling (anti-bot, agent-driven, DOM-drift) → selectolax / httpx (raw throughput) → Scrapy + scrapy-redis (distributed) → Crawlee (Node/TS). Source of truth: [`playbooks/scrapling/`](playbooks/scrapling/) (validated 2026-06-25); re-`/research` if >4 weeks stale.
 
 | Signal / Intent | Tool | Key params | Rationale |
 |----------------|------|------------|-----------|
