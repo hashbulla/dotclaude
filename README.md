@@ -22,8 +22,8 @@
 
 ## Table of contents
 
-1. [🧠 Concepts](#-concepts)
-2. [Highlights](#highlights)
+1. [Highlights](#highlights)
+2. [🧠 Concepts](#-concepts)
 3. [🚀 Quick start](#-quick-start)
 4. [🤖 Agents (RPI + extras)](#-agents-rpi--extras)
 5. [🎯 Slash commands](#-slash-commands)
@@ -299,7 +299,7 @@ Worked RPI/brainstorm→spec examples: [docs/superpowers/specs/2026-06-16-no-los
 
 ### What makes it senior-AI-engineer grade
 
-1. **Adversarial review by default.** Two reviewers (code + security) running in worktree isolation prevent rubber-stamp pattern.
+1. **Adversarial review by default.** Three reviewers (code, security, constitutional-validator) gate every phase — code + security in worktree isolation — preventing the rubber-stamp pattern.
 2. **Citation Grounding on P0/P1.** Findings must back high-severity claims with external evidence. Reviewers can't soften to avoid citing — uncited P0/P1 auto-downgrade.
 3. **Constitutional check.** `constitutional-validator` checks the diff against the project's *own* `CLAUDE.md` + `.claude/rules/*.md` + stated non-goals. Project-internal layer that pure code review misses.
 4. **Conditional `/deep-research`.** `requirement-parser` sets a `needs_deep_research` flag. When true (new lib, comparing options, regulated domain, perf-critical, novel architecture, security-sensitive), `/rpi:research` invokes `/deep-research` (Perplexity-grade, 100+ sources). When false (trivial features), falls back to `tavily_skill` / `tavily_search`.
