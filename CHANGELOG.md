@@ -29,7 +29,7 @@ Env knobs: `SELF_UPDATE_FORCE=1` (bypass throttle), `SELF_UPDATE_INTERVAL_HOURS=
 
 #### Public-release hardening (AI-213)
 
-- Removed 4 client-confidential FR-B2B inline skills (voice-check, deck-generator, humanize-fr, linkedin-post) from git history and `.gitignore`d them.
+- Excluded 4 client-confidential FR-B2B inline skills from the public repo: untracked and `.gitignore`d, with their content scrubbed from git history during the public-release rewrite.
 - Updated public posture: removed "repo is private" qualifiers; replaced GitHub-issue disclosure path with GitHub private vulnerability reporting.
 - Reconciled all doc counts: 11 rules (was 8), 5 MCP servers (was 3), 5 playbooks (was 2 listed), `no-loss` as the one shipped inline skill.
 - Fixed two broken README relative links (skills/claude-init/SKILL.md → public GitHub URL; workflows/rpi/feature-template/ → commands/rpi/).
