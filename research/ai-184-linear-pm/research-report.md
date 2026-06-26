@@ -11,13 +11,13 @@
 - Linear's official AI-agent guidance is explicit and load-bearing for an agent-ops rule: **assigning an issue to an agent is *delegation*, not ownership** — the human assignee stays responsible.[^14][^6] [CONFIRMED]
 - The single strongest agent-ops idempotence rule, published by Linear: **comments are editable and unreliable to read back from; agents should treat human-authored input as frozen-in-time and never depend on re-reading their own prior comments** — and an agent should signal completion via a structured final activity, not by mutating the spec.[^17] [CONFIRMED]
 - Linear explicitly recommends **automating status transitions over manual "ticket management"**, and a published community pattern for Claude Code + Linear MCP is: read issue → move to In Progress at work-start → comment progress → ask before moving to Done.[^1][^18] [PROBABLY TRUE]
-- For the lean solo "AI Agency" workspace (empirically: 1 team, no cycles, no initiatives), the cycle/WIP/initiative machinery of The Linear Method is **overkill** — those are multi-person team-flow tools and the workspace runs none; the applicable subset is: write issues about concrete problems, one named owner (trivially the solo operator), keep a manageable backlog, mix feature + quality work, priority/estimate as triage signal not ritual.[^9][^30][^31] [CONFIRMED]
+- For the lean solo workspace (empirically: 1 team, no cycles, no initiatives), the cycle/WIP/initiative machinery of The Linear Method is **overkill** — those are multi-person team-flow tools and the workspace runs none; the applicable subset is: write issues about concrete problems, one named owner (trivially the solo operator), keep a manageable backlog, mix feature + quality work, priority/estimate as triage signal not ritual.[^9][^30][^31] [CONFIRMED]
 
 ## 1. Linear's product model & data primitives
 
 **Issues** are the atomic unit: each belongs to a single team, carries an identifier like `ENG-123`, and is **required to have only a title and a status** — priority, estimate, label, due date, assignee, and relations are all optional.[^1] This minimalism is intentional: "This makes it quick to create issues and cuts down on unnecessary work."[^1]
 
-**Workflow states** are per-team ordered statuses grouped into categories. Linear's documented categories are **backlog, unstarted ("Todo"), started ("In Progress"), completed ("Done"), and canceled**.[^1][^31] Active issues = Unstarted + Started.[^7] The MCP-observed workspace has six statuses; `list_issue_statuses` returns their `type`: Backlog→`backlog`, Todo→`unstarted`, In Progress→`started`, Done→`completed`, Canceled→`canceled`, **Duplicate→`duplicate`** (a distinct status type Linear creates when triage merges duplicates).[^31] [CONFIRMED — direct observation]
+**Workflow states** are per-team ordered statuses grouped into categories. Linear's documented categories are **backlog, unstarted ("Todo"), started ("In Progress"), completed ("Done"), and canceled**.[^1][^31] Active issues = Unstarted + Started.[^7] The observed workspace has six statuses; `list_issue_statuses` returns their `type`: Backlog→`backlog`, Todo→`unstarted`, In Progress→`started`, Done→`completed`, Canceled→`canceled`, **Duplicate→`duplicate`** (a distinct status type Linear creates when triage merges duplicates).[^31] [CONFIRMED — direct observation]
 
 **Priority** is a fixed five-value enum — **No priority, Low, Medium, High, Urgent** — and Linear deliberately refuses custom priorities: "Adding too many options makes it harder to set priority and leads to diminishing returns." Urgent triggers assignee notification.[^4] In the API/URL surface, priority is set by name (`Urgent|High|Medium|Low`) or integer.[^3]
 
@@ -27,7 +27,7 @@
 
 **Sub-issues** break a parent into smaller pieces; Linear's rule of thumb: "Consider creating sub-issues when a set of work is too large to be a single issue but too small to be a project."[^8] Sub-issues **inherit** the parent's team, priority, and project (and cycle if active), but **not labels**.[^8] Optional team-level automations: parent auto-closes when all sub-issues are done, and sub-issues auto-close when the parent is done.[^8] A checklist/bulleted list can be converted to sub-issues, and an over-grown parent can be "Convert to project."[^8]
 
-**Labels & label groups**: labels can be team- or workspace-scoped and organized into **groups**. The MCP-observed workspace uses a single `Type` label group with 7 children (Admin, Bug, Réunion, Veille, Conseil, Contenu, IA/Dev), each with a French description.[^31] [CONFIRMED — direct observation] A label-hygiene finding: three **orphan default labels** (Feature, Bug, Improvement) sit *outside* any group and duplicate the `Type` Bug — these are Linear's stock defaults and should be deleted/merged.[^31] [POSSIBLY TRUE — inference from observed state]
+**Labels & label groups**: labels can be team- or workspace-scoped and organized into **groups**. A well-structured workspace uses a single `Type` label group with a coherent set of children scoped to the team's work types.[^31] [CONFIRMED — direct observation] A common label-hygiene issue: **orphan default labels** (e.g. Linear's stock "Feature", "Bug", "Improvement") sit *outside* any group and may duplicate entries in a custom `Type` group — these should be deleted/merged.[^31] [POSSIBLY TRUE — inference from observed state]
 
 **Projects** group issues toward a **specific, time-bound deliverable** (e.g. launching a feature); they have their own page, progress graphs, and can be shared across teams.[^1] **Milestones** subdivide a single project into meaningful completion stages.[^1] **Cycles** are sprints — automated, repeating N-week windows that "specifically do not end in a release"; incomplete issues roll over automatically.[^1] **Initiatives** are a manually curated list of projects expressing company objectives, with a workspace-level view, health rollup, and (Enterprise) nestable sub-initiatives.[^11][^12]
 
@@ -45,16 +45,16 @@ The Method's principles, verbatim from `linear.app/method`: **Build for the crea
 
 ### Lean-solo calibration (workspace: 1 team, NO cycles, NO initiatives)
 
-What **transfers** to the solo "AI Agency" workspace:
+What **transfers** to the solo workspace:
 - **Write issues about concrete problems/tasks** with a defined outcome — the keystone, fully applicable.[^10] [CONFIRMED applicability]
 - **One named owner per issue/project** — trivially satisfied (the solo operator), but the discipline of *assigning* still matters for the My-Issues view and agent delegation.[^9][^14]
 - **Keep a manageable backlog** — arguably *more* important solo: no one else resurfaces dropped work.[^9]
 - **Mix feature + quality work**; **write a short spec before non-trivial build**.[^9][^10]
 
 What is **OVERKILL** and should be flagged as such in the rule:
-- **Cycles / sprint planning / velocity / rollover machinery** — the workspace runs no cycles; cycle-filling is a multi-person planning ritual (a community thread documents 120 clicks to fill a cycle) with no payoff for one person.[^29][^9][^31] A solo operator should use **priority + a manageable backlog** as the planning surface, not cycles. [CONFIRMED — workspace runs 0 cycles]
+- **Cycles / sprint planning / velocity / rollover machinery** — the observed workspace runs no cycles; cycle-filling is a multi-person planning ritual (a community thread documents 120 clicks to fill a cycle) with no payoff for one person.[^29][^9][^31] A solo operator should use **priority + a manageable backlog** as the planning surface, not cycles. [CONFIRMED — workspace runs 0 cycles]
 - **WIP-limit machinery** — WIP limits are a Kanban team-flow tool to surface bottlenecks across people;[^30] for one operator, "keep WIP low" degrades to the trivial heuristic *finish what's In Progress before starting more* — no board column limits needed. [PROBABLY TRUE]
-- **Initiative hierarchy / sub-initiatives / OKR rollup** — explicitly leadership/multi-project tooling;[^11][^12] zero initiatives in use; a flat issue+(occasional)project model suffices. [CONFIRMED — not in use]
+- **Initiative hierarchy / sub-initiatives / OKR rollup** — explicitly leadership/multi-project tooling;[^11][^12] the observed workspace runs zero initiatives; a flat issue+(occasional)project model suffices. [CONFIRMED — not in use]
 - **Project status-update cadence & reminders** — built for keeping *other* stakeholders aligned;[^16] solo, a status update is only worth posting on a genuinely multi-week project, and only as a thinking/handoff artifact, not a reporting ritual.
 
 ## 3. How to write an excellent Linear issue (the "good issue" checklist)
@@ -92,7 +92,7 @@ Synthesizing Linear's own guidance:[^10][^18][^9]
 
 **Tool surface.** The Linear MCP server exposes ~23 tools (Fiberplane's audit) spanning **list_*** (issues, projects, teams, users, documents, cycles, comments, issue_labels, issue_statuses, project_labels), **get_*** (issue, project, team, user, document, issue_status), **create_*** (issue, project, comment, issue_label), **update_*** (issue, project), and **search_documentation**.[^22] The server "is doing more than a 1:1 mapping to the GraphQL schemas" — it offers **curated, task-completion-oriented parameter sets** (e.g. `list_issues` exposes `teamId`/`stateId`/`assigneeId`, not GraphQL's nested filter objects).[^22] [CONFIRMED — corroborated by direct tool observation]
 
-The **observed** linear-server toolset for this workspace is broader and uses a `save_*` idempotent-upsert naming convention: `get_issue`, `save_issue`, `list_issues`, `save_comment`, `list_comments`, `save_status_update`, `get_status_updates`, `save_project`, `save_milestone`, `save_document`, `list_issue_statuses`, `list_issue_labels`, `create_issue_label`, `list_cycles`, plus attachment/diff tools and `search_documentation`.[^31] [CONFIRMED — direct observation] The `save_*` naming signals **upsert idempotence**: `save_issue` with an `id` updates, without one creates.
+The **observed** linear-server toolset is broader and uses a `save_*` idempotent-upsert naming convention: `get_issue`, `save_issue`, `list_issues`, `save_comment`, `list_comments`, `save_status_update`, `get_status_updates`, `save_project`, `save_milestone`, `save_document`, `list_issue_statuses`, `list_issue_labels`, `create_issue_label`, `list_cycles`, plus attachment/diff tools and `search_documentation`.[^31] [CONFIRMED — direct observation] The `save_*` naming signals **upsert idempotence**: `save_issue` with an `id` updates, without one creates.
 
 ### Agent-ops best-practice rules (the core deliverable)
 
@@ -105,7 +105,7 @@ The **observed** linear-server toolset for this workspace is broader and uses a 
 
 **C. Never overwrite a human-authored spec.** This is the cardinal rule, derived from B: the description is the human's contract; the agent's writes go to comments/activities and to *properties* (state, assignee-back, labels, relations), never to clobbering the description body. If the description needs correcting, propose it in a comment.
 
-**D. Transition workflow states to reflect reality, and prefer automation.** Linear: "we recommend using integrations or automations to update issue status to avoid the need to 'manage tickets.'"[^1] The published Claude-Code-MCP pattern: on starting work, **move to In Progress**; keep the issue updated with progress comments; **ask the human before moving to Done.**[^18] Acknowledge a delegation immediately (the native-agent analog: emit a `thought` within 10 s, or the session is marked unresponsive).[^17][^26] Map states to the workspace's six: Backlog (not yet scheduled) → Todo (scheduled, not started) → In Progress (active) → Done (completed) / Canceled (won't do) / Duplicate (merged).[^31]
+**D. Transition workflow states to reflect reality, and prefer automation.** Linear: "we recommend using integrations or automations to update issue status to avoid the need to 'manage tickets.'"[^1] The published Claude-Code-MCP pattern: on starting work, **move to In Progress**; keep the issue updated with progress comments; **ask the human before moving to Done.**[^18] Acknowledge a delegation immediately (the native-agent analog: emit a `thought` within 10 s, or the session is marked unresponsive).[^17][^26] Map states to the observed six: Backlog (not yet scheduled) → Todo (scheduled, not started) → In Progress (active) → Done (completed) / Canceled (won't do) / Duplicate (merged).[^31]
 
 **E. Signal blockers via relations, not prose.** When work is blocked by another issue, set a **blocked-by relation** to the blocker (and/or post an `elicitation`/comment naming it) rather than only writing "blocked" in a comment — relations are filterable and surface in views; prose does not.[^2][^23]
 
@@ -132,7 +132,7 @@ No mature, widely-adopted "linear-pm" Claude Code skill/plugin or Cursor rule wa
 ## Methodology note
 
 - Tier profile: Tier 1+2 technical (vendor-official primary). Domain allowlist: linear.app, developers.linear.app + open community for axis 6.
-- Sub-questions: 6. Tavily calls: 7 search + 6 extract + 0 research; plus **8 Linear MCP `search_documentation` calls** (vendor-primary, Tier 1-equivalent) and **3 direct MCP state observations** (`list_teams`, `list_issue_statuses`, `list_issue_labels` — Tier 1 primary, the calibration ground truth).
+- Sub-questions: 6. Tavily calls: 7 search + 6 extract + 0 research; plus **8 Linear MCP `search_documentation` calls** (vendor-primary, Tier 1-equivalent) and **3 direct MCP state observations** (`list_teams`, `list_issue_statuses`, `list_issue_labels` against a live workspace — Tier 1 primary, the calibration ground truth).
 - CRAG iterations: 0 (corroboration met on first pass; vendor-primary + direct-observation coverage was strong).
 - Quality gates (deterministically verified, verdict PASS): groundedness 1.0, source quality 0.833 Tier 1/2, corroboration rate 0.864, source-count floor 36/35, freshness ≥2024 (median 2026-01). Coverage 1.0 (all 6 axes ≥1 vendor source).
 - Known gaps: no full GraphQL-schema enumeration of every MCP tool (drifts with releases — re-derive live); SLAs/Business-tier features documented thinly (out of scope for solo workspace); no mature community "linear-pm" asset found to import.
@@ -169,5 +169,5 @@ No mature, widely-adopted "linear-pm" Claude Code skill/plugin or Cursor rule wa
 [^28]: Linear Guide: Setup, Best Practices & Pro Tips, Morgen, 2026. https://www.morgen.so/blog-posts/linear-project-management — Tier 3, Admiralty C3, sub-questions: sq2, sq3
 [^29]: Considering the switch to Linear, but filling a cycle seems like a hassle, r/Linear, 2024. https://www.reddit.com/r/Linear/comments/1b8r79i/considering_the_switch_to_linear_but_filling_a — Tier 4, Admiralty D4, sub-questions: sq2
 [^30]: Working with WIP limits for kanban, Atlassian, 2026. https://www.atlassian.com/agile/kanban/wip-limits — Tier 2, Admiralty B3, sub-questions: sq2
-[^31]: Linear MCP direct observation (list_teams, list_issue_statuses, list_issue_labels) — AI Agency workspace, 2026-06-24. Live MCP `linear-server`. — Tier 1, Admiralty A1, sub-questions: sq1, sq5, sq6
+[^31]: Linear MCP direct observation (list_teams, list_issue_statuses, list_issue_labels) — solo lean workspace, 2026-06-24. Live MCP `linear-server`. — Tier 1, Admiralty A1, sub-questions: sq1, sq5, sq6
 [^32]: Ask HN: Solo devs, how do you plan your development?, Hacker News, 2019. https://news.ycombinator.com/item?id=21905423 — Tier 4, Admiralty D4, sub-questions: sq2

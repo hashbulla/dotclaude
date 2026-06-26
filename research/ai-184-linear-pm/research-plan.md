@@ -4,7 +4,7 @@
 
 ## 1. Question & scope
 
-**Research question:** Codify a global Claude Code user-scope rule (`~/.claude/rules/linear-pm.md`) so every Linear interaction by the agent is PM-grade — covering Linear's product model, The Linear Method, the "good issue" discipline, Linear Agents, the Linear MCP server surface + agent-ops idempotence rules, and importable community assets. Calibrated for a SOLO freelance "AI Agency" workspace (6-state workflow, single `Type` label group, no cycles, no initiatives).
+**Research question:** Codify a global Claude Code user-scope rule (`~/.claude/rules/linear-pm.md`) so every Linear interaction by the agent is PM-grade — covering Linear's product model, The Linear Method, the "good issue" discipline, Linear Agents, the Linear MCP server surface + agent-ops idempotence rules, and importable community assets. Calibrated for a SOLO freelance lean workspace (6-state workflow, single `Type` label group, no cycles, no initiatives).
 
 **Classification:** technical
 **Tier profile:** Tier 1+2 technical, with a deliberate exception — the authoritative sources here are vendor-official (`linear.app/docs`, `linear.app/method`, `developers.linear.app`, `mcp.linear.app`, Linear changelog/blog). These are graded Tier 2 reliability B (vendor-official primary documentation). GitHub official-org repos and well-known dev docs are Tier 2. Community assets (GitHub repos, Cursor rules) are Tier 3/4 and admissible only as importable-asset signals, never as factual support for Linear's own semantics.
