@@ -33,7 +33,7 @@ The **Claude Code plugin** (added in late 2025, present in the user's install at
 
 Source of truth for this list: the Context7 README's "feat(plugins): add Context7 plugin for Claude Code" commit description.[^2] [CONFIRMED]
 
-The user's installed plugin manifest (`~/.claude/plugins/installed_plugins.json`) confirms `context7@claude-plugins-official` is registered at user scope. The `.mcp.json` at `~/.claude/plugins/cache/claude-plugins-official/context7/c050adb10757/.mcp.json` currently reads:
+The installed plugin manifest (`~/.claude/plugins/installed_plugins.json`) confirms `context7@claude-plugins-official` is registered at user scope. The `.mcp.json` at `~/.claude/plugins/cache/claude-plugins-official/context7/c050adb10757/.mcp.json` currently reads:
 
 ```json
 { "context7": { "command": "npx", "args": ["-y", "@upstash/context7-mcp"] } }

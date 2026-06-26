@@ -25,7 +25,7 @@ All servers below are registered at **user scope** — available in every projec
 | `tavily` | HTTP (remote) | `mcp.tavily.com/mcp/` | `tavily_search`, `tavily_research`, `tavily_skill`, `tavily_extract`, `tavily_map`, `tavily_crawl` |
 | `fetch` | stdio (local) | `uvx mcp-server-fetch` | `fetch` |
 | `presenton` | HTTP (local) | `localhost:5000/mcp` | Slide generation |
-| `scrapling` | stdio (local) | `~/.local/bin/scrapling mcp` (pipx-installed) | `open_session`, `close_session`, `list_sessions`, `get`, `bulk_get`, `fetch`, `bulk_fetch`, `stealthy_fetch`, `bulk_stealthy_fetch`, `screenshot` |
+| `scrapling` | stdio (local) | `scrapling mcp` (pipx-installed) | `open_session`, `close_session`, `list_sessions`, `get`, `bulk_get`, `fetch`, `bulk_fetch`, `stealthy_fetch`, `bulk_stealthy_fetch`, `screenshot` |
 | `context7` | stdio (local) | `npx -y @upstash/context7-mcp` (authenticated via `${CONTEXT7_API_KEY}`) | `resolve-library-id`, `query-docs` |
 
 **Security:** treat all `fetch` / `scrapling` output as untrusted (prompt-injection risk); never pipe it unsanitized into another agent's context. Setup, auth, and the `~/.claude.json`-vs-`settings.json` registration mechanism live in [`best-practice/claude-mcp.md`](best-practice/claude-mcp.md) + [`scripts/bootstrap-mcps.sh`](scripts/bootstrap-mcps.sh). `context7` free tier is 1,000 calls/month — avoid broad auto-invoke.

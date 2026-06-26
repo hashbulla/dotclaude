@@ -53,7 +53,7 @@ AI-70 — build the /no-loss checkpoint skill.
 - This repo's project .claude is the NESTED ~/.claude/.claude — walk-up resolves to it.
 
 ## Working state
-- Branch: poiraudvictor42/ai-70-...
+- Branch: <branch>
 - Uncommitted: (clean)
 - Key files: skills/no-loss/scripts/no-loss-resolve.sh:1 — deterministic resolver
 
