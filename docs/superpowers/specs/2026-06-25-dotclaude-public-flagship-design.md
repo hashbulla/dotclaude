@@ -20,7 +20,7 @@ Method: 4 parallel adversarial reviewers (privacy/secret-leak · front-door docs
 **Verified facts:**
 - ✅ Top-tier PII (phone all formats, postal address, both emails) clean in working tree **and all 35 commits** (`git log -S` → 0). The `.example` + `.gitignore` discipline held.
 - ❌ Leak-by-reference in history: NDA client name, a prospect name, the Calendly handle, and a PostHog key prefix each appear in 1 past commit → working-tree edit insufficient, history rewrite required.
-- ❌ 27 tracked symlinks, all → private `~/local-skills/` (dead on clone + leak local layout).
+- ❌ 27 tracked symlinks, all → a private local path (dead on clone + leak local layout).
 - ❌ Advertised `voice-check` PostToolUse hook is **not wired** in `settings.json` (0 matches) — doctrine-vs-reality drift.
 
 ## 3. Decisions locked (via AskUserQuestion, 2026-06-25)
@@ -65,7 +65,7 @@ WS6 history rewrite + publish  (irreversible)
 ### WS2 — Clone portability · GATE: fresh-clone smoke test
 - `git rm` all 27 symlinks under `skills/` + `agents/anti-patterns.md`. Add a `.gitignore` rule so they aren't re-added.
 - Update `bootstrap.sh`: recreate external skills/agents from `skills.manifest.toml` + `skills/EXTERNAL.md` + `agents/EXTERNAL.md` at install (clone upstreams to an XDG path, then symlink — or document the manual path). Keep it `set -euo pipefail`, idempotent, offline-tolerant.
-- Fix the 5 hardcoded `~/.claude/...` hook paths in `settings.json` → `${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/...` (match the dispatcher convention already used).
+- Fix the 5 hardcoded absolute `$HOME/.claude/...` hook paths in `settings.json` → `${CLAUDE_PROJECT_DIR:-$HOME/.claude}/hooks/...` (match the dispatcher convention already used).
 - Verify `CLAUDE.md`'s `@identity.md`/`@profile.md`/`@RTK.md` imports resolve on a fresh clone (bootstrap seeds `identity.md`/`profile.md` from `.example`).
 - **Gate:** `git clone` into a temp dir → no dangling symlinks, no dead links, hooks resolve, `bootstrap.sh` runs green, `scripts/audit-config.sh` passes.
 
