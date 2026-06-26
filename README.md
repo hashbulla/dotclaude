@@ -57,7 +57,7 @@ The repo is layered. Each layer has one job; doctrine is on disk before code.
 | Configuration | [`settings.json`](settings.json), `.env.local` (gitignored) | [best-practice/claude-settings.md](best-practice/claude-settings.md) | ✅ |
 | MCP servers | [`CLAUDE.md` § MCP Registry](CLAUDE.md), `mcp.json` | [best-practice/claude-mcp.md](best-practice/claude-mcp.md) | ✅ |
 | Operational runbooks | [`playbooks/`](playbooks/) (5 playbooks) | [playbooks/README.md](playbooks/README.md) | ✅ |
-| Doctrine | [`best-practice/`](best-practice/) (9 docs) | — | ✅ |
+| Doctrine | [`best-practice/`](best-practice/) (10 docs) | — | ✅ |
 | Reference | [`docs/`](docs/) | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [docs/PORTABILITY.md](docs/PORTABILITY.md) | ✅ |
 
 ```mermaid
@@ -76,10 +76,12 @@ flowchart TD
 ## 🚀 Quick start
 
 ```bash
-git clone git@github.com:hashbulla/dotclaude.git ~/.claude
+git clone https://github.com/hashbulla/dotclaude.git ~/.claude
 cd ~/.claude
 bash bootstrap.sh
 ```
+
+> Owner / contributors (push access): `git clone git@github.com:hashbulla/dotclaude.git ~/.claude`
 
 The bootstrap:
 

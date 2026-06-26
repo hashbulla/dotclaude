@@ -21,15 +21,17 @@ Optional but useful:
 ## Step 1 — Clone
 
 ```bash
-git clone git@github.com:hashbulla/dotclaude.git ~/.claude
+git clone https://github.com/hashbulla/dotclaude.git ~/.claude
 cd ~/.claude
 ```
+
+> Owner / contributors (push access): `git clone git@github.com:hashbulla/dotclaude.git ~/.clone`
 
 If `~/.claude/` already exists (Claude Code initialized it on first run), back it up first:
 
 ```bash
 mv ~/.claude ~/.claude.bak.$(date +%Y%m%d)
-git clone git@github.com:hashbulla/dotclaude.git ~/.claude
+git clone https://github.com/hashbulla/dotclaude.git ~/.claude
 cp ~/.claude.bak.*/{settings.local.json,identity.md,profile.md,.env.local,history.jsonl} ~/.claude/ 2>/dev/null || true
 ```
 
