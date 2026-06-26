@@ -6,7 +6,7 @@ This file catalogs every agent in `~/.claude/agents/` that is a symlink pointing
 
 | Agent file | Upstream symlink target | Provenance | Bootstrap action |
 |---|---|---|---|
-| [`anti-patterns.md`](anti-patterns.md) | `~/local-skills/Skills/impeccable/.claude/agents/anti-patterns.md` | [`pbakaus/impeccable`](https://github.com/pbakaus/impeccable) public repo | Documented; not auto-installed. Manually clone `pbakaus/impeccable` to `~/local-skills/Skills/impeccable` if needed. |
+| [`anti-patterns.md`](anti-patterns.md) | `~/.local/share/dotclaude/skills/impeccable/.claude/agents/anti-patterns.md` | [`pbakaus/impeccable`](https://github.com/pbakaus/impeccable) public repo | Documented; not auto-installed. Manually clone `pbakaus/impeccable` to `~/.local/share/dotclaude/skills/impeccable` if needed. |
 
 ## Why these are symlinked, not vendored
 
@@ -19,7 +19,7 @@ When you clone this dotclaude repo on a new machine and run `bootstrap.sh`, the 
 ```bash
 # Clone the upstream once
 git clone https://github.com/pbakaus/impeccable.git \
-  ~/local-skills/Skills/impeccable
+  ~/.local/share/dotclaude/skills/impeccable
 
 # The symlink resolves automatically — no further action.
 ```

@@ -102,7 +102,7 @@ dotclaude has three kinds:
 
 1. **Inline** — `~/.claude/skills/<name>/` is a real directory committed to dotclaude. Shipped with the repo. Example: `synthese`.
 2. **Auto-installed** — declared in `skills.manifest.toml`, cloned by `bootstrap.sh`, symlinked into `~/.claude/skills/`. 5 of them: `deep-research`, `critical-harness`, `claude-init`, `skill-generator`, `skill-harness`.
-3. **Symlinked-out (third-party)** — symlinks to `~/local-skills/Skills/<ecosystem>/<skill>`. Catalogued in `skills/EXTERNAL.md`. Not auto-installed; user clones the ecosystem repo manually.
+3. **Symlinked-out (third-party)** — symlinks to `~/.local/share/dotclaude/skills/<ecosystem>/<skill>`. Catalogued in `skills/EXTERNAL.md`. Not auto-installed; user clones the ecosystem repo manually.
 
 ## Verifying
 

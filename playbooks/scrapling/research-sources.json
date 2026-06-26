@@ -66,7 +66,7 @@
   },
   {
     "id": "S06",
-    "url": "local:~/local-skills/scraping/scrapling/.venv/lib/python3.12/site-packages/scrapling/__init__.py",
+    "url": "local:~/.local/share/dotclaude/scrapling/.venv/lib/python3.12/site-packages/scrapling/__init__.py",
     "title": "scrapling/__init__.py — public API exports",
     "publisher": "Installed package — version 0.4.8",
     "published_date": "2026-05-11",
@@ -79,7 +79,7 @@
   },
   {
     "id": "S07",
-    "url": "local:~/local-skills/scraping/scrapling/.venv/lib/python3.12/site-packages/scrapling/fetchers/__init__.py",
+    "url": "local:~/.local/share/dotclaude/scrapling/.venv/lib/python3.12/site-packages/scrapling/fetchers/__init__.py",
     "title": "scrapling/fetchers/__init__.py — fetcher module exports",
     "publisher": "Installed package — version 0.4.8",
     "published_date": "2026-05-11",
@@ -92,7 +92,7 @@
   },
   {
     "id": "S08",
-    "url": "local:~/local-skills/scraping/scrapling/.venv/lib/python3.12/site-packages/scrapling/core/ai.py",
+    "url": "local:~/.local/share/dotclaude/scrapling/.venv/lib/python3.12/site-packages/scrapling/core/ai.py",
     "title": "scrapling/core/ai.py — ScraplingMCPServer implementation",
     "publisher": "Installed package — version 0.4.8",
     "published_date": "2026-05-11",
@@ -105,7 +105,7 @@
   },
   {
     "id": "S09",
-    "url": "local:~/local-skills/scraping/scrapling/.venv/lib/python3.12/site-packages/scrapling/cli.py",
+    "url": "local:~/.local/share/dotclaude/scrapling/.venv/lib/python3.12/site-packages/scrapling/cli.py",
     "title": "scrapling/cli.py — CLI subcommands",
     "publisher": "Installed package — version 0.4.8",
     "published_date": "2026-05-11",
@@ -118,7 +118,7 @@
   },
   {
     "id": "S10",
-    "url": "local:~/local-skills/scraping/scrapling/.venv/lib/python3.12/site-packages/scrapling/spiders/robotstxt.py",
+    "url": "local:~/.local/share/dotclaude/scrapling/.venv/lib/python3.12/site-packages/scrapling/spiders/robotstxt.py",
     "title": "scrapling/spiders/robotstxt.py — RobotsTxtManager",
     "publisher": "Installed package — version 0.4.8",
     "published_date": "2026-05-11",

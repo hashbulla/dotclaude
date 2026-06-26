@@ -11,21 +11,21 @@
 
 [skill.deep-research]
 repo = "git@github.com:hashbulla/deep-research.git"
-clone_to = "~/local-skills/Skills/deep-research"
+clone_to = "~/.local/share/dotclaude/skills/deep-research"
 symlink_target = "~/.claude/skills/deep-research"
 required = true
 description = "Agentic multi-source deep research. Triggered by /rpi:research when needs_deep_research=true."
 
 [skill.critical-harness]
 repo = "git@github.com:hashbulla/critical-harness.git"
-clone_to = "~/local-skills/Skills/critical-harness"
+clone_to = "~/.local/share/dotclaude/skills/critical-harness"
 symlink_target = "~/.claude/skills/critical-harness"
 required = true
 description = "Adversarial repo-level review pipeline. Pattern source for RPI's Citation Grounding rule."
 
 [skill.claude-init]
 repo = "git@github.com:hashbulla/claude-init-skill.git"
-clone_to = "~/local-skills/Skills/claude-init-skill"
+clone_to = "~/.local/share/dotclaude/skills/claude-init-skill"
 symlink_source = "skills/claude-init"
 symlink_target = "~/.claude/skills/claude-init"
 required = true
@@ -33,14 +33,14 @@ description = "Bootstraps or audits the full .claude/ memory architecture of a p
 
 [skill.skill-generator]
 repo = "git@github.com:hashbulla/skill-generator.git"
-clone_to = "~/local-skills/Skills/skill-generator"
+clone_to = "~/.local/share/dotclaude/skills/skill-generator"
 symlink_target = "~/.claude/skills/skill-generator"
 required = true
 description = "Scaffolds production-grade skills per Anthropic Agent Skills spec and Perplexity's eval-first method."
 
 [skill.skill-harness]
 repo = "git@github.com:hashbulla/skill-harness.git"
-clone_to = "~/local-skills/Skills/skill-harness"
+clone_to = "~/.local/share/dotclaude/skills/skill-harness"
 symlink_target = "~/.claude/skills/skill-harness"
 required = true
 description = "Adversarial quality harness for individual skills. Companion to skill-generator."

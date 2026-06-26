@@ -30,7 +30,7 @@ Public repo: <https://github.com/pbakaus/impeccable>
 | `~/.claude/skills/typeset` | `.claude/skills/typeset` |
 | `~/.claude/agents/anti-patterns.md` | `.claude/agents/anti-patterns.md` |
 
-**Install**: `git clone https://github.com/pbakaus/impeccable.git ~/local-skills/Skills/impeccable` — the symlinks resolve automatically.
+**Install**: `git clone https://github.com/pbakaus/impeccable.git ~/.local/share/dotclaude/skills/impeccable` — the symlinks resolve automatically.
 
 ### paperclipai/paperclip (6 skills)
 
@@ -43,7 +43,7 @@ Public repo: <https://github.com/pbakaus/impeccable>
 | `~/.claude/skills/paperclip-dev` | `skills/paperclip-dev` |
 | `~/.claude/skills/para-memory-files` | `skills/para-memory-files` |
 
-**Install**: `git clone https://github.com/paperclipai/paperclip.git ~/local-skills/paperclip` — adjust paths if your AIEngineering layout differs.
+**Install**: `git clone https://github.com/paperclipai/paperclip.git ~/.local/share/dotclaude/skills/paperclip` — the symlinks resolve automatically.
 
 ## Symlinked but no remote (machine-local content)
 
@@ -71,10 +71,10 @@ Bootstrap detects dangling symlinks. For each one pointing to a third-party ecos
 
 ```bash
 # pbakaus/impeccable
-git clone https://github.com/pbakaus/impeccable.git ~/local-skills/Skills/impeccable
+git clone https://github.com/pbakaus/impeccable.git ~/.local/share/dotclaude/skills/impeccable
 
 # paperclipai/paperclip
-git clone https://github.com/paperclipai/paperclip.git ~/local-skills/paperclip
+git clone https://github.com/paperclipai/paperclip.git ~/.local/share/dotclaude/skills/paperclip
 ```
 
 If you don't want a particular symlink at all:

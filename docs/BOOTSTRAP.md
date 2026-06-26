@@ -62,10 +62,10 @@ Expected output:
   ✓ seeded hooks/config/hooks-config.local.json from hooks/config/hooks-config.local.example.json
 
 ━━━ 3/5 First-party skills ━━━
-  ↓ cloning deep-research → ~/local-skills/Skills/deep-research
-  ✓ deep-research symlinked: ~/.claude/skills/deep-research → ~/local-skills/Skills/deep-research
-  ↓ cloning critical-harness → ~/local-skills/Skills/critical-harness
-  ✓ critical-harness symlinked: ~/.claude/skills/critical-harness → ~/local-skills/Skills/critical-harness
+  ↓ cloning deep-research → ~/.local/share/dotclaude/skills/deep-research
+  ✓ deep-research symlinked: ~/.claude/skills/deep-research → ~/.local/share/dotclaude/skills/deep-research
+  ↓ cloning critical-harness → ~/.local/share/dotclaude/skills/critical-harness
+  ✓ critical-harness symlinked: ~/.claude/skills/critical-harness → ~/.local/share/dotclaude/skills/critical-harness
   …
 
 ━━━ 4/5 Dangling symlink detector ━━━

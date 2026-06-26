@@ -52,7 +52,7 @@ Catalogued in `skills/EXTERNAL.md`. dotclaude carries the symlink (so the slash 
 | paperclip | `paperclipai/paperclip` | paperclip, paperclip-converting-plans-to-tasks, paperclip-create-agent, paperclip-create-plugin, paperclip-dev, para-memory-files |
 | Other | `hashbulla/dossier-intelligence`, `hashbulla/proposition-commerciale-skill` | dossier-intelligence, proposition-commerciale |
 
-To install on a new machine: `git clone <repo> ~/local-skills/<path>` — the existing symlinks then resolve.
+To install on a new machine: `git clone <repo> ~/.local/share/dotclaude/skills/<skill-name>` — the existing symlinks then resolve.
 
 To remove from your machine: `rm ~/.claude/skills/<name>` for each symlink that points to an ecosystem you don't use.
 

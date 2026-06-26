@@ -109,7 +109,7 @@ The genesis commit. dotclaude scaffolding lifted from a working `~/.claude/` and
 - `bootstrap.sh` — idempotent. Checks deps, seeds templates, clones manifest skills, detects dangling symlinks, dry-runs hook dispatcher.
 - `skills/EXTERNAL.md` — catalog of 25+ symlinked third-party skills with manual-install commands.
 - Published 3 new GitHub repos: `hashbulla/skill-generator`, `hashbulla/skill-harness`. Updated `hashbulla/claude-init-skill` with professional README/LICENSE/.gitignore.
-- Migration: `critical-harness` moved from `~/.claude/skills/critical-harness/` (real dir + nested .git) to `~/local-skills/Skills/critical-harness` + symlinked back, matching the `deep-research` pattern.
+- Migration: `critical-harness` moved from `~/.claude/skills/critical-harness/` (real dir + nested .git) to `~/.local/share/dotclaude/skills/critical-harness` + symlinked back, matching the `deep-research` pattern.
 
 #### Doctrine
 
@@ -127,8 +127,8 @@ The genesis commit. dotclaude scaffolding lifted from a working `~/.claude/` and
 
 - `settings.json`: PostHog API key moved from inline to `${POSTHOG_API_KEY}` env interpolation. Required user action: rotate the key.
 - `CLAUDE.md`: added `@profile.md` import alongside `@identity.md` and `@RTK.md`.
-- `~/.claude/skills/claude-init`: was a real directory with `SKILL.md` only; now a symlink to `~/local-skills/Skills/claude-init-skill/skills/claude-init` (canonical repo).
-- `~/.claude/skills/critical-harness`: was a real directory with nested `.git`; now a symlink to `~/local-skills/Skills/critical-harness` (canonical, no nested git).
+- `~/.claude/skills/claude-init`: was a real directory with `SKILL.md` only; now a symlink to `~/.local/share/dotclaude/skills/claude-init-skill/skills/claude-init` (canonical repo).
+- `~/.claude/skills/critical-harness`: was a real directory with nested `.git`; now a symlink to `~/.local/share/dotclaude/skills/critical-harness` (canonical, no nested git).
 
 ### Preserved
 
@@ -137,7 +137,7 @@ The genesis commit. dotclaude scaffolding lifted from a working `~/.claude/` and
 - All non-RPI agents and commands pre-existing at scaffold time (`pdf-design-evaluator`, `project-memory-architect`, `/research`, `/domain-setup`).
 - Inline skill shipped: `no-loss` (zero-loss session checkpoint, with evals). `synthese` preserved.
 - Playbooks: `claude-code-koyeb-channels`, `klavis-mcp`.
-- All symlinks into `~/local-skills/` (impeccable, paperclip, dossier-intelligence, proposition-commerciale, the `hashbulla/*` first-party skills).
+- All symlinks into `~/.local/share/dotclaude/skills/` (impeccable, paperclip, dossier-intelligence, proposition-commerciale, the `hashbulla/*` first-party skills).
 
 ### Backed up (in `/tmp/dotclaude.preflight/`, ephemeral)
 
