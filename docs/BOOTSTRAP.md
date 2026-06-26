@@ -25,7 +25,7 @@ git clone https://github.com/hashbulla/dotclaude.git ~/.claude
 cd ~/.claude
 ```
 
-> Owner / contributors (push access): `git clone git@github.com:hashbulla/dotclaude.git ~/.clone`
+> Owner / contributors (push access): `git clone git@github.com:hashbulla/dotclaude.git ~/.claude`
 
 If `~/.claude/` already exists (Claude Code initialized it on first run), back it up first:
 
