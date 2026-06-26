@@ -37,8 +37,6 @@ Skills declared in `skills.manifest.toml`. Bootstrap clones the upstream repo an
 - `hashbulla/deep-research`
 - `hashbulla/critical-harness`
 - `hashbulla/claude-init-skill`
-- `hashbulla/skill-generator`
-- `hashbulla/skill-harness`
 
 If the bootstrap fails to clone (offline, lack of access), the affected symlinks dangle. The dangling-symlink detector prints them; you re-run bootstrap when connectivity is back.
 

@@ -47,7 +47,7 @@ Public repo: <https://github.com/pbakaus/impeccable>
 
 ## Symlinked but no remote (machine-local content)
 
-`skill-generator` and `skill-harness` were in this category historically. Since the migration on 2026-05-12 they are auto-installed via the manifest (`hashbulla/skill-generator`, `hashbulla/skill-harness`). No machine-local-only skills remain.
+No machine-local-only skills remain. (`skill-generator` and `skill-harness` are private — not-yet-public — and are not in the manifest.)
 
 ## Inline skills (real directories in this repo)
 
@@ -62,8 +62,6 @@ Auto-installed by `bootstrap.sh` from `hashbulla/*` GH repos. Symlinks resolve a
 - `deep-research`
 - `critical-harness`
 - `claude-init`
-- `skill-generator`
-- `skill-harness`
 
 ## On a fresh machine
 

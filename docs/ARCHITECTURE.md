@@ -83,7 +83,7 @@ After that, launching `claude` works.
 Three categories of skill in `~/.claude/skills/`:
 
 1. **Inline** (real directories committed): `no-loss`. Ships with dotclaude. (`claude-init` and `synthese` are not tracked inline — they install via `skills.manifest.toml` or manual clone.)
-2. **Auto-installed first-party** (cloned by bootstrap, symlinked): `deep-research`, `critical-harness`, `claude-init`, `skill-generator`, `skill-harness`. Manifest in `skills.manifest.toml`.
+2. **Auto-installed first-party** (cloned by bootstrap, symlinked): `deep-research`, `critical-harness`, `claude-init`. Manifest in `skills.manifest.toml`. (`skill-generator` and `skill-harness` are private — not-yet-public, not in the manifest.)
 3. **Symlinked third-party** (manual install): `impeccable/*` (18 skills), `paperclip/*` (6 skills), `dossier-intelligence`, `proposition-commerciale`. Catalogued in `skills/EXTERNAL.md`.
 
 Bootstrap detects dangling symlinks and prints repair commands.

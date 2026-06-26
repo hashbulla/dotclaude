@@ -105,10 +105,10 @@ The genesis commit. dotclaude scaffolding lifted from a working `~/.claude/` and
 
 #### Skills
 
-- `skills.manifest.toml` — declarative bootstrap manifest for 5 first-party skills.
+- `skills.manifest.toml` — declarative bootstrap manifest for 3 public first-party skills.
 - `bootstrap.sh` — idempotent. Checks deps, seeds templates, clones manifest skills, detects dangling symlinks, dry-runs hook dispatcher.
 - `skills/EXTERNAL.md` — catalog of 25+ symlinked third-party skills with manual-install commands.
-- Published 3 new GitHub repos: `hashbulla/skill-generator`, `hashbulla/skill-harness`. Updated `hashbulla/claude-init-skill` with professional README/LICENSE/.gitignore.
+- Updated `hashbulla/claude-init-skill` with professional README/LICENSE/.gitignore. (`skill-generator` and `skill-harness` deferred — not-yet-public, not installable via manifest.)
 - Migration: `critical-harness` moved from `~/.claude/skills/critical-harness/` (real dir + nested .git) to `~/.local/share/dotclaude/skills/critical-harness` + symlinked back, matching the `deep-research` pattern.
 
 #### Doctrine

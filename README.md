@@ -4,7 +4,7 @@
 
 > The working `~/.claude/` configuration of a senior AI engineer — version-controlled, bootstrap-able on any machine, and opinionated by design.
 
-`dotclaude` turns a blank Claude Code install into a production AI-engineering workstation: lazy-loaded rule routing, the four-phase **RPI** (Research → Plan → Implement) workflow with an adversarial reviewer trio in worktree isolation, Citation Grounding with auto-downgrade on P0/P1 findings, a 27-event hook dispatcher, Tavily-first search routing, five first-party skill repos installed from `skills.manifest.toml` by `bootstrap.sh`, and a security posture that keeps every secret out of the repo.
+`dotclaude` turns a blank Claude Code install into a production AI-engineering workstation: lazy-loaded rule routing, the four-phase **RPI** (Research → Plan → Implement) workflow with an adversarial reviewer trio in worktree isolation, Citation Grounding with auto-downgrade on P0/P1 findings, a 27-event hook dispatcher, Tavily-first search routing, three public first-party skill repos installed from `skills.manifest.toml` by `bootstrap.sh`, and a security posture that keeps every secret out of the repo.
 
 **Inspiration**: [shanraisshan/claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice). dotclaude diverges in three places: it lives at user scope (not project scope), it carries a working RPI workflow instead of a weather demo, and it bakes Citation Grounding from [`/critical-harness`](https://github.com/hashbulla/critical-harness) into the review trio.
 
@@ -141,15 +141,15 @@ Reviewer trio (`code-reviewer`, `security-reviewer`, `constitutional-validator`)
 
 One eval-first inline flagship ships in-repo: [`no-loss`](skills/no-loss/) (zero-loss session checkpoint, with eval fixtures). All other skills install from [`skills.manifest.toml`](skills.manifest.toml) via `bootstrap.sh` — the `skills/` directory reads intentionally thin because external skill repos are cloned on demand, not bundled.
 
-Five first-party skills auto-install via the manifest:
+Three public first-party skills auto-install via the manifest:
 
 | Skill | Repo | Purpose |
 |---|---|---|
 | `deep-research` | [`hashbulla/deep-research`](https://github.com/hashbulla/deep-research) | Agentic multi-source research, calibrated to Perplexity Deep Research |
 | `critical-harness` | [`hashbulla/critical-harness`](https://github.com/hashbulla/critical-harness) | Adversarial repo-level review with Citation Grounding |
 | `claude-init` | [`hashbulla/claude-init-skill`](https://github.com/hashbulla/claude-init-skill) | Bootstrap or audit a project's full `.claude/` architecture |
-| `skill-generator` | [`hashbulla/skill-generator`](https://github.com/hashbulla/skill-generator) | Scaffolds production-grade skills (Anthropic spec + Perplexity eval-first) |
-| `skill-harness` | [`hashbulla/skill-harness`](https://github.com/hashbulla/skill-harness) | Adversarial review of individual skills |
+
+Two additional skills — `skill-generator` / `skill-harness` (private — eval-first skill authoring + adversarial grading) — are part of the methodology but not-yet-public and not installable via this manifest.
 
 Plus 24 symlinked third-party skills (`pbakaus/impeccable` ×18, `paperclipai/paperclip` ×6). Catalogue + manual install commands in [`skills/EXTERNAL.md`](skills/EXTERNAL.md).
 
@@ -372,7 +372,7 @@ Full rotation cadence and incident response: [SECURITY.md](SECURITY.md).
 
 - **Inspiration**: [shanraisshan/claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice) — the gold-standard reference repo. dotclaude's layout, hook dispatcher pattern, and config hierarchy doctrine trace back here.
 - **Citation Grounding pattern**: [hashbulla/critical-harness](https://github.com/hashbulla/critical-harness). The Critic + Citation Grounder structural separation transplants directly into RPI's review trio.
-- **Eval-first methodology**: Perplexity Deep Research + Anthropic Agent Skills spec ([agentskills.io](https://agentskills.io)). [`skill-generator`](https://github.com/hashbulla/skill-generator) operationalizes it.
+- **Eval-first methodology**: Perplexity Deep Research + Anthropic Agent Skills spec ([agentskills.io](https://agentskills.io)). `skill-generator` (private — not-yet-public) operationalizes it.
 - **Impeccable frontend doctrine**: [pbakaus/impeccable](https://github.com/pbakaus/impeccable) — 18 skills that ship distinctive frontend code over generic AI aesthetic.
 - **Anthropic** for Claude Code itself.
 

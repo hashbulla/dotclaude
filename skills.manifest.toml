@@ -5,9 +5,10 @@
 # Each [skill.<name>] block describes one bootstrap-installable skill.
 # Format is intentionally explicit: adding or removing a skill is a 4-line edit.
 #
-# 5 first-party skills ship via this manifest. Third-party symlinks
+# 3 public first-party skills ship via this manifest. Third-party symlinks
 # (impeccable/*, paperclip/*)
 # are catalogued in skills/EXTERNAL.md — they require manual setup.
+# skill-generator and skill-harness are private (not-yet-public) — not listed here.
 
 [skill.deep-research]
 repo = "git@github.com:hashbulla/deep-research.git"
@@ -31,16 +32,3 @@ symlink_target = "~/.claude/skills/claude-init"
 required = true
 description = "Bootstraps or audits the full .claude/ memory architecture of a project."
 
-[skill.skill-generator]
-repo = "git@github.com:hashbulla/skill-generator.git"
-clone_to = "~/.local/share/dotclaude/skills/skill-generator"
-symlink_target = "~/.claude/skills/skill-generator"
-required = true
-description = "Scaffolds production-grade skills per Anthropic Agent Skills spec and Perplexity's eval-first method."
-
-[skill.skill-harness]
-repo = "git@github.com:hashbulla/skill-harness.git"
-clone_to = "~/.local/share/dotclaude/skills/skill-harness"
-symlink_target = "~/.claude/skills/skill-harness"
-required = true
-description = "Adversarial quality harness for individual skills. Companion to skill-generator."
