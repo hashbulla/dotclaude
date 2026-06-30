@@ -37,6 +37,7 @@
       "Read(path: **/.env.*)",
       "Read(path: **/.env.local)",
       "Read(path: **/config/secrets.*)",
+      "Read(path: **/.secrets/**)",
       "Read(path: **/*.key)",
       "Read(path: **/*.pem)",
       "Read(path: **/credentials.json)",
